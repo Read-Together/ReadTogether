@@ -11,4 +11,4 @@ Mauro Bosetti | https://github.com/amuroBosetti
 
 * Link a [Trello](https://trello.com/b/KN3gMxlb/readtogether)
 * Link al [documento de reporte](https://docs.google.com/document/d/1XDH8pwYPvzW9UgIGr9NNP0wZUeKfJ46zarGUHk4VMFA/edit?usp=sharing)
-* * Link al [User Story Mapping](https://miro.com/app/board/o9J_lI8_hOs=/)
+* Link al [User Story Mapping](https://miro.com/app/board/o9J_lI8_hOs=/)
