@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 class GruposController {
 
     @GetMapping("/grupos")
-    fun buscarGrupos() {
-
+    fun buscarGrupos(): List<String> {
+        return listOf<String>("El señor de los anillos")
     }
-
 }
