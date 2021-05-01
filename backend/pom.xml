@@ -19,9 +19,9 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-gcp-starter-firestore</artifactId>
-            <version>1.2.0.M1</version>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>7.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
