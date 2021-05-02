@@ -38,7 +38,7 @@ class TestBuscador {
         mockMvc.perform(MockMvcRequestBuilders.get("/grupos?busqueda=comunidad"))
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.[0]", Matchers.comparesEqualTo(grupoQueMatchea)))
-                .andExpect(jsonPath("$", hasSize<Int>(2)))
+                .andExpect(jsonPath("$", hasSize<Int>(1)))
 
     }
 
