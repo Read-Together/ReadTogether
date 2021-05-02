@@ -1,8 +1,10 @@
 package ar.edu.unq.readtogether.readtogether
 
+import ar.edu.unq.readtogether.readtogether.firebase.FireBaseInitialization
 import ar.edu.unq.readtogether.readtogether.services.GrupoService
 import org.hamcrest.Matchers
 import org.hamcrest.collection.IsCollectionWithSize.hasSize
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -22,6 +24,8 @@ class TestBuscador {
     private lateinit var mockMvc: MockMvc
     @Autowired
     private lateinit var grupoService: GrupoService
+    @Autowired
+    private lateinit var firebase : FireBaseInitialization
 
     @Test
     fun cuandoBuscoPorUnNombre_elBuscadorDevuelveLosGruposConEseNombre() {
@@ -30,10 +34,17 @@ class TestBuscador {
         grupoService.guardarGrupo(grupoQueMatchea)
         grupoService.guardarGrupo(grupoQueNoMatchea)
 
+
         mockMvc.perform(MockMvcRequestBuilders.get("/grupos?busqueda=comunidad"))
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.[0]", Matchers.comparesEqualTo(grupoQueMatchea)))
-                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$", hasSize<Int>(2)))
 
+    }
+
+    @Test
+    fun cuandoPidoTodosLosDocumentos_meRetornaUnoSoloPorAhora(){
+        val test = firebase.firestore.getAll()
+        assertEquals(test.get().size, 1)
     }
 }
