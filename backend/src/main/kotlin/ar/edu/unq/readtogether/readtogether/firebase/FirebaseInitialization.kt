@@ -11,7 +11,7 @@ import javax.annotation.PostConstruct
 
 
 @Service
-class FireBaseInitialization {
+class FirebaseInitialization {
 
     val database = "readtogether-4453b"
 
@@ -19,15 +19,18 @@ class FireBaseInitialization {
     @Throws(IOException::class)
     private fun initfirebase() {
         val serviceAccount = javaClass.classLoader.getResourceAsStream("readtogether-firebase-key.json")
+        //val serviceAccount = FileInputStream("./resources/readtogether-firebase-key.json")
         val options = FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setDatabaseUrl("https://$database.firebaseio.com")
+                .setDatabaseUrl("https://$database.firebaseio.com/")
                 .build()
         if (FirebaseApp.getApps().isEmpty()) {
             FirebaseApp.initializeApp(options)
         }
     }
 
-    val firestore: Firestore
-        get() = FirestoreClient.getFirestore()
+    fun getFirestore() : Firestore {
+        return FirestoreClient.getFirestore()
+    }
+
 }
