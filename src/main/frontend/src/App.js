@@ -11,15 +11,15 @@ function Home() {
 
 function Resultados() {
   const { termino } = useParams();
-  const [resultado, setResultado] = useState("")
+  const [resultados, setResultados] = useState([])
 
   axios.get(`http://localhost:8080/grupos?busqueda=${termino}`)
-    .then(resultado => {
-      setResultado(resultado.data)
+    .then(resultados => {
+      setResultados(resultados.data)
     });
   
   return(
-    <p>{resultado}</p>
+    <p>{resultados.map(resultado => resultado.nombre)}</p>
   )
 
 }
