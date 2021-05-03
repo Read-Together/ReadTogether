@@ -24,15 +24,18 @@ class GruposController {
         return grupoRepository.obtenerGrupos(busqueda)
     }
 
+    /***
+     * Mapeos creados para aprender como usar la base de datos.
+     * Cuando tenga el visto bueno de todes, modifico para que tod encaje
+     */
     @GetMapping("/get")
     fun grupos() : ResponseEntity<List<Grupo>>{
-        return ResponseEntity(grupoService.retornarGruposFirebase(), HttpStatus.OK)
+        return ResponseEntity(grupoService.retornarTodosLosGrupos(), HttpStatus.OK)
     }
 
     /*** Metodo creado para probar labase de datos ***/
     @PostMapping("/add")
     fun guardarGrupo(@RequestBody grupo: Grupo) : ResponseEntity<Boolean> {
-        return ResponseEntity(grupoService.agregarGrupoFirebase(grupo), HttpStatus.OK)
-        //return grupoService.agregarGrupoFirebase(grupo)
+        return ResponseEntity(grupoService.guardarGrupoFirebase(grupo), HttpStatus.OK)
     }
 }

@@ -24,8 +24,6 @@ class TestBuscador {
     private lateinit var mockMvc: MockMvc
     @Autowired
     private lateinit var grupoService: GrupoService
-    @Autowired
-    private lateinit var firebase : FirebaseInitialization
 
     @Test
     fun cuandoBuscoPorUnNombre_elBuscadorDevuelveLosGruposConEseNombre() {
@@ -42,7 +40,7 @@ class TestBuscador {
 
     @Test
     fun cuandoPidoTodosLosGrupos_retornaDosPorAhora(){
-        var grupos = grupoService.retornarGruposFirebase()
+        var grupos = grupoService.retornarTodosLosGrupos()
         assertEquals(2, grupos.size)
     }
 }
