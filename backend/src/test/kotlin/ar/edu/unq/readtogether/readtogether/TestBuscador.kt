@@ -1,10 +1,13 @@
 package ar.edu.unq.readtogether.readtogether
 
 import ar.edu.unq.readtogether.readtogether.firebase.FirebaseInitialization
+import ar.edu.unq.readtogether.readtogether.grupos.Grupo
 import ar.edu.unq.readtogether.readtogether.services.GrupoService
 import org.hamcrest.Matchers
 import org.hamcrest.collection.IsCollectionWithSize.hasSize
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -24,23 +27,16 @@ class TestBuscador {
     private lateinit var mockMvc: MockMvc
     @Autowired
     private lateinit var grupoService: GrupoService
+    private var grupo1 = Grupo()
+    private var grupo2 = Grupo()
+
 
     @Test
     fun cuandoBuscoPorUnNombre_elBuscadorDevuelveLosGruposConEseNombre() {
-        val grupoQueMatchea = "La comunidad del anillo"
-        val grupoQueNoMatchea = "Amantes de Crepusculo"
-        grupoService.guardarGrupo(grupoQueMatchea)
-        grupoService.guardarGrupo(grupoQueNoMatchea)
-
         mockMvc.perform(MockMvcRequestBuilders.get("/grupos?busqueda=comunidad"))
                 .andExpect(status().isOk)
-                .andExpect(jsonPath("$.[0]", Matchers.comparesEqualTo(grupoQueMatchea)))
+                .andExpect(jsonPath("$.[0].nombre", Matchers.comparesEqualTo("La comunidad del anillo")))
                 .andExpect(jsonPath("$", hasSize<Int>(1)))
     }
 
-    @Test
-    fun cuandoPidoTodosLosGrupos_retornaDosPorAhora(){
-        var grupos = grupoService.retornarTodosLosGrupos()
-        assertEquals(2, grupos.size)
-    }
 }

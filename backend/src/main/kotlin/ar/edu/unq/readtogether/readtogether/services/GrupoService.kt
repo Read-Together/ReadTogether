@@ -12,22 +12,15 @@ class GrupoService {
     @Autowired
     private lateinit var grupoRepository: GrupoRepository
 
-    @Autowired
-    private lateinit var firebase : FirebaseInitialization
-
-    fun guardarGrupo(grupo: String) {
+    fun guardarGrupo(grupo: Grupo) {
         grupoRepository.save(grupo)
     }
 
-    /*** Metodo creado para probar la base de datos **/
-    fun retornarTodosLosGrupos() : List<Grupo>{
-        return grupoRepository.retornarTodosLosGruposFirebase()
+    fun obtenerGruposConNombre(nombre : String) : List<Grupo>{
+        return grupoRepository.obtenerGrupos(nombre)
     }
 
-    /*** Metodo creado para probar la base de datos **/
-    fun guardarGrupoFirebase(grupo: Grupo) : Boolean{
-        return grupoRepository.guardarGrupoFirebase(grupo)
+    fun eliminarDatos(){
+        grupoRepository.eliminarDatos()
     }
-
-    private fun getCollection() = firebase.getFirestore().collection("groups")
 }
