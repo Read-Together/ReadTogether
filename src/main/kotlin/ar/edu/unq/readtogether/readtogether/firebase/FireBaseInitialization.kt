@@ -19,7 +19,7 @@ class FireBaseInitialization {
     @Throws(IOException::class)
     private fun initfirebase() {
         val serviceAccount = javaClass.classLoader.getResourceAsStream("readtogether-firebase-key.json")
-        val options = FirebaseOptions.Builder()
+        val options = FirebaseOptions.builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                 .setDatabaseUrl("https://$database.firebaseio.com")
                 .build()

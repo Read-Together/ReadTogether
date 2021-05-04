@@ -1,9 +1,8 @@
 package ar.edu.unq.readtogether.readtogether.repositories
 
-import ar.edu.unq.readtogether.readtogether.firebase.FirebaseInitialization
+import ar.edu.unq.readtogether.readtogether.firebase.FireBaseInitialization
 import ar.edu.unq.readtogether.readtogether.grupos.Grupo
 import com.google.api.core.ApiFuture
-import com.google.cloud.firestore.Query
 import com.google.cloud.firestore.QuerySnapshot
 import com.google.cloud.firestore.WriteResult
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,9 +12,9 @@ import org.springframework.stereotype.Repository
 class GrupoRepository{
 
     @Autowired
-    private lateinit var firebase : FirebaseInitialization
+    private lateinit var firebase : FireBaseInitialization
 
-    private fun getCollection() = firebase.getFirestore().collection("grupos")
+    private fun getCollection() = firebase.firestore.collection("grupos")
 
     fun save(grupo: Grupo): String{
         var docData: MutableMap<String, Any> = mutableMapOf()
@@ -42,7 +41,7 @@ class GrupoRepository{
                 grupo.id = doc.id
                 retorno.add(grupo)
             }
-            return retorno.filter { grupo -> grupo.nombre.contains(terminoDeBusqueda) }
+            return retorno.filter { it.nombre.contains(terminoDeBusqueda) }
     }
 
     /***metodo de prueba ***/

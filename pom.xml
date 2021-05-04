@@ -57,7 +57,7 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-gcp-starter-firestore</artifactId>
-            <version>1.2.0.M1</version>
+            <version>1.2.8.RELEASE</version>
         </dependency>
     </dependencies>
 
@@ -126,6 +126,9 @@
                         <phase>prepare-package</phase>
                         <configuration>
                             <arguments>build</arguments>
+                            <environmentVariables>
+                                <CI>false</CI>
+                            </environmentVariables>
                         </configuration>
                     </execution>
                 </executions>

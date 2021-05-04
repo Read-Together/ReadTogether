@@ -1,6 +1,5 @@
 package ar.edu.unq.readtogether.readtogether.services
 
-import ar.edu.unq.readtogether.readtogether.firebase.FirebaseInitialization
 import ar.edu.unq.readtogether.readtogether.grupos.Grupo
 import ar.edu.unq.readtogether.readtogether.repositories.GrupoRepository
 import org.springframework.beans.factory.annotation.Autowired
