@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class GrupoService {
+class GrupoService @Autowired constructor(private val grupoRepository: GrupoRepository) {
 
-    @Autowired
-    private lateinit var grupoRepository: GrupoRepository
 
     fun guardarGrupo(grupo: Grupo) {
         grupoRepository.save(grupo)

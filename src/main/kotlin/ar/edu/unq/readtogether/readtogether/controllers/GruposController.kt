@@ -13,8 +13,7 @@ import org.springframework.http.ResponseEntity
 class GruposController {
 
     @Autowired
-    private val grupoService = GrupoService()
-
+    private lateinit var grupoService: GrupoService
     @GetMapping("/grupos")
     fun buscarGrupos(@RequestParam busqueda : String): List<Grupo> {
         return grupoService.obtenerGruposConNombre(busqueda)

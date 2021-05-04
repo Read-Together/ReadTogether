@@ -13,4 +13,9 @@ class Grupo{
 
     constructor()
 
+    constructor(nombre: String, descripcion: String){
+        this.nombre = nombre
+        this.descripcion = descripcion
+    }
+
 }
