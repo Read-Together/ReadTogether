@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route, Switch, useParams} from 'react-router-do
 import {useState} from "react";
 import NavBar from "./components/NavBar"
 import {LeftMenu} from "./components/LeftMenu";
+import {FormularioCrearComunidad} from "./components/FormularioCrearComunidad";
 
 const axios = require('axios').default;
 
@@ -35,6 +36,7 @@ function App() {
           <div className="main-content">
             <Switch>
               <Route path="/busqueda/:termino" component={Resultados}/>
+              <Route path="/crear_comunidad" component={FormularioCrearComunidad}/>
               <Route path="/">
                 <Home/>
               </Route>
