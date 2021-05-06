@@ -2,6 +2,8 @@ import './App.css';
 import {BrowserRouter as Router, Route, Switch, useParams} from 'react-router-dom'
 import SearchForm from "./components/SearchForm";
 import {useState} from "react";
+import Register from './components/Register';
+import RegisterForm from './components/RegisterForm';
 
 const axios = require('axios').default;
 
@@ -23,6 +25,7 @@ function Resultados() {
   )
 
 }
+
 
 function App() {
   return (
@@ -64,19 +67,23 @@ function App() {
                   <a className="nav-link disabled" href="#" tabIndex="-1" aria-disabled="true">Disabled</a>
                 </li>
               </ul>
-              <SearchForm/>
+            
+                <Register/>
+                <SearchForm/>
             </div>
           </div>
         </nav>
       </div>
       <Switch>
-        <Route path="/busqueda/:termino" component={Resultados}>
-        </Route>
+        <Route path="/registro/" component={RegisterForm}></Route>
+        <Route path="/busqueda/:termino" component={Resultados} ></Route>
         <Route path="/">
+
           <Home/>
         </Route>
       </Switch>
     </Router>
+   
   );
 }
 
