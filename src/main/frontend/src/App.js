@@ -2,6 +2,7 @@ import './App.css';
 import {BrowserRouter as Router, Route, Switch, useParams} from 'react-router-dom'
 import {useState} from "react";
 import NavBar from "./components/NavBar"
+import {LeftMenu} from "./components/LeftMenu";
 
 const axios = require('axios').default;
 
@@ -10,15 +11,15 @@ function Home() {
 }
 
 function Resultados() {
-  const { termino } = useParams();
+  const {termino} = useParams();
   const [resultados, setResultados] = useState([])
 
   axios.get(`http://localhost:8080/grupos?busqueda=${termino}`)
     .then(resultados => {
       setResultados(resultados.data)
     });
-  
-  return(
+
+  return (
     <p>{resultados.map(resultado => resultado.nombre)}</p>
   )
 
@@ -29,14 +30,18 @@ function App() {
     <Router>
       <div className="App">
         <NavBar/>
+        <div className="body-container">
+          <LeftMenu/>
+          <div className="main-content">
+            <Switch>
+              <Route path="/busqueda/:termino" component={Resultados}/>
+              <Route path="/">
+                <Home/>
+              </Route>
+            </Switch>  
+          </div>
+        </div>
       </div>
-      <Switch>
-        <Route path="/busqueda/:termino" component={Resultados}>
-        </Route>
-        <Route path="/">
-          <Home/>
-        </Route>
-      </Switch>
     </Router>
   );
 }

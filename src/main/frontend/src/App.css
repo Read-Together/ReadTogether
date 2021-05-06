@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+.body-container{
+  display: grid;
+  grid-template-columns: 20% 75%;
+  height: 100%;
+}
+
+html, body, #root, .App{
+  height: 100%;
+}
