@@ -29,14 +29,11 @@ class TestBuscador {
     @Autowired
     private lateinit var grupoService: GrupoService
 
-    private var grupo1 = Grupo("La comunidad del anillo", "Descripción")
-    private var grupo2 = Grupo("Amantes de Crepusculo", "Descripcion")
-
 
     @Test
     fun cuandoBuscoPorUnNombre_elBuscadorDevuelveLosGruposConEseNombre() {
-        grupoService.guardarGrupo(grupo1)
-        grupoService.guardarGrupo(grupo2)
+        grupoService.crearGrupo("La comunidad del anillo", "Descripción")
+        grupoService.crearGrupo("Amantes de Crepusculo", "Descripcion")
 
         mockMvc.perform(MockMvcRequestBuilders.get("/grupos?busqueda=comunidad"))
                 .andExpect(status().isOk)

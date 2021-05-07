@@ -1,6 +1,7 @@
 package ar.edu.unq.readtogether.readtogether.grupos
 
 class Grupo{
+
     lateinit var id: String
     lateinit var nombre: String
     lateinit var descripcion: String

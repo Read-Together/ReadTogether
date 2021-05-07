@@ -20,4 +20,9 @@ class GrupoService @Autowired constructor(private val grupoRepository: GrupoRepo
     fun eliminarDatos(){
         grupoRepository.eliminarDatos()
     }
+
+    fun crearGrupo(nombre: String, detalle: String) {
+        val grupo1 = Grupo(nombre,detalle)
+        this.guardarGrupo(grupo1)
+    }
 }
