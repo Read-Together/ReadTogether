@@ -12,8 +12,8 @@ export function FormularioCrearComunidad() {
     event.preventDefault()
     
     axios.post("http://localhost:8080/grupos", {
-      nombre: "nombre",
-      descripcion: "descripcion"
+      nombre: nombre,
+      descripcion: descripcion
     })
       .then(() => {
         setFueCreado(true)

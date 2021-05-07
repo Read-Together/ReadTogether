@@ -19,7 +19,7 @@ class GruposController {
 
     @PostMapping("/grupos")
     fun crearGrupo(@RequestBody creacionDeGruposForm:CreacionDeGruposForm ){
-        grupoService.crearGrupo(creacionDeGruposForm.nombre,creacionDeGruposForm.detalle)
+        grupoService.crearGrupo(creacionDeGruposForm.nombre,creacionDeGruposForm.descripcion)
     }
 
 }
