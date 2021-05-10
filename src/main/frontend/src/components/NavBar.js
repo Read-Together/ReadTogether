@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import SearchForm from "./SearchForm";
 
 function NavBar() {
@@ -37,6 +38,9 @@ function NavBar() {
             <a className="nav-link disabled" href="#" tabIndex="-1" aria-disabled="true">Disabled</a>
           </li>
         </ul>
+        <Link to="/registrar" class="espaciado">
+              <button type="button" class="btn btn-primary"> Registrarme</button>
+              </Link>
         <SearchForm/>
       </div>
     </div>
