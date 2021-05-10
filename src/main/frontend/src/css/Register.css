@@ -1,0 +1,14 @@
+.cardRegistrate{
+    text-align: center;
+    border-radius: 8px;
+    width: 25%;
+    padding: 0.8%;
+    border: 1px solid rgb(235, 232, 232);
+    background-color: rgb(238, 237, 241); 
+    margin-left: 38%;
+    margin-top: 8%;
+}
+
+.espaciado{
+    margin-right: 0.5%;
+}
