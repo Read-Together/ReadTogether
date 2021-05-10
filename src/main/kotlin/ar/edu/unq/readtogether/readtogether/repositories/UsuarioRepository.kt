@@ -13,7 +13,7 @@ class UsuarioRepository {
     @Autowired
     private lateinit var firebase : FireBaseInitialization
 
-    private fun getCollection() = firebase.getFirestore().collection("usuarios")
+    private fun getCollection() = firebase.firestore.collection("usuarios")
 
     @Throws
     fun registrarUsuario(usuario: Usuario) : UsuarioResponseDTO? {
@@ -43,10 +43,12 @@ class UsuarioRepository {
         if(userName.isEmpty && userEmail.isEmpty){
             return null
         }
-        var usuarios: MutableList<UsuarioResponseDTO> = when(userName.isEmpty){
-            false -> userName.toObjects(UsuarioResponseDTO::class.java)
-            true -> userEmail.toObjects(UsuarioResponseDTO::class.java)
-        }
+        var usuarios: MutableList<UsuarioResponseDTO> = mutableListOf()
+	if(userName.isEmpty){
+		usuarios = userEmail.toObjects(UsuarioResponseDTO::class.java)
+	}else{
+		usuarios = userName.toObjects(UsuarioResponseDTO::class.java)
+	}
         var retorno = usuarios[0]
         retorno.id = usuarios[0].id
         return retorno
