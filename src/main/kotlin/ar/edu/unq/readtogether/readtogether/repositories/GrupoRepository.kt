@@ -41,7 +41,7 @@ class GrupoRepository{
                 grupo.id = doc.id
                 retorno.add(grupo)
             }
-            return retorno.filter { it.nombre.contains(terminoDeBusqueda) }
+            return retorno.filter { it.nombre.contains(terminoDeBusqueda) || it.descripcion.contains(terminoDeBusqueda) }
     }
 
     /***metodo de prueba ***/
