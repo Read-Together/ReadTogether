@@ -1,5 +1,7 @@
 package ar.edu.unq.readtogether.readtogether.dtos
 
+data class UsuarioResponse(var id: String?, var userName: String, var email: String)
+
 class UsuarioResponseDTO {
 
     var id: String? = null

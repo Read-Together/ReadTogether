@@ -60,7 +60,6 @@ class UsuarioTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/registrar")
                 .content(ObjectMapper().writeValueAsString(usuario))
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk)
         var user = repositorio.buscarUsuario(usuario)
        assert(user!!.userName == usuario.userName)
     }
