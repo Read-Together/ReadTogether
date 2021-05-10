@@ -27,8 +27,6 @@ class UsuarioTest {
     private lateinit var mockMvc: MockMvc
     @Autowired
     private lateinit var service: UsuarioService
-    @Autowired
-    private lateinit var repositorio: UsuarioRepository
 
     @AfterEach
     fun limpiarBase(){
@@ -60,7 +58,7 @@ class UsuarioTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/registrar")
                 .content(ObjectMapper().writeValueAsString(usuario))
                 .contentType(MediaType.APPLICATION_JSON))
-        var user = repositorio.buscarUsuario(usuario)
+        var user = service.buscarUsuario(usuario)
        assert(user!!.userName == usuario.userName)
     }
 

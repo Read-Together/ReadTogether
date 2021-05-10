@@ -16,6 +16,10 @@ class UsuarioService {
         return usuarioRepository.registrarUsuario(usuario)
     }
 
+    fun buscarUsuario(usuario: Usuario):UsuarioResponseDTO?{
+        return usuarioRepository.buscarUsuario(usuario)
+    }
+
     fun eliminarDatos(){
         return usuarioRepository.eliminarDatos()
     }
