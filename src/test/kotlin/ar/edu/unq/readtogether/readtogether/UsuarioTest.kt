@@ -5,6 +5,7 @@ import ar.edu.unq.readtogether.readtogether.modelo.Usuario
 import ar.edu.unq.readtogether.readtogether.repositories.UsuarioRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,9 +29,22 @@ class UsuarioTest {
     @Autowired
     private lateinit var service: UsuarioService
 
+    @BeforeEach
+    fun setUp(){
+        service.eliminarDatos()
+    }
+
     @AfterEach
     fun limpiarBase(){
         service.eliminarDatos()
+    }
+
+    @Test
+    fun cuandoRegistroUnUsuario_puedoEncontralo(){
+        usuario = Usuario("gonzalo1994","gonzalo@gmail.com","1234")
+        service.registrarUsuario(usuario)
+        var user = service.buscarUsuario(usuario)
+        assert(user!!.userName == usuario.userName)
     }
 
     @Test
@@ -52,14 +66,6 @@ class UsuarioTest {
                 .andExpect(status().is4xxClientError)
     }
 
-    @Test
-    fun comprobarQueElUsuarioFueRegistrado(){
-        usuario = Usuario("gonzalo1994","gonzalo@gmail.com","1234")
-        mockMvc.perform(MockMvcRequestBuilders.post("/registrar")
-                .content(ObjectMapper().writeValueAsString(usuario))
-                .contentType(MediaType.APPLICATION_JSON))
-        var user = service.buscarUsuario(usuario)
-       assert(user!!.userName == usuario.userName)
-    }
+
 
 }
