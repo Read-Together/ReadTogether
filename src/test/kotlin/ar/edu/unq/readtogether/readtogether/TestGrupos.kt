@@ -39,6 +39,7 @@ class TestGrupos {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
         assertThat(grupoService.obtenerGruposConNombre("grupo")).hasSize(1)
+        assertThat(grupoService.obtenerGruposConDescripcion("detalle")).hasSize(1)
     }
 
     @AfterEach

@@ -17,6 +17,10 @@ class GrupoService @Autowired constructor(private val grupoRepository: GrupoRepo
         return grupoRepository.obtenerGrupos(nombre)
     }
 
+    fun obtenerGruposConDescripcion(descripcion:String):List<Grupo>{
+        return grupoRepository.obtenerGrupos(descripcion)
+    }
+
     fun eliminarDatos(){
         grupoRepository.eliminarDatos()
     }
