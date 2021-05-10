@@ -1,7 +1,7 @@
 package ar.edu.unq.readtogether.readtogether.repositories
 
 import ar.edu.unq.readtogether.readtogether.dtos.UsuarioResponseDTO
-import ar.edu.unq.readtogether.readtogether.firebase.FirebaseInitialization
+import ar.edu.unq.readtogether.readtogether.firebase.FireBaseInitialization
 import ar.edu.unq.readtogether.readtogether.modelo.Usuario
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
