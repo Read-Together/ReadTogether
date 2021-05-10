@@ -11,7 +11,7 @@ import kotlin.jvm.Throws
 class UsuarioRepository {
 
     @Autowired
-    private lateinit var firebase : FirebaseInitialization
+    private lateinit var firebase : FireBaseInitialization
 
     private fun getCollection() = firebase.getFirestore().collection("usuarios")
 
