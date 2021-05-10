@@ -34,15 +34,13 @@ class UsuarioTest {
         service.eliminarDatos()
     }
 
-    @AfterEach
-    fun limpiarBase(){
-        service.eliminarDatos()
-    }
 
     @Test
     fun cuandoRegistroUnUsuario_puedoEncontralo(){
         usuario = Usuario("gonzalo1994","gonzalo@gmail.com","1234")
-        service.registrarUsuario(usuario)
+        mockMvc.perform(MockMvcRequestBuilders.post("/registrar")
+                .content(ObjectMapper().writeValueAsString(usuario))
+                .contentType(MediaType.APPLICATION_JSON))
         var user = service.buscarUsuario(usuario)
         assert(user!!.userName == usuario.userName)
     }
