@@ -4,10 +4,8 @@ import ar.edu.unq.readtogether.readtogether.services.UsuarioService
 import ar.edu.unq.readtogether.readtogether.modelo.Usuario
 import ar.edu.unq.readtogether.readtogether.repositories.UsuarioRepository
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -21,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UsuarioTest {
 
     private lateinit var usuario: Usuario
@@ -29,15 +28,19 @@ class UsuarioTest {
     @Autowired
     private lateinit var service: UsuarioService
 
-    @BeforeEach
+    @BeforeAll
     fun setUp(){
         service.eliminarDatos()
     }
 
+    @AfterEach
+    fun clean(){
+        service.eliminarDatos()
+    }
 
     @Test
     fun cuandoRegistroUnUsuario_puedoEncontralo(){
-        usuario = Usuario("gonzalo1994","gonzalo@gmail.com","1234")
+        usuario = Usuario("mauro10","mauro@gmail.com","1234")
         mockMvc.perform(MockMvcRequestBuilders.post("/registrar")
                 .content(ObjectMapper().writeValueAsString(usuario))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -56,7 +59,7 @@ class UsuarioTest {
 
     @Test
     fun cuandoAgregoUnUsuarioQueYaExiste_retornaUn400(){
-        usuario = Usuario("gonzalo1994","gonzalo@gmail.com","1234")
+        usuario = Usuario("juan","juan@gmail.com","1234")
         service.registrarUsuario(usuario)
         mockMvc.perform(MockMvcRequestBuilders.post("/registrar")
                 .content(ObjectMapper().writeValueAsString(usuario))
