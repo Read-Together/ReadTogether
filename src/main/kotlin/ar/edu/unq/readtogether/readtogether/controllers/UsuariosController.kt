@@ -20,6 +20,7 @@ class UsuariosController {
         try {
             return ResponseEntity(usuarioService.registrarUsuario(usuario), HttpStatus.OK)
         } catch (e: RuntimeException) {
+            println(e.stackTrace)
             return ResponseEntity(null, HttpStatus.BAD_REQUEST)
         }
     }
