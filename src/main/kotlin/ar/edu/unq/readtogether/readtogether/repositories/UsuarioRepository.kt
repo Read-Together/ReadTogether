@@ -16,21 +16,23 @@ class UsuarioRepository {
     private fun getCollection() = firebase.firestore.collection("usuarios")
 
     @Throws
-    fun registrarUsuario(usuario: Usuario) : UsuarioResponseDTO? {
+    fun registrarUsuario(usuario: Usuario): UsuarioResponseDTO? {
         var docData: MutableMap<String, Any> = mutableMapOf()
         docData["userName"] = usuario.userName
         docData["email"] = usuario.email
         docData["password"] = usuario.password
         var users = getCollection()
         validarUsuario(usuario)
-        users.document().create(docData)
+        users.document().set(docData)
         return buscarUsuario(usuario)
 
     }
 
     private fun validarUsuario(usuario: Usuario) {
-        if (buscarUsuario(usuario) != null || !emailValido(usuario.email)) {
-            throw RuntimeException()
+        if (buscarUsuario(usuario) != null) {
+            throw RuntimeException("El usuario ya existe")
+        } else if (!emailValido(usuario.email)) {
+            throw RuntimeException("El email no es valido")
         }
     }
 
