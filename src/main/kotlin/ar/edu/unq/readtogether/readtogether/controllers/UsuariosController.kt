@@ -24,4 +24,9 @@ class UsuariosController {
             return ResponseEntity(null, HttpStatus.BAD_REQUEST)
         }
     }
+
+    @PostMapping("/login")
+    fun login(@RequestBody usuario: Usuario){
+
+    }
 }
