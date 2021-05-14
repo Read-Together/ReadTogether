@@ -34,6 +34,12 @@ const NavBar = () => {
               </a>
             </li>
           </ul>
+          <Link to="/ingresar" className="espaciado">
+            <button type="button" className="btn btn-secondary">
+              {" "}
+              Ingresar
+            </button>
+          </Link>
           <Link to="/registrar" class="espaciado">
             <button type="button" class="btn btn-primary">
               {" "}

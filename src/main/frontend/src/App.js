@@ -5,6 +5,7 @@ import NavBar from "./components/NavBar"
 import {LeftMenu} from "./components/LeftMenu";
 import Register from './components/Register';
 import {FormularioCrearComunidad} from "./components/FormularioCrearComunidad";
+import {Ingresar} from "./components/Ingresar";
 
 const axios = require('axios').default;
 
@@ -42,6 +43,7 @@ function App() {
           <div className="main-content">
             <Switch>
               <Route path="/registrar" component={Register}/>
+              <Route path="/ingresar" component={Ingresar}/>
               <Route path="/busqueda/:termino" component={Resultados}/>
               <Route path="/crear_comunidad" component={FormularioCrearComunidad}/>
               <Route path="/">

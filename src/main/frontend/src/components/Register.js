@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useHistory} from "react-router-dom";
 import React, { useState } from "react";
-import "../css/Register.css";
+import "../css/Auth.css";
 import {Alert} from "react-bootstrap";
 
 const Register = () => {
@@ -41,7 +41,7 @@ const Register = () => {
   };
 
   return (
-    <div class="cardRegistrate">
+    <div class="cardAuth">
       <form id="Registro" onSubmit={handleSubmit} class="row g-3">
       <Alert variant="danger" show={noRegistrado}>¡Ups! Ocurrió un error </Alert>
       <Alert variant="success" show={registrado}>¡Genial! Te has registrado {data.userName} </Alert>
