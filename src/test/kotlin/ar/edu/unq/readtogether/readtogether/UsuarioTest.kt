@@ -2,7 +2,6 @@ package ar.edu.unq.readtogether.readtogether
 
 import ar.edu.unq.readtogether.readtogether.services.UsuarioService
 import ar.edu.unq.readtogether.readtogether.modelo.Usuario
-import ar.edu.unq.readtogether.readtogether.repositories.UsuarioRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -26,16 +25,17 @@ class UsuarioTest {
     @Autowired
     private lateinit var mockMvc: MockMvc
     @Autowired
-    private lateinit var service: UsuarioService
+    private lateinit var userService: UsuarioService
+
 
     @BeforeAll
     fun setUp(){
-        service.eliminarDatos()
+        userService.eliminarDatos()
     }
 
     @AfterEach
     fun clean(){
-        service.eliminarDatos()
+        userService.eliminarDatos()
     }
 
     @Test
@@ -44,7 +44,7 @@ class UsuarioTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/registrar")
                 .content(ObjectMapper().writeValueAsString(usuario))
                 .contentType(MediaType.APPLICATION_JSON))
-        var user = service.buscarUsuario(usuario)
+        var user = userService.buscarUsuario(usuario)
         assert(user!!.userName == usuario.userName)
     }
 
@@ -60,13 +60,10 @@ class UsuarioTest {
     @Test
     fun cuandoAgregoUnUsuarioQueYaExiste_retornaUn400(){
         usuario = Usuario("juan","juan@gmail.com","1234")
-        service.registrarUsuario(usuario)
+        userService.registrarUsuario(usuario)
         mockMvc.perform(MockMvcRequestBuilders.post("/registrar")
                 .content(ObjectMapper().writeValueAsString(usuario))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError)
     }
-
-
-
 }

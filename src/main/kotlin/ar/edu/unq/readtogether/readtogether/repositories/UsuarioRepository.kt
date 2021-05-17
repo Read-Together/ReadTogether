@@ -66,4 +66,9 @@ class UsuarioRepository {
             doc.delete()
         }
     }
+
+    fun usuarioDeNombre(usuario: String): Usuario {
+        val userName = getCollection().whereEqualTo("userName", usuario).get().get()
+        return userName.toObjects(Usuario::class.java)[0]
+    }
 }
