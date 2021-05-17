@@ -74,11 +74,11 @@ class UsuarioRepository {
      * Retorna un token con el prefijo "Bearer"
      * "Bearer " + token
      * **/
-    fun login(usuario: RequestUsuario): String {
-        var userName = getCollection().whereEqualTo("userName", usuario.usuario).get().get()
+    fun login(usuario: String, password: String): String {
+        var userName = getCollection().whereEqualTo("userName", usuario).get().get()
         if(!userName.isEmpty){
             val passDB = userName.toObjects(Usuario::class.java)
-            if(passwordEsCorrecta(passDB[0].password, usuario.password )){
+            if(passwordEsCorrecta(passDB[0].password, password )){
                 return token.getJWTToken(passDB[0].userName)
             }
             throw Exception("Usuario y/o contraseña inválidos")

@@ -4,8 +4,8 @@ import ar.edu.unq.readtogether.readtogether.dtos.RequestUsuario
 import ar.edu.unq.readtogether.readtogether.services.UsuarioService
 import ar.edu.unq.readtogether.readtogether.modelo.Usuario
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.*
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -70,9 +70,9 @@ class UsuarioTest {
 
     @Test
     fun cuandoInicioSesion_retornaUn200(){
-        usuario = Usuario("juan","juan@gmail.com","1234")
+        usuario = Usuario("juan2","juan2@gmail.com","1234")
         service.registrarUsuario(usuario)
-        var request = RequestUsuario("juan", "1234")
+        var request = RequestUsuario("juan2", "1234")
         mockMvc.perform(MockMvcRequestBuilders.post("/login")
                 .content(ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -81,18 +81,16 @@ class UsuarioTest {
 
     @Test
     fun cuandoInicioSesionConDatosErroneos_arrojaComoExceptionUsuarioYOContraseniaInvalidos(){
-        usuario = Usuario("juan","juan@gmail.com","1234")
+        usuario = Usuario("juan3","juan3@gmail.com","1234")
         service.registrarUsuario(usuario)
-        var usuarioLogin = RequestUsuario("juan", "123")
-        var myException = ""
-        try {
+        var usuarioLogin = RequestUsuario("juan3", "123")
+        assertThatThrownBy {
             mockMvc.perform(MockMvcRequestBuilders.post("/login")
                     .content(ObjectMapper().writeValueAsString(usuarioLogin))
                     .contentType(MediaType.APPLICATION_JSON))
-        }catch (e:Exception){
-            myException = e.cause.toString().substringAfter(": ")
-        }
-        assertEquals(myException, "Usuario y/o contraseña inválidos")
+                    .andExpect(status().is4xxClientError)
+        }.hasRootCauseMessage("Usuario y/o contraseña inválidos");
+
     }
 
 }

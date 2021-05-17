@@ -37,18 +37,20 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
             }
             chain.doFilter(request, response)
         } catch (e: ExpiredJwtException) {
-            response.status = HttpServletResponse.SC_FORBIDDEN
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, e.message)
+            catchError(response, e)
             return
         } catch (e: UnsupportedJwtException) {
-            response.status = HttpServletResponse.SC_FORBIDDEN
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, e.message)
+            catchError(response, e)
             return
         } catch (e: MalformedJwtException) {
-            response.status = HttpServletResponse.SC_FORBIDDEN
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, e.message)
+            catchError(response, e)
             return
         }
+    }
+
+    private fun catchError(response: HttpServletResponse, e: Exception) {
+        response.status = HttpServletResponse.SC_FORBIDDEN
+        response.sendError(HttpServletResponse.SC_FORBIDDEN, e.message)
     }
 
     private fun validateToken(request: HttpServletRequest): Claims {

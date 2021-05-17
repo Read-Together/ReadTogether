@@ -20,7 +20,6 @@ class Token {
                 .commaSeparatedStringToAuthorityList("ROLE_USER")
         val token = Jwts
                 .builder()
-                .setId("softtekJWT")
                 .setSubject(username)
                 .claim("authorities", grantedAuthorities.stream()
                         .map { obj: GrantedAuthority -> obj.authority }

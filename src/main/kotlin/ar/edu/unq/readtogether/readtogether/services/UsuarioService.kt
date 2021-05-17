@@ -25,8 +25,8 @@ class UsuarioService{
         return usuarioRepository.eliminarDatos()
     }
 
-    fun login(usuario: RequestUsuario): String {
-        return usuarioRepository.login(usuario)
+    fun login(requestUsuario: RequestUsuario): String {
+        return usuarioRepository.login(requestUsuario.usuario, requestUsuario.password)
     }
 
 }
