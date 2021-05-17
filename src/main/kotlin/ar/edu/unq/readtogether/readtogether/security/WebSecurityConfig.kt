@@ -16,12 +16,14 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter(){
      * a los endpoint y pide autorización a los restantes
      * **/
     override fun configure(http: HttpSecurity){
-        http.csrf().disable()
+        http.csrf().disable().cors().and()
                 .addFilterAfter(JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter::class.java)
                 .authorizeRequests()
+                .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.POST, "/registrar").permitAll()
                 .antMatchers(HttpMethod.GET, "/grupos").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .anyRequest().authenticated()
+
     }
 }
