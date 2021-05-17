@@ -6,7 +6,6 @@ import ar.edu.unq.readtogether.readtogether.modelo.Usuario
 import ar.edu.unq.readtogether.readtogether.security.Token
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
-import kotlin.jvm.Throws
 
 @Repository
 class UsuarioRepository {
@@ -67,6 +66,10 @@ class UsuarioRepository {
         }
     }
 
+    fun usuarioDeNombre(usuario: String): Usuario {
+        val userName = getCollection().whereEqualTo("userName", usuario).get().get()
+        return userName.toObjects(Usuario::class.java)[0]
+    }
     /**
      * Retorna un token con el prefijo "Bearer"
      * "Bearer " + token
