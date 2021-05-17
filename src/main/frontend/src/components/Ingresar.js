@@ -35,13 +35,13 @@ export const Ingresar = () => {
           <Alert variant="danger" show={noSePudoLoggear}>Tu usuario o contraseña no son correctos </Alert>
           <Form.Group controlId="usuario" className="login-input">
             <Form.Label>Usuario</Form.Label>
-            <Form.Control type="text" value={usuario}
+            <Form.Control type="text" value={usuario} placeholder="Nombre de usuario"
                           onChange={event => setUsuario(event.target.value)}/>
           </Form.Group>
 
           <Form.Group controlId="password" className="login-input">
             <Form.Label>Contraseña</Form.Label>
-            <Form.Control type="password" value={password}
+            <Form.Control type="password" value={password} placeholder="Contraseña"
                           onChange={event => setPassword(event.target.value)}/>
           </Form.Group>
 

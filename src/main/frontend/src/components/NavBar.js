@@ -1,9 +1,16 @@
 import { Link } from "react-router-dom";
 import "../css/SearchForm.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const NavBar = () => {
-  const [termino, setTermino] = useState("");
+  const [termino, setTermino] = useState("");  
+  const [estaLoggeado, setEstaLoggeado] = useState(false);
+
+  useEffect (() =>{
+    if(sessionStorage.getItem("accessToken")){
+      setEstaLoggeado(true)
+    }
+  }, [])
 
   const handleInputChange = (event) => {
     setTermino(event.target.value);
@@ -27,25 +34,28 @@ const NavBar = () => {
           <span className="navbar-toggler-icon" />
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          
           <ul className="navbar-nav me-auto me-2 mb-lg-0">
+          {sessionStorage.getItem("accessToken") &&
             <li className="nav-item">
               <a className="nav-link active" aria-current="page" href="/">
-                Home
+                {sessionStorage.getItem("loggedUsername")}
               </a>
-            </li>
+            </li>}
           </ul>
           <Link to="/ingresar" className="espaciado">
+            {!estaLoggeado &&
             <button type="button" className="btn btn-secondary">
-              {" "}
               Ingresar
-            </button>
+            </button>}
           </Link>
           <Link to="/registrar" class="espaciado">
+          {!estaLoggeado &&
             <button type="button" class="btn btn-primary">
-              {" "}
               Registrarme
-            </button>
+            </button>}
           </Link>
+
           <input
             class="form-control me-2 barraBusqueda"
             type="search"
