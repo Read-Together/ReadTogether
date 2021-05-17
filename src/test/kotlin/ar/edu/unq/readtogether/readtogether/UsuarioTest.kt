@@ -67,6 +67,5 @@ class UsuarioTest {
                 .andExpect(status().is4xxClientError)
     }
 
-
-
+    
 }

@@ -1,13 +1,14 @@
 package ar.edu.unq.readtogether.readtogether.services
 
+import ar.edu.unq.readtogether.readtogether.dtos.RequestUsuario
 import ar.edu.unq.readtogether.readtogether.dtos.UsuarioResponseDTO
-import ar.edu.unq.readtogether.readtogether.repositories.UsuarioRepository
 import ar.edu.unq.readtogether.readtogether.modelo.Usuario
+import ar.edu.unq.readtogether.readtogether.repositories.UsuarioRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class UsuarioService {
+class UsuarioService{
 
     @Autowired
     private lateinit var usuarioRepository: UsuarioRepository
@@ -23,4 +24,10 @@ class UsuarioService {
     fun eliminarDatos(){
         return usuarioRepository.eliminarDatos()
     }
+
+    fun login(usuario: RequestUsuario): String {
+        return usuarioRepository.login(usuario)
+    }
+
 }
+
