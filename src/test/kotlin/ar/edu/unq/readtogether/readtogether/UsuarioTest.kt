@@ -70,9 +70,9 @@ class UsuarioTest {
 
     @Test
     fun cuandoInicioSesion_retornaUn200(){
-        usuario = Usuario("juan","juan@gmail.com","1234")
+        usuario = Usuario("juan2","juan2@gmail.com","1234")
         service.registrarUsuario(usuario)
-        var request = RequestUsuario("juan", "1234")
+        var request = RequestUsuario("juan2", "1234")
         mockMvc.perform(MockMvcRequestBuilders.post("/login")
                 .content(ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -81,9 +81,9 @@ class UsuarioTest {
 
     @Test
     fun cuandoInicioSesionConDatosErroneos_arrojaComoExceptionUsuarioYOContraseniaInvalidos(){
-        usuario = Usuario("juan","juan@gmail.com","1234")
+        usuario = Usuario("juan3","juan3@gmail.com","1234")
         service.registrarUsuario(usuario)
-        var usuarioLogin = RequestUsuario("juan", "123")
+        var usuarioLogin = RequestUsuario("juan3", "123")
         var myException = ""
         try {
             mockMvc.perform(MockMvcRequestBuilders.post("/login")
