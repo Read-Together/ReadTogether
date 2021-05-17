@@ -1,10 +1,11 @@
 package ar.edu.unq.readtogether.readtogether
 
+import ar.edu.unq.readtogether.readtogether.dtos.RequestUsuario
 import ar.edu.unq.readtogether.readtogether.services.UsuarioService
 import ar.edu.unq.readtogether.readtogether.modelo.Usuario
-import ar.edu.unq.readtogether.readtogether.repositories.UsuarioRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -67,6 +68,31 @@ class UsuarioTest {
                 .andExpect(status().is4xxClientError)
     }
 
+    @Test
+    fun cuandoInicioSesion_retornaUn200(){
+        usuario = Usuario("juan","juan@gmail.com","1234")
+        service.registrarUsuario(usuario)
+        var request = RequestUsuario("juan", "1234")
+        mockMvc.perform(MockMvcRequestBuilders.post("/login")
+                .content(ObjectMapper().writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk)
+    }
 
+    @Test
+    fun cuandoInicioSesionConDatosErroneos_arrojaComoExceptionUsuarioYOContraseniaInvalidos(){
+        usuario = Usuario("juan","juan@gmail.com","1234")
+        service.registrarUsuario(usuario)
+        var usuarioLogin = RequestUsuario("juan", "123")
+        var myException = ""
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.post("/login")
+                    .content(ObjectMapper().writeValueAsString(usuarioLogin))
+                    .contentType(MediaType.APPLICATION_JSON))
+        }catch (e:Exception){
+            myException = e.cause.toString().substringAfter(": ")
+        }
+        assertEquals(myException, "Usuario y/o contraseña inválidos")
+    }
 
 }
