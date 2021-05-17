@@ -6,6 +6,7 @@ import ar.edu.unq.readtogether.readtogether.modelo.Usuario
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
