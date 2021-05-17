@@ -3,14 +3,14 @@ import "../css/NavBar.css";
 import { useState} from "react";
 
 const NavBar = () => {
-  
-  const [termino, setTermino] = useState("");  
+
+  const [termino, setTermino] = useState("");
 
   const handleInputChange = (event) => {
     setTermino(event.target.value);
   };
 
-  
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
@@ -29,16 +29,16 @@ const NavBar = () => {
           <span className="navbar-toggler-icon" />
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          
+
           <ul className="navbar-nav me-auto me-2 mb-lg-0">
-          
+
             <li className="nav-item">
               <a className="nav-link active" aria-current="page" href="/home">
                 {sessionStorage.getItem("loggedUsername")}
               </a>
             </li>
           </ul>
-          
+
           <input
             class="form-control me-2 inputBusqueda"
             type="search"
