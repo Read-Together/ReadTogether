@@ -9,12 +9,16 @@ export function FormularioCrearComunidad() {
   const [noFueCreado, setNoFueCreado] = useState(false)
 
   const handleSubmit = (event) => {
+    const headers = {
+      authorization: sessionStorage.getItem("accessToken")
+    };
+  
     event.preventDefault()
     
     axios.post("http://localhost:8080/grupos", {
       nombre: nombre,
       descripcion: descripcion
-    })
+    }, { headers : headers})
       .then(() => {
         setFueCreado(true)
       })
