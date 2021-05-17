@@ -6,6 +6,7 @@ import {LeftMenu} from "./components/LeftMenu";
 import Register from './components/Register';
 import {FormularioCrearComunidad} from "./components/FormularioCrearComunidad";
 import {Ingresar} from "./components/Ingresar";
+import {PrivateRoute} from "./components/PrivateRoute";
 
 const axios = require('axios').default;
 
@@ -23,15 +24,11 @@ function Resultados() {
       setResultados(resultados.data)
     });
   }, [termino]);
-
- 
-
+  
   return (
     <p>{resultados.map(resultado => resultado.nombre)}</p>
   )
-
 }
-
 
 function App() {
   return (
@@ -45,7 +42,7 @@ function App() {
               <Route path="/registrar" component={Register}/>
               <Route path="/ingresar" component={Ingresar}/>
               <Route path="/busqueda/:termino" component={Resultados}/>
-              <Route path="/crear_comunidad" component={FormularioCrearComunidad}/>
+              <PrivateRoute path="/crear_comunidad" component={FormularioCrearComunidad}/>
               <Route path="/">
                 <Home/>
               </Route>
