@@ -1,6 +1,7 @@
 package ar.edu.unq.readtogether.readtogether.repositories
 
 import ar.edu.unq.readtogether.readtogether.dtos.UsuarioResponseDTO
+import ar.edu.unq.readtogether.readtogether.excepciones.CredencialesDeLoginInvalidasException
 import ar.edu.unq.readtogether.readtogether.firebase.FireBaseInitialization
 import ar.edu.unq.readtogether.readtogether.modelo.Usuario
 import ar.edu.unq.readtogether.readtogether.security.Token
@@ -78,9 +79,9 @@ class UsuarioRepository {
             if(passwordEsCorrecta(passDB[0].password, password )){
                 return Token.getJWTToken(passDB[0].userName)
             }
-            throw Exception("Usuario y/o contraseña inválidos")
+            throw CredencialesDeLoginInvalidasException()
         }else{
-            throw Exception("Usuario y/o contraseña inválidos")
+            throw CredencialesDeLoginInvalidasException()
         }
     }
 

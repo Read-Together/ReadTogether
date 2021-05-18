@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 
 
-
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -25,24 +24,26 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 class UsuarioTest {
 
     private lateinit var usuario: Usuario
+
     @Autowired
     private lateinit var mockMvc: MockMvc
+
     @Autowired
     private lateinit var usuarioService: UsuarioService
 
     @BeforeAll
-    fun setUp(){
+    fun setUp() {
         usuarioService.eliminarDatos()
     }
 
     @AfterEach
-    fun clean(){
+    fun clean() {
         usuarioService.eliminarDatos()
     }
 
     @Test
-    fun cuandoRegistroUnUsuario_puedoEncontralo(){
-        usuario = Usuario("mauro10","mauro@gmail.com","1234")
+    fun cuandoRegistroUnUsuario_puedoEncontralo() {
+        usuario = Usuario("mauro10", "mauro@gmail.com", "1234")
         mockMvc.perform(MockMvcRequestBuilders.post("/registrar")
                 .content(ObjectMapper().writeValueAsString(usuario))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -52,7 +53,7 @@ class UsuarioTest {
 
     @Test
     fun cuandoAgregoUnUsuario_retornaUn200() {
-        usuario = Usuario("gonzalo1994","gonzalo@gmail.com","1234")
+        usuario = Usuario("gonzalo1994", "gonzalo@gmail.com", "1234")
         mockMvc.perform(MockMvcRequestBuilders.post("/registrar")
                 .content(ObjectMapper().writeValueAsString(usuario))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -60,8 +61,8 @@ class UsuarioTest {
     }
 
     @Test
-    fun cuandoAgregoUnUsuarioQueYaExiste_retornaUn400(){
-        usuario = Usuario("juan","juan@gmail.com","1234")
+    fun cuandoAgregoUnUsuarioQueYaExiste_retornaUn400() {
+        usuario = Usuario("juan", "juan@gmail.com", "1234")
         usuarioService.registrarUsuario(usuario)
         mockMvc.perform(MockMvcRequestBuilders.post("/registrar")
                 .content(ObjectMapper().writeValueAsString(usuario))
@@ -70,8 +71,8 @@ class UsuarioTest {
     }
 
     @Test
-    fun cuandoInicioSesion_retornaUn200(){
-        usuario = Usuario("juan2","juan2@gmail.com","1234")
+    fun cuandoInicioSesion_retornaUn200() {
+        usuario = Usuario("juan2", "juan2@gmail.com", "1234")
         usuarioService.registrarUsuario(usuario)
         var request = RequestUsuario("juan2", "1234")
         mockMvc.perform(MockMvcRequestBuilders.post("/login")
@@ -81,29 +82,26 @@ class UsuarioTest {
     }
 
     @Test
-    fun cuandoInicioSesion_MeDevuelveUnToken(){
-        usuario = Usuario("barbi","barbi@gmail.com","1234")
+    fun cuandoInicioSesion_MeDevuelveUnToken() {
+        usuario = Usuario("barbi", "barbi@gmail.com", "1234")
         usuarioService.registrarUsuario(usuario)
         var request = RequestUsuario("barbi", "1234")
         var response = mockMvc.perform(MockMvcRequestBuilders.post("/login")
-            .content(ObjectMapper().writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andReturn().response.contentAsString
+                .content(ObjectMapper().writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn().response.contentAsString
         assert(response.contains("Bearer "))
     }
 
     @Test
-    fun cuandoInicioSesionConDatosErroneos_arrojaComoExceptionUsuarioYOContraseniaInvalidos(){
-        usuario = Usuario("juan3","juan3@gmail.com","1234")
+    fun cuandoInicioSesionConDatosErroneos_arrojaComoExceptionUsuarioYOContraseniaInvalidos() {
+        usuario = Usuario("juan3", "juan3@gmail.com", "1234")
         usuarioService.registrarUsuario(usuario)
         var usuarioLogin = RequestUsuario("juan3", "123")
-        assertThatThrownBy {
-            mockMvc.perform(MockMvcRequestBuilders.post("/login")
-                    .content(ObjectMapper().writeValueAsString(usuarioLogin))
-                    .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().is4xxClientError)
-        }.hasRootCauseMessage("Usuario y/o contraseña inválidos");
-
+        mockMvc.perform(MockMvcRequestBuilders.post("/login")
+                .content(ObjectMapper().writeValueAsString(usuarioLogin))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound)
     }
 
 }
