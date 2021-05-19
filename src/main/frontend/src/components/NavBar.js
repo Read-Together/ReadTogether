@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import "../css/NavBar.css";
 import { useState} from "react";
+import { Button } from "react-bootstrap";
 
 const NavBar = () => {
 
@@ -39,6 +40,10 @@ const NavBar = () => {
             </li>
           </ul>
 
+          <Button className="btn btn-danger cerrarSesion">
+            Cerrar sesión
+          </Button>
+
           <input
             class="form-control me-2 inputBusqueda"
             type="search"
@@ -48,7 +53,7 @@ const NavBar = () => {
             aria-label="Search"
           />
           <Link to={`/busqueda/${termino}`}>
-            <button Class="btn btn-outline-success" type="submit">
+            <button Class="btn btn-outline-success botonBuscar" type="submit">
               Buscar
             </button>
           </Link>
