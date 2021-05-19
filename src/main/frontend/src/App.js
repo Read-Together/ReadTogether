@@ -1,55 +1,50 @@
-import './App.css';
-import {BrowserRouter as Router, Route, Switch, useParams} from 'react-router-dom'
-import {useEffect, useState} from "react";
-import NavBar from "./components/NavBar"
-import {LeftMenu} from "./components/LeftMenu";
-import Register from './components/Register';
-import {FormularioCrearComunidad} from "./components/FormularioCrearComunidad";
-import {Ingresar} from "./components/Ingresar";
-import {PrivateRoute} from "./components/PrivateRoute";
+import "./App.css";
+import { BrowserRouter as Router, Switch, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Register from "./components/Register";
+import { FormularioCrearComunidad } from "./components/FormularioCrearComunidad";
+import { Ingresar } from "./components/Ingresar";
+import { PrivateRoute } from "./components/PrivateRoute";
+import PublicRoute from "./components/PublicRoute";
+import Home from "./components/Home";
+import NavBar from "./components/NavBar";
 
-const axios = require('axios').default;
-
-function Home() {
-  return null;
-}
+const axios = require("axios").default;
 
 function Resultados() {
-  const {termino} = useParams();
-  const [resultados, setResultados] = useState([])
+  const { termino } = useParams();
+  const [resultados, setResultados] = useState([]);
 
-  useEffect (() => {
-     axios.get(`http://localhost:8080/grupos?busqueda=${termino}`)
-    .then(resultados => {
-      setResultados(resultados.data)
-    });
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/grupos?busqueda=${termino}`)
+      .then((resultados) => {
+        setResultados(resultados.data);
+      });
   }, [termino]);
-  
+
   return (
-    <p>{resultados.map(resultado => resultado.nombre)}</p>
-  )
+    <div>
+      <NavBar />
+      <p>{resultados.map((resultado) => resultado.nombre)}</p>
+    </div>
+  );
 }
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <NavBar/>
-        <div className="body-container">
-          <LeftMenu/>
-          <div className="main-content">
-            <Switch>
-              <Route path="/registrar" component={Register}/>
-              <Route path="/ingresar" component={Ingresar}/>
-              <Route path="/busqueda/:termino" component={Resultados}/>
-              <PrivateRoute path="/crear_comunidad" component={FormularioCrearComunidad}/>
-              <Route path="/">
-                <Home/>
-              </Route>
-            </Switch>  
-          </div>
-        </div>
-      </div>
+      <Switch>
+        <PublicRoute path="/registrar" component={Register} />
+        <PublicRoute path="/ingresar" component={Ingresar} />
+        <PrivateRoute path="/busqueda/:termino" component={Resultados} />
+        <PrivateRoute path="/home" component={Home} />
+        <PrivateRoute
+          path="/crear_comunidad"
+          component={FormularioCrearComunidad}
+        />
+        <PrivateRoute path="/" component={Home} />
+      </Switch>
     </Router>
   );
 }

@@ -1,13 +1,14 @@
-import {Alert, Button, Card, Container, Form} from "react-bootstrap";
-import {useState} from "react";
-import "../css/Auth.css"
+import { Alert, Button, Card, Form } from "react-bootstrap";
+import { useState } from "react";
 import axios from "axios";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
+import "../css/Ingresar.css";
 
 export const Ingresar = () => {
   const history = useHistory();
-  const [usuario, setUsuario] = useState("")
-  const [password, setPassword] = useState("")
+  const [usuario, setUsuario] = useState("");
+  const [password, setPassword] = useState("");
   const [noSePudoLoggear, setNoSePudoLoggear] = useState(false);
 
   function handleSubmit(event) {
@@ -15,42 +16,63 @@ export const Ingresar = () => {
 
     let data = {
       usuario: usuario,
-      password: password
+      password: password,
     };
 
-    axios.post("http://localhost:8080/login", data)
+    axios
+      .post("http://localhost:8080/login", data)
       .then((respuesta) => {
-        sessionStorage.setItem('accessToken', respuesta.data)
-        sessionStorage.setItem('loggedUsername', usuario)
-        history.replace("/")
-      }).catch((respuesta) => {
-        setNoSePudoLoggear(true)
-    })
+        sessionStorage.setItem("accessToken", respuesta.data);
+        sessionStorage.setItem("loggedUsername", usuario);
+        history.replace("/home");
+      })
+      .catch((respuesta) => {
+        setNoSePudoLoggear(true);
+      });
   }
-  
-  return <Container className="justify-content-md-center">
-    <Card className={"text-center cardAuth"}>
+
+  return (
+    <Card className={"text-center loginCompleto"}>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
-          <Alert variant="danger" show={noSePudoLoggear}>Tu usuario o contraseña no son correctos </Alert>
+          <Alert variant="danger" show={noSePudoLoggear}>
+            Tu usuario o contraseña no son correctos{" "}
+          </Alert>
           <Form.Group controlId="usuario" className="login-input">
             <Form.Label>Usuario</Form.Label>
-            <Form.Control type="text" value={usuario} placeholder="Nombre de usuario"
-                          onChange={event => setUsuario(event.target.value)}/>
+            <Form.Control
+              type="text"
+              value={usuario}
+              placeholder="Nombre de usuario"
+              onChange={(event) => setUsuario(event.target.value)}
+            />
           </Form.Group>
 
           <Form.Group controlId="password" className="login-input">
             <Form.Label>Contraseña</Form.Label>
-            <Form.Control type="password" value={password} placeholder="Contraseña"
-                          onChange={event => setPassword(event.target.value)}/>
+            <Form.Control
+              type="password"
+              value={password}
+              placeholder="Contraseña"
+              onChange={(event) => setPassword(event.target.value)}
+            />
           </Form.Group>
+          <div className="botones">
+            <div>
+              <Button variant="primary" type="submit" className="botonIngresar">
+                Ingresar
+              </Button>
+            </div>
 
-          <Button variant="primary" type="submit">
-            Ingresar
-          </Button>
+            <div className="espacioPregunta">
+              ¿No tenes cuenta?
+              <Link to="/registrar" class="espaciado">
+                Registrate
+              </Link>
+            </div>
+          </div>
         </Form>
       </Card.Body>
-
     </Card>
-  </Container>
+  );
 };
