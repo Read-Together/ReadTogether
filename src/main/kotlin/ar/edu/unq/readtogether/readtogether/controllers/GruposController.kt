@@ -25,9 +25,9 @@ class GruposController {
         grupoService.crearGrupo(creacionDeGruposForm.nombre,creacionDeGruposForm.descripcion)
     }
 
-    @PostMapping("/grupos/{nombreDeGrupo}/registrar")
-    fun suscribirUsuarioAlGrupo(@RequestBody usuario: RequestDeSuscripcion,@PathVariable nombreDeGrupo:String){
-        grupoService.suscribirUsuarioAlGrupo(usuario.userName,nombreDeGrupo)
+    @PostMapping("/grupos/{idDelGrupo}/registrar")
+    fun suscribirUsuarioAlGrupo(@PathVariable("idDelGrupo") idDelGrupo: String, @RequestBody usuario: RequestDeSuscripcion){
+        grupoService.suscribirUsuarioAlGrupo(usuario.userName, idDelGrupo)
     }
 
 }

@@ -4,6 +4,7 @@ import ar.edu.unq.readtogether.readtogether.dtos.CreacionDeGruposForm
 import ar.edu.unq.readtogether.readtogether.grupos.Grupo
 import ar.edu.unq.readtogether.readtogether.modelo.Usuario
 import ar.edu.unq.readtogether.readtogether.services.GrupoService
+import ar.edu.unq.readtogether.readtogether.services.UsuarioService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.json.JSONObject
@@ -23,7 +24,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 @ActiveProfiles("test")
 class TestGrupos {
 
-
+    @Autowired
+    private lateinit var usuarioService: UsuarioService
     @Autowired
     private lateinit var mockMvc: MockMvc
 
@@ -47,22 +49,23 @@ class TestGrupos {
 
     @Test
     fun unUsuarioSeUneAlGrupoYQuedaRegistradoEnEl(){
-        usuario = Usuario("gonzalo1994","gonzalo@gmail.com","1234")
+        usuario = Usuario("gonzalo1995","gonzalo2@gmail.com","1234")
+        usuarioService.registrarUsuario(usuario)
         val nombreComunidad = "comunidad del anillo"
-        grupoService.guardarGrupo(Grupo(nombreComunidad, "mi precioso"))
+        grupoService.guardarGrupo(Grupo(nombreComunidad, "mi precioso", mutableListOf()))
+        val idDelGrupo = grupoService.obtenerGruposConNombre(nombreComunidad)[0].id
 
         mockMvc.perform(
-            MockMvcRequestBuilders.post("/grupos/" + nombreComunidad + "/registrar")
+            MockMvcRequestBuilders.post("/grupos/$idDelGrupo/registrar")
                 .content(JSONObject().put("userName", usuario.userName).toString())
                 .contentType(MediaType.APPLICATION_JSON)
-        )
+        ).andExpect(MockMvcResultMatchers.status().isOk).andReturn()
 
-        assertThat(grupoService.obtenerGruposConNombre("comunidad del anillo")).hasSize(1)
-        assertThat(grupoService.obtenerGruposConNombre("comunidad del anillo").first().usuarios).hasSize(1)
+        assertThat(grupoService.obtenerGrupoDeID(idDelGrupo).usuarios).hasSize(1)
     }
 
     @AfterEach
-    internal fun tearDown() {
+    fun tearDown() {
         grupoService.eliminarDatos()
     }
 }

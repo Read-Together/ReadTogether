@@ -12,19 +12,21 @@ class Grupo{
     lateinit var id: String
     lateinit var nombre: String
     lateinit var descripcion: String
-    var usuarios: MutableList<Usuario> = mutableListOf()
+    lateinit var usuarios: MutableList<Usuario>
 
-    constructor(id: String, nombre: String, descripcion: String){
+    constructor(id: String, nombre: String, descripcion: String, usuarios: MutableList<Usuario>){
         this.id = id
         this.nombre = nombre
         this.descripcion = descripcion
+        this.usuarios = usuarios
     }
 
     constructor()
 
-    constructor(nombre: String, descripcion: String){
+    constructor(nombre: String, descripcion: String, usuarios: MutableList<Usuario>){
         this.nombre = nombre
         this.descripcion = descripcion
+        this.usuarios = usuarios
     }
 
 }
