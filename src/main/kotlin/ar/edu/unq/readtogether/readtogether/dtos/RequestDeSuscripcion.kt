@@ -1,3 +1,5 @@
 package ar.edu.unq.readtogether.readtogether.dtos
 
-class RequestDeSuscripcion(val userName:String)
+import com.fasterxml.jackson.annotation.JsonProperty
+
+class RequestDeSuscripcion(@JsonProperty("userName") val userName:String)

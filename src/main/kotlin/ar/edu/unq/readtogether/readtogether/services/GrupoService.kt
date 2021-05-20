@@ -31,13 +31,18 @@ class GrupoService @Autowired constructor(
     }
 
     fun crearGrupo(nombre: String, detalle: String) {
-        val grupo1 = Grupo(nombre,detalle)
+        val grupo1 = Grupo(nombre,detalle, mutableListOf())
         this.guardarGrupo(grupo1)
     }
 
-    fun suscribirUsuarioAlGrupo(usuario: String, nombreDelGrupo: String) {
-        val grupo = this.obtenerGruposConNombre(nombreDelGrupo).first()
+    fun suscribirUsuarioAlGrupo(usuario: String, idDelGrupo: String) {
+        val grupo = this.obtenerGrupoDeID(idDelGrupo)
 
         grupo.agregarUsuario(usuarioRepository.usuarioDeNombre(usuario))
+        grupoRepository.actualizarGrupo(grupo)
+    }
+
+    fun obtenerGrupoDeID(idDelGrupo: String): Grupo {
+        return grupoRepository.obtenerGrupoDeID(idDelGrupo)
     }
 }
