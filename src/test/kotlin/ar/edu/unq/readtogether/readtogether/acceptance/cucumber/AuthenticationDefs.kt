@@ -1,6 +1,5 @@
 package ar.edu.unq.readtogether.readtogether.acceptance.cucumber
 
-import ar.edu.unq.readtogether.readtogether.ReadtogetherApplication
 import ar.edu.unq.readtogether.readtogether.dtos.RequestUsuario
 import ar.edu.unq.readtogether.readtogether.modelo.Usuario
 import ar.edu.unq.readtogether.readtogether.services.UsuarioService
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultActions
@@ -26,12 +24,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 class AuthenticationDefs {
     @Autowired
     private lateinit var mockMvc: MockMvc
-    private lateinit var resultAction: ResultActions
+
     @Autowired
     private lateinit var usuarioService: UsuarioService
 
     @Autowired
     private lateinit var context: StepDefinitionsContext
+
+    private lateinit var resultAction: ResultActions
 
     val username = "unNombreDeUsuario"
     val email = "unMail@gmail.com"
