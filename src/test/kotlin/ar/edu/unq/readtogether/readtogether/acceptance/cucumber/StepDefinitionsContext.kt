@@ -1,17 +1,14 @@
-/*
 package ar.edu.unq.readtogether.readtogether.acceptance.cucumber
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.stereotype.Component
 import org.springframework.test.web.servlet.*
 
 
 @Component
 class StepDefinitionsContext : ResultActions{
-
-    @Autowired
-    private lateinit var mockMvc : MockMvc
 
     protected lateinit var currentResultAction: ResultActions
 
@@ -27,10 +24,9 @@ class StepDefinitionsContext : ResultActions{
         return currentResultAction.andReturn();
     }
 
-    fun perform(requestBuilder: RequestBuilder): ResultActions {
+    fun perform(requestBuilder: RequestBuilder, mockMvc: MockMvc): ResultActions {
         currentResultAction = (mockMvc.perform(requestBuilder))
         return this
     }
 
 }
-*/

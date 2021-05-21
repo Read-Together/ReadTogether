@@ -10,6 +10,7 @@ import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.context.ContextConfiguration
@@ -21,16 +22,16 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
-@ContextConfiguration(classes = [TestConfig::class, ReadtogetherApplication::class])
+@AutoConfigureMockMvc
 class AuthenticationDefs {
-
+    @Autowired
+    private lateinit var mockMvc: MockMvc
     private lateinit var resultAction: ResultActions
-
     @Autowired
     private lateinit var usuarioService: UsuarioService
 
     @Autowired
-    private lateinit var mockMvc : MockMvc
+    private lateinit var context: StepDefinitionsContext
 
     val username = "unNombreDeUsuario"
     val email = "unMail@gmail.com"
@@ -45,9 +46,11 @@ class AuthenticationDefs {
     @When("ingresa su usuario y contraseña correctos")
     fun autenticarUsuario(){
         val request = RequestUsuario(username, contraseña)
-        resultAction = mockMvc.perform(MockMvcRequestBuilders.post("/login")
-                .content(ObjectMapper().writeValueAsString(request))
-                .contentType(MediaType.APPLICATION_JSON))
+        resultAction = context.perform(
+                MockMvcRequestBuilders.post("/login")
+                        .content(ObjectMapper().writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON), mockMvc
+        )
     }
 
     @Then("obtiene un token con el que autenticarse")
