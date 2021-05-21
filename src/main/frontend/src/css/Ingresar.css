@@ -1,8 +1,7 @@
-.registerCompleto{
+.loginCompleto{
     border-radius: 8px;
     border: 1px solid rgb(235, 232, 232);
     background-color: rgb(238, 237, 241); 
-    text-align: center;
     padding: 17px;
     width: 350px;
     position: absolute;
@@ -12,14 +11,22 @@
 }
 
 .espaciado{
-    margin-right: 0.5%;
+    margin-left: 1%;
 }
 
-.register-input{
+.botones{
+    padding-top: 2%;
+}
+
+.espacioPregunta{
+    margin-top: 3%;
+}
+
+.botonIngresar{
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+
+.login-input{
     padding: 1.5%;
-}
-
-.botonVolverRegister{
-    width: 25%;
-    margin-left: 2%;
 }
