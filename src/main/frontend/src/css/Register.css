@@ -1,0 +1,25 @@
+.registerCompleto{
+    border-radius: 8px;
+    border: 1px solid rgb(235, 232, 232);
+    background-color: rgb(238, 237, 241); 
+    text-align: center;
+    padding: 17px;
+    width: 350px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.espaciado{
+    margin-right: 0.5%;
+}
+
+.register-input{
+    padding: 1.5%;
+}
+
+.botonVolverRegister{
+    width: 25%;
+    margin-left: 2%;
+}
