@@ -1,6 +1,5 @@
 package ar.edu.unq.readtogether.readtogether.repositories
 
-import ar.edu.unq.readtogether.readtogether.dtos.RequestUsuario
 import ar.edu.unq.readtogether.readtogether.dtos.UsuarioResponseDTO
 import ar.edu.unq.readtogether.readtogether.firebase.FireBaseInitialization
 import ar.edu.unq.readtogether.readtogether.modelo.Usuario
@@ -14,7 +13,6 @@ class UsuarioRepository {
 
     @Autowired
     private lateinit var firebase : FireBaseInitialization
-    private val token = Token()
     private fun getCollection() = firebase.firestore.collection("usuarios")
 
     @Throws
@@ -47,12 +45,11 @@ class UsuarioRepository {
         if(userName.isEmpty && userEmail.isEmpty){
             return null
         }
-        var usuarios: MutableList<UsuarioResponseDTO> = mutableListOf()
-	if(userName.isEmpty){
-		usuarios = userEmail.toObjects(UsuarioResponseDTO::class.java)
-	}else{
-		usuarios = userName.toObjects(UsuarioResponseDTO::class.java)
-	}
+        var usuarios: MutableList<UsuarioResponseDTO> = if(userName.isEmpty){
+            userEmail.toObjects(UsuarioResponseDTO::class.java)
+        }else{
+            userName.toObjects(UsuarioResponseDTO::class.java)
+        }
         var retorno = usuarios[0]
         retorno.id = usuarios[0].id
         return retorno
@@ -79,7 +76,7 @@ class UsuarioRepository {
         if(!userName.isEmpty){
             val passDB = userName.toObjects(Usuario::class.java)
             if(passwordEsCorrecta(passDB[0].password, password )){
-                return token.getJWTToken(passDB[0].userName)
+                return Token.getJWTToken(passDB[0].userName)
             }
             throw Exception("Usuario y/o contraseña inválidos")
         }else{
