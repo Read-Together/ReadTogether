@@ -1,13 +1,14 @@
 import axios from "axios";
-import { useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import React, { useState } from "react";
 import "../css/Register.css";
-import {Alert} from "react-bootstrap";
+import { Alert } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const history = useHistory();
-  const[registrado, setRegistrado] = useState(false);
-  const[noRegistrado, setNoRegistrado] = useState(false);
+  const [registrado, setRegistrado] = useState(false);
+  const [noRegistrado, setNoRegistrado] = useState(false);
   const [data, setData] = useState({
     userName: "",
     email: "",
@@ -22,30 +23,33 @@ const Register = () => {
   };
 
   const handleSubmit = (event) => {
-    setNoRegistrado(false)
-    setRegistrado(false)
+    setNoRegistrado(false);
+    setRegistrado(false);
     event.preventDefault();
     axios
-      .post('http://localhost:8080/registrar', data)
-      .then( () =>{
-        setRegistrado(true)
+      .post("http://localhost:8080/registrar", data)
+      .then(() => {
+        setRegistrado(true);
         setTimeout(() => {
-          history.push("/")
-        }, 3000)
+          history.push("/ingresar");
+        }, 3000);
       })
       .catch((error) => {
-        setRegistrado(false)
-        setNoRegistrado(true)
+        setRegistrado(false);
+        setNoRegistrado(true);
       });
-      
   };
 
   return (
-    <div class="cardRegistrate">
+    <div class="registerCompleto">
       <form id="Registro" onSubmit={handleSubmit} class="row g-3">
-      <Alert variant="danger" show={noRegistrado}>¡Ups! Ocurrió un error </Alert>
-      <Alert variant="success" show={registrado}>¡Genial! Te has registrado {data.userName} </Alert>
-      
+        <Alert variant="danger" show={noRegistrado}>
+          ¡Ups! Ocurrió un error{" "}
+        </Alert>
+        <Alert variant="success" show={registrado}>
+          ¡Genial! Te has registrado {data.userName}{" "}
+        </Alert>
+
         <div>
           <label for="inputCity" class="form-label">
             Nombre de Usuario
@@ -56,7 +60,7 @@ const Register = () => {
             value={data.username}
             placeholder="Nombre de usuario"
             onChange={handleInputChange}
-            class="form-control"
+            class="form-control register-input"
             id="inputCity"
           />
         </div>
@@ -67,7 +71,7 @@ const Register = () => {
           <input
             type="text"
             name="email"
-            class="form-control"
+            class="form-control register-input"
             id="inputEmail4"
             value={data.email}
             placeholder="Correo electrónico"
@@ -81,7 +85,7 @@ const Register = () => {
           <input
             type="password"
             name="password"
-            class="form-control"
+            class="form-control register-input"
             id="inputPassword4"
             value={data.password}
             placeholder="Contraseña"
@@ -89,13 +93,18 @@ const Register = () => {
           />
         </div>
         <div>
-          <button type="submit" 
-          disabled={
-            !(data.email && data.password && data.userName)
-          }
-          class="btn btn-primary">
-            Registrar
-          </button>
+          <span>
+            <button
+              type="submit"
+              disabled={!(data.email && data.password && data.userName)}
+              class="btn btn-primary"
+            >
+              Registrar
+            </button>
+            <Link to="/ingresar">
+              <button class="btn btn-danger botonVolver">Volver</button>
+            </Link>
+          </span>
         </div>
       </form>
     </div>
