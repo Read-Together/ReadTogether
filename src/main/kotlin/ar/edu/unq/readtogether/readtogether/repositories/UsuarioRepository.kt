@@ -6,7 +6,7 @@ import ar.edu.unq.readtogether.readtogether.modelo.Usuario
 import ar.edu.unq.readtogether.readtogether.security.Token
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
-
+import kotlin.jvm.Throws
 
 @Repository
 class UsuarioRepository {

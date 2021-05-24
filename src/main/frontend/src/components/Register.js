@@ -102,7 +102,7 @@ const Register = () => {
               Registrar
             </button>
             <Link to="/ingresar">
-              <button class="btn btn-danger botonVolver">Volver</button>
+              <button class="btn btn-danger botonVolverRegister">Volver</button>
             </Link>
           </span>
         </div>

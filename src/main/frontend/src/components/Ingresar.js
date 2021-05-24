@@ -59,7 +59,7 @@ export const Ingresar = () => {
           </Form.Group>
           <div className="botones">
             <div>
-              <Button variant="primary" type="submit" className="botonIngresar">
+              <Button variant="primary" type="submit" className="botonIngresar" disabled={!(password && usuario)}>
                 Ingresar
               </Button>
             </div>
