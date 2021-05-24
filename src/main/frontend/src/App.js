@@ -26,7 +26,10 @@ function Resultados() {
   return (
     <div>
       <NavBar />
-      <p>{resultados.map((resultado) => resultado.nombre)}</p>
+        <div>
+            <p>{resultados.map((resultado) => resultado.nombre)}</p>
+        </div>
+
     </div>
   );
 }
