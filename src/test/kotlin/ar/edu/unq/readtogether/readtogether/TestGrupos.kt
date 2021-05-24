@@ -75,12 +75,15 @@ class TestGrupos {
     fun unUsuarioSeUneAlGrupoYQuedaRegistradoEnEl(){
         usuario = Usuario("gonzalo1995","gonzalo2@gmail.com","1234")
         usuarioService.registrarUsuario(usuario)
+        val usuarioRequest = RequestUsuario("gonzalo1995","1234")
         val nombreComunidad = "comunidad del anillo"
         grupoService.guardarGrupo(Grupo(nombreComunidad, "mi precioso", mutableListOf()))
         val idDelGrupo = grupoService.obtenerGruposConNombre(nombreComunidad)[0].id
+        var token = usuarioService.login(usuarioRequest)
 
         mockMvc.perform(
             MockMvcRequestBuilders.post("/grupos/$idDelGrupo/registrar")
+                .header("Authorization",token)
                 .content(JSONObject().put("userName", usuario.userName).toString())
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isOk).andReturn()

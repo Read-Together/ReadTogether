@@ -13,6 +13,11 @@ class GrupoRepositoryTest {
     @Autowired
     private lateinit var grupoRepository: GrupoRepository
 
+    @AfterEach
+    fun tearDown() {
+        grupoRepository.eliminarDatos()
+    }
+
     @Test
     fun puedoActualizarUnGrupo(){
         val grupo = Grupo("dalasha", "son muy buenos", mutableListOf())
@@ -26,10 +31,5 @@ class GrupoRepositoryTest {
         val grupoRecuperado = grupoRepository.obtenerGrupoDeID(id)
         assertEquals(grupoRecuperado.nombre, "ex-dalasha")
         assertEquals(grupoRecuperado.descripcion, "eran muy buenos")
-    }
-
-    @AfterEach
-    fun tearDown() {
-        grupoRepository.eliminarDatos()
     }
 }
