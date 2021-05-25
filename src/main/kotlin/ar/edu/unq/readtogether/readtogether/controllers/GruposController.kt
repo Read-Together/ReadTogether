@@ -6,6 +6,8 @@ import ar.edu.unq.readtogether.readtogether.grupos.Grupo
 import ar.edu.unq.readtogether.readtogether.modelo.Usuario
 import ar.edu.unq.readtogether.readtogether.services.GrupoService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @CrossOrigin
@@ -30,4 +32,8 @@ class GruposController {
         grupoService.suscribirUsuarioAlGrupo(usuario.userName, idDelGrupo)
     }
 
+    @GetMapping("/grupos/{idDelGrupo}")
+    fun comunidad(@PathVariable("idDelGrupo") idDelGrupo: String) : ResponseEntity<Grupo>{
+        return ResponseEntity(grupoService.obtenerGrupoDeID(idDelGrupo), HttpStatus.ACCEPTED)
+    }
 }

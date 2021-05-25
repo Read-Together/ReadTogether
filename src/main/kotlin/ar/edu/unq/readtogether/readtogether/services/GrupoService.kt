@@ -45,4 +45,8 @@ class GrupoService @Autowired constructor(
     fun obtenerGrupoDeID(idDelGrupo: String): Grupo {
         return grupoRepository.obtenerGrupoDeID(idDelGrupo)
     }
+
+    fun comunidad(idDelGrupo: String): Grupo {
+        return grupoRepository.obtenerGrupoDeID(idDelGrupo)
+    }
 }

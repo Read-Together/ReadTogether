@@ -1,0 +1,21 @@
+.nombreDeComunidad{
+    font-size: 145%;
+    margin-left: 2%;
+    margin-top: 2%;
+    padding-left: 1%;
+}
+
+.descripcionDeComunidad{
+    font-size: 65%;
+    margin-left: 5%;
+    margin-top: 0%;
+    padding-top: 0.5%;
+}
+
+.cardComunidadEncontrado{
+    background-color:rgb(255, 252, 252);
+    margin-right: 25%;
+    padding-right: 1%;
+    border-color: whitesmoke;
+}
+
