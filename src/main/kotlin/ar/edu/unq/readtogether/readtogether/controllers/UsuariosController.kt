@@ -1,5 +1,6 @@
 package ar.edu.unq.readtogether.readtogether.controllers
 
+import ar.edu.unq.readtogether.readtogether.dtos.RequestUsuario
 import ar.edu.unq.readtogether.readtogether.dtos.UsuarioResponseDTO
 import ar.edu.unq.readtogether.readtogether.services.UsuarioService
 import ar.edu.unq.readtogether.readtogether.modelo.Usuario
@@ -23,5 +24,10 @@ class UsuariosController {
             println(e.stackTrace)
             return ResponseEntity(null, HttpStatus.BAD_REQUEST)
         }
+    }
+
+    @PostMapping("/login")
+    fun login(@RequestBody usuario: RequestUsuario): String{
+        return usuarioService.login(usuario)
     }
 }

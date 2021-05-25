@@ -21,8 +21,10 @@ class GrupoRepository {
         var docData: MutableMap<String, Any> = mutableMapOf()
         docData["nombre"] = grupo.nombre
         docData["descripcion"] = grupo.descripcion
+        docData["usuarios"] = grupo.usuarios
+        docData["id"] = grupo.id
         var groups = getCollection()
-        var writeResultApiFuture: ApiFuture<WriteResult> = groups.document().create(docData)
+        var writeResultApiFuture: ApiFuture<WriteResult> = groups.document().set(docData)
         try {
             if (writeResultApiFuture.get() != null) {
                 return "El grupo ${grupo.nombre} ha sido creado"
@@ -39,7 +41,6 @@ class GrupoRepository {
         var collection: ApiFuture<QuerySnapshot> = getCollection().get()
         for (doc in collection.get().documents) {
             grupo = doc.toObject(Grupo::class.java)
-            grupo.id = doc.id
             retorno.add(grupo)
         }
         return retorno.filter { it.nombre.contains(terminoDeBusqueda) || it.descripcion.contains(terminoDeBusqueda) }
@@ -56,7 +57,7 @@ class GrupoRepository {
     }
 
     fun actualizarGrupo(grupo: Grupo) {
-        getCollection().get().get().documents.first { each -> each.id == grupo.id }.reference.update(
+        getCollection().get().get().documents.first { each -> each.data["id"] == grupo.id }.reference.update(
             mutableMapOf(
                 Pair("id", grupo.id),
                 Pair("nombre", grupo.nombre),
@@ -68,7 +69,7 @@ class GrupoRepository {
 
     private fun crearGrupoDesde(grupo: QueryDocumentSnapshot?): Grupo {
         val grupoCreado = grupo!!.toObject(Grupo::class.java)
-        grupoCreado.id = grupo.id
+        //grupoCreado.id = grupo.id
         return grupoCreado
     }
 

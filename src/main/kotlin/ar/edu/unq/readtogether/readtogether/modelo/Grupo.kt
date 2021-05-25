@@ -1,6 +1,7 @@
 package ar.edu.unq.readtogether.readtogether.grupos
 
 import ar.edu.unq.readtogether.readtogether.modelo.Usuario
+import java.util.*
 
 class Grupo{
 
@@ -14,19 +15,13 @@ class Grupo{
     lateinit var descripcion: String
     lateinit var usuarios: MutableList<Usuario>
 
-    constructor(id: String, nombre: String, descripcion: String, usuarios: MutableList<Usuario>){
-        this.id = id
+    constructor(nombre: String, descripcion: String, usuarios: MutableList<Usuario>){
+        this.id = UUID.randomUUID().toString()
         this.nombre = nombre
         this.descripcion = descripcion
         this.usuarios = usuarios
     }
 
     constructor()
-
-    constructor(nombre: String, descripcion: String, usuarios: MutableList<Usuario>){
-        this.nombre = nombre
-        this.descripcion = descripcion
-        this.usuarios = usuarios
-    }
 
 }

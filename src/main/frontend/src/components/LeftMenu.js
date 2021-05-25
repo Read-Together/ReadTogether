@@ -1,5 +1,5 @@
 import { ListGroup } from "react-bootstrap";
-import "./LeftMenu.css";
+import "../css/LeftMenu.css";
 
 export function LeftMenu() {
   return (
