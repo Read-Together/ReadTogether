@@ -1,19 +1,21 @@
 package ar.edu.unq.readtogether.readtogether.repositories
 
 import ar.edu.unq.readtogether.readtogether.grupos.Grupo
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class GrupoRepositoryTest {
 
     @Autowired
     private lateinit var grupoRepository: GrupoRepository
 
-    @AfterEach
+    @AfterAll
     fun tearDown() {
         grupoRepository.eliminarDatos()
     }
@@ -29,7 +31,7 @@ class GrupoRepositoryTest {
         grupoRepository.actualizarGrupo(grupo)
 
         val grupoRecuperado = grupoRepository.obtenerGrupoDeID(id)
-        assertEquals(grupoRecuperado.nombre, "ex-dalasha")
-        assertEquals(grupoRecuperado.descripcion, "eran muy buenos")
+        assertThat(grupoRecuperado.nombre == "ex-dalasha")
+        assertThat(grupoRecuperado.descripcion == "eran muy buenos")
     }
 }

@@ -29,28 +29,23 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TestGrupos {
 
-    @Autowired
-    private lateinit var usuarioService: UsuarioService
+
     @Autowired
     private lateinit var mockMvc: MockMvc
-
-    private lateinit var usuario: Usuario
-
     @Autowired
     private lateinit var grupoService: GrupoService
     @Autowired
-    private lateinit var userService: UsuarioService
-    @Autowired
-    private lateinit var usuarioController: UsuariosController
+    private lateinit var usuarioService: UsuarioService
+
 
     @BeforeAll
     fun setUp(){
-        userService.eliminarDatos()
+        usuarioService.eliminarDatos()
     }
 
     @AfterEach
     fun clean(){
-        userService.eliminarDatos()
+        usuarioService.eliminarDatos()
         grupoService.eliminarDatos()
     }
 
@@ -59,8 +54,8 @@ class TestGrupos {
         val creacionDeGruposForm = CreacionDeGruposForm("grupo", "detalle")
         val usuarioARegistrar = Usuario("mauro","mauro@gmail.com", "123")
         val usuarioQueIniciaSesion = RequestUsuario("mauro", "123")
-        userService.registrarUsuario(usuarioARegistrar)
-        var token = userService.login(usuarioQueIniciaSesion)
+        usuarioService.registrarUsuario(usuarioARegistrar)
+        var token = usuarioService.login(usuarioQueIniciaSesion)
         mockMvc.perform(
             MockMvcRequestBuilders.post("/grupos")
                 .header("Authorization", token)
@@ -73,22 +68,43 @@ class TestGrupos {
 
     @Test
     fun unUsuarioSeUneAlGrupoYQuedaRegistradoEnEl(){
-        usuario = Usuario("gonzalo1995","gonzalo2@gmail.com","1234")
+        var usuario = Usuario("gonzalo1995","gonzalo2@gmail.com","1234")
         usuarioService.registrarUsuario(usuario)
         val usuarioRequest = RequestUsuario("gonzalo1995","1234")
         val nombreComunidad = "comunidad del anillo"
-        grupoService.guardarGrupo(Grupo(nombreComunidad, "mi precioso", mutableListOf()))
-        val idDelGrupo = grupoService.obtenerGruposConNombre(nombreComunidad)[0].id
         var token = usuarioService.login(usuarioRequest)
+        grupoService.guardarGrupo(Grupo(nombreComunidad, "mi precioso", mutableListOf()))
+        var grupo = grupoService.obtenerGruposConNombre(nombreComunidad)[0]
+        val idDelGrupo = grupo.id
 
         mockMvc.perform(
             MockMvcRequestBuilders.post("/grupos/$idDelGrupo/registrar")
                 .header("Authorization",token)
                 .content(JSONObject().put("userName", usuario.userName).toString())
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(MockMvcResultMatchers.status().isOk).andReturn()
+        ).andExpect(MockMvcResultMatchers.status().isOk)
 
-        assertThat(grupoService.obtenerGrupoDeID(idDelGrupo).usuarios).hasSize(1)
+        var usuarioDelGrupo = grupoService.obtenerGrupoDeID(idDelGrupo).usuarios
+        assertThat(usuarioDelGrupo.size == 1)
+    }
+
+    @Test
+    fun buscoUnaComunidadPorUnIdYLoRetorna(){
+        var usuario = Usuario("barbi","barbi@gmail.com","123")
+        usuarioService.registrarUsuario(usuario)
+        val usuarioRequest = RequestUsuario("barbi","123")
+        val nombreComunidad = "silicon valley"
+        var token = usuarioService.login(usuarioRequest)
+        grupoService.guardarGrupo(Grupo(nombreComunidad, "esto es una descripcion", mutableListOf()))
+        var grupo = grupoService.obtenerGruposConNombre(nombreComunidad)[0]
+        val idDelGrupo = grupo.id
+
+        var response = mockMvc.perform(
+            MockMvcRequestBuilders.get("/grupos/$idDelGrupo")
+                .header("Authorization",token))
+            .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+            .andReturn().response.contentAsString[0].toString()
+        assertThat(response == idDelGrupo)
     }
 
 }

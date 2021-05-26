@@ -8,6 +8,7 @@ import { PrivateRoute } from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import Home from "./components/Home";
 import NavBar from "./components/NavBar";
+import "./css/Resultados.css"
 
 const axios = require("axios").default;
 
@@ -26,10 +27,20 @@ function Resultados() {
   return (
     <div>
       <NavBar />
-        <div>
-            <p>{resultados.map((resultado) => resultado.nombre)}</p>
-        </div>
-
+      <div>
+        {resultados.map((resultado) => (
+          <div class="card cardComunidadEncontrado">
+            <div class="nombreDeComunidad">
+              
+              {resultado.nombre}
+             
+              </div>
+            <div class="descripcionDeComunidad">
+              {resultado.descripcion}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

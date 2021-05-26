@@ -54,7 +54,7 @@ class TestBuscador {
         var token = usuarioService.login(usuarioQueIniciaSesion)
         mockMvc.perform(MockMvcRequestBuilders.get("/grupos?busqueda=comunidad")
                 .header("Authorization", token))
-                .andExpect(status().isOk)
+                .andExpect(status().is2xxSuccessful)
                 .andExpect(jsonPath("$.[0].nombre", Matchers.comparesEqualTo("La comunidad del anillo")))
                 .andExpect(jsonPath("$", hasSize<Int>(1)))
     }

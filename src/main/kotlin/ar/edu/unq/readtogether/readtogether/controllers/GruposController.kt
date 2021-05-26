@@ -18,8 +18,8 @@ class GruposController {
     private lateinit var grupoService: GrupoService
 
     @GetMapping("/grupos")
-    fun buscarGrupos(@RequestParam busqueda : String): List<Grupo> {
-        return grupoService.obtenerGruposConNombre(busqueda)
+    fun buscarGrupos(@RequestParam busqueda : String): ResponseEntity<List<Grupo>> {
+        return ResponseEntity(grupoService.obtenerGruposConNombre(busqueda),HttpStatus.ACCEPTED)
     }
 
     @PostMapping("/grupos")

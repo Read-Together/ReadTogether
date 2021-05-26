@@ -69,7 +69,6 @@ class GrupoRepository {
 
     private fun crearGrupoDesde(grupo: QueryDocumentSnapshot?): Grupo {
         val grupoCreado = grupo!!.toObject(Grupo::class.java)
-        //grupoCreado.id = grupo.id
         return grupoCreado
     }
 
