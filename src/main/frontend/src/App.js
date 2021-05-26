@@ -17,6 +17,7 @@ function Resultados() {
   const { termino } = useParams();
   const [resultados, setResultados] = useState([]);
 
+
   useEffect(() => {
     axios
       .get(`http://localhost:8080/grupos?busqueda=${termino}`)
@@ -32,7 +33,7 @@ function Resultados() {
         {resultados.map((resultado) => (
           <div className="card cardComunidadEncontrado">
             <div className="nombreDeComunidad">
-              <Link to={`/busqueda/${resultado.id}`} link="none">
+              <Link to={`/grupos/${resultado.id}`}>
                 <div>{resultado.nombre}</div>
               </Link>
             </div>
@@ -53,7 +54,7 @@ function App() {
         <PublicRoute path="/registrar" component={Register} />
         <PublicRoute path="/ingresar" component={Ingresar} />
         <PrivateRoute path="/busqueda/:termino" component={Resultados} />
-        <PrivateRoute path="/comunidad/:idDelGrupo" component={Comunidad} />
+        <PrivateRoute path="/grupos/:id" component={Comunidad} />
         <PrivateRoute path="/home" component={Home} />
         <PrivateRoute
           path="/crear_comunidad"

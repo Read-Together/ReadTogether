@@ -22,20 +22,21 @@
 }
 
 :hover{
-    text-decoration: none;
-}
-
-:active{
     
     text-decoration: none;
 }
 
+:active{
+    color: black;
+    text-decoration: none;
+}
+
 :link{
+    color: black;
     text-decoration: none;
 }
 
 :visited{ 
-    color: black;
     text-decoration: none;
 }
 

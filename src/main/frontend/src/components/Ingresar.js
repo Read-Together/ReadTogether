@@ -1,5 +1,5 @@
 import { Alert, Button, Card, Form } from "react-bootstrap";
-import { useState } from "react";
+import {useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -64,9 +64,10 @@ export const Ingresar = () => {
               </Button>
             </div>
 
-            <div className="espacioPregunta">
+            <div className="espacioPregunta ">
               ¿No tenes cuenta?
-              <Link to="/registrar" class="espaciado">
+              
+              <Link to="/registrar" className="espaciado">
                 Registrate
               </Link>
             </div>

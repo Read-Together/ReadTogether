@@ -68,13 +68,16 @@ export function FormularioCrearComunidad() {
             />
           </Form.Group>
 
-          <Button variant="primary" type="submit" className="botonCrear" disabled={!(nombre && descripcion)}>
+          <Button
+            variant="primary"
+            type="submit"
+            className="botonCrear"
+            disabled={!(nombre && descripcion)}
+          >
             Crear
           </Button>
           <Link to="/home">
-          <Button className ="btn btn-danger botonVolver">
-          Volver
-          </Button>
+            <Button className="btn btn-danger botonVolver">Volver</Button>
           </Link>
         </Form>
       </Container>
