@@ -9,5 +9,5 @@ import org.springframework.test.context.ContextConfiguration
 @RunWith(Cucumber::class)
 @CucumberOptions(features = ["../resources/cucumber/authentication.feature"]
         , plugin = ["pretty"])
-class RunCucumberTest {
+class CucumberIntegrationTest {
 }
