@@ -32,10 +32,13 @@ function Resultados() {
       <div>
         {resultados.map((resultado) => (
           <div className="card cardComunidadEncontrado">
-            <div className="nombreDeComunidad">
-              <Link to={`/grupos/${resultado.id}`}>
-                <div>{resultado.nombre}</div>
-              </Link>
+            <div className="nombreDeComunidad d-grid gap-2 d-md-flex ">
+                <Link to={`/grupos/${resultado.id}`}>
+                    <div>{resultado.nombre}</div>
+                </Link>
+                    <div>
+                        <button class="botonUnirse btn btn-primary" type="button" >Unirse</button>
+                    </div>
             </div>
             <div className="descripcionDeComunidad">
               {resultado.descripcion}
