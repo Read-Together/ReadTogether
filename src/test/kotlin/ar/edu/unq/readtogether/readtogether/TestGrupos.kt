@@ -83,8 +83,9 @@ class TestGrupos {
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isOk)
 
-        var usuarioDelGrupo = grupoService.obtenerGrupoDeID(idDelGrupo).usuarios
-        assertThat(usuarioDelGrupo.size == 1)
+        var usuariosDelGrupo = grupoService.obtenerGrupoDeID(idDelGrupo).usuarios
+        assertThat(usuariosDelGrupo.size == 1)
+        assertThat(usuariosDelGrupo[0].userName=="gonzalo1995")
     }
 
     @Test

@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Switch, useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Register from "./components/Register";
 import { FormularioCrearComunidad } from "./components/FormularioCrearComunidad";
 import { Ingresar } from "./components/Ingresar";
@@ -17,6 +17,16 @@ function Resultados() {
   const { termino } = useParams();
   const [resultados, setResultados] = useState([]);
 
+
+  function handleSubmit(event) {
+      axios
+      .post("/grupos/$idDelGrupo/registrar")
+          .then((respuesta) => {
+              sessionStorage.setItem("accessToken", respuesta.data);
+              sessionStorage.setItem("loggedUsername", usuario);
+          .content(JSONObject().put("userName", usuario.userName).toString())
+      )
+  }
 
   useEffect(() => {
     axios
@@ -37,7 +47,7 @@ function Resultados() {
                     <div>{resultado.nombre}</div>
                 </Link>
                     <div>
-                        <button class="botonUnirse btn btn-primary" type="button" >Unirse</button>
+                        <button type="submit" class="botonUnirse btn btn-primary" type="button" >Unirse</button>
                     </div>
             </div>
             <div className="descripcionDeComunidad">
