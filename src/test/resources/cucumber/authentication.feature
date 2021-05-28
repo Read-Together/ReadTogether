@@ -14,3 +14,8 @@ Feature: Autenticacion de usuario
     And esta autenticado
     When intenta crear una comunidad
     Then la aplicacion se lo permite
+
+  Scenario: Usuario no autenticado no puede usar una funcionalidad que requiere autenticacion
+    Given un usuario que no se ha registrado en la aplicacion
+    When intenta crear una comunidad
+    Then la aplicacion no se lo permite

@@ -7,6 +7,5 @@ import org.springframework.boot.runApplication
 class ReadtogetherApplication
 
 fun main(args: Array<String>) {
-	listOf<String>().map {  }
 	runApplication<ReadtogetherApplication>(*args)
 }
