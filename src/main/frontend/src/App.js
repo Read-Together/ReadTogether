@@ -1,6 +1,12 @@
 import "./App.css";
 import axios from "axios";
-import {BrowserRouter as Router, Switch, useParams, Link, useHistory} from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  useParams,
+  Link,
+  useHistory,
+} from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import Register from "./components/Register";
 import { FormularioCrearComunidad } from "./components/FormularioCrearComunidad";
@@ -11,27 +17,29 @@ import Home from "./components/Home";
 import NavBar from "./components/NavBar";
 import "./css/Resultados.css";
 import Comunidad from "./components/Comunidad";
-import {logDOM} from "@testing-library/react";
-
-
-
-//const axios = require("axios").default;
 
 function Resultados() {
   const { termino } = useParams();
   const [resultados, setResultados] = useState([]);
   const history = useHistory();
+  
 
-   const unirmeAGrupo = (resultado) => {
-       const header = {authorization:sessionStorage.getItem("accessToken")}
-       const data = {userName:sessionStorage.getItem("loggedUsername")}
-       console.log()
-       axios
-           .post(`/grupos/${resultado.id}/registrar`,data,{headers:header})
-           .then((respuesta) => {
-              history.replace(`/grupos/${resultado.id}`);
-           })
-   }
+  const unirmeAGrupo = (resultado) => {
+    const header = { authorization: sessionStorage.getItem("accessToken") };
+    const data = { userName: sessionStorage.getItem("loggedUsername") };
+    axios
+      .post(`http://localhost:8080/grupos/${resultado.id}/registrar`, data, {
+        headers: header,
+      })
+      .then(() => {
+        history.push(`/grupos/${resultado.id}`);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const estaEnElGrupo = (resultado) =>{
+    return resultado.usuarios.some(usuario => usuario.userName == sessionStorage.getItem("loggedUsername"))      
+  } 
 
   useEffect(() => {
     axios
@@ -48,13 +56,24 @@ function Resultados() {
         {resultados.map((resultado) => (
           <div className="card cardComunidadEncontrado">
             <div className="nombreDeComunidad d-grid gap-2 d-md-flex ">
-                <Link to={`/grupos/${resultado.id}`}>
-                    <div>{resultado.nombre}</div>
-                    {console.log(resultado.id)}
-                </Link>
-                    <div>
-                        <button onClick={unirmeAGrupo(resultado)} className="botonUnirse btn btn-primary" >Unirse</button>
-                    </div>
+              <Link to={`/grupos/${resultado.id}`}>
+                <div>{resultado.nombre}</div>
+                {console.log(resultado.id)}
+              </Link>
+              <div>
+                {!(estaEnElGrupo(resultado)
+                ) && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      unirmeAGrupo(resultado);
+                    }}
+                    className="botonUnirse btn btn-primary"
+                  >
+                    Unirse
+                  </button>
+                )}
+              </div>
             </div>
             <div className="descripcionDeComunidad">
               {resultado.descripcion}

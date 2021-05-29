@@ -23,13 +23,14 @@ class GruposController {
     }
 
     @PostMapping("/grupos")
-    fun crearGrupo(@RequestBody creacionDeGruposForm: CreacionDeGruposForm){
-        grupoService.crearGrupo(creacionDeGruposForm.nombre,creacionDeGruposForm.descripcion)
+    fun crearGrupo(@RequestBody creacionDeGruposForm: CreacionDeGruposForm): ResponseEntity<String>{
+        return ResponseEntity(grupoService.crearGrupo(creacionDeGruposForm.nombre,creacionDeGruposForm.descripcion), HttpStatus.CREATED)
     }
 
     @PostMapping("/grupos/{idDelGrupo}/registrar")
     fun suscribirUsuarioAlGrupo(@PathVariable("idDelGrupo") idDelGrupo: String, @RequestBody usuario: RequestDeSuscripcion){
         grupoService.suscribirUsuarioAlGrupo(usuario.userName, idDelGrupo)
+        println(usuario.userName)
     }
 
     @GetMapping("/grupos/{idDelGrupo}")

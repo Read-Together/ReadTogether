@@ -3,18 +3,20 @@ import { useState } from "react";
 import axios from "axios";
 import "../css/FormularioCrearComunidad.css";
 import NavBar from "./NavBar";
-import { Link } from "react-router-dom";
+import { Link, useHistory} from "react-router-dom";
 
 export function FormularioCrearComunidad() {
   const [nombre, setNombre] = useState("");
   const [descripcion, setdescripcion] = useState("");
   const [fueCreado, setFueCreado] = useState(false);
   const [noFueCreado, setNoFueCreado] = useState(false);
+  const history = useHistory()
 
   const handleSubmit = (event) => {
     const headers = {
       authorization: sessionStorage.getItem("accessToken"),
     };
+    const data = { userName: sessionStorage.getItem("loggedUsername") };
 
     event.preventDefault();
 
@@ -27,8 +29,15 @@ export function FormularioCrearComunidad() {
         },
         { headers: headers }
       )
-      .then(() => {
+      .then((response) => {
+        console.log(response.data);
         setFueCreado(true);
+        axios.post(`http://localhost:8080/grupos/${response.data}/registrar`, data, {
+          headers: headers
+        })
+        .then(() => {
+          history.push(`/grupos/${response.data}`);
+        })
       })
       .catch(() => {
         setNoFueCreado(true);

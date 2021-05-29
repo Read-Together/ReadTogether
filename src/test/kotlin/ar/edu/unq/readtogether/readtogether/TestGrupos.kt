@@ -60,7 +60,7 @@ class TestGrupos {
                 .header("Authorization", token)
                 .content(ObjectMapper().writeValueAsString(creacionDeGruposForm))
                 .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
         assertThat(grupoService.obtenerGruposConNombre("grupo")).hasSize(1)
         assertThat(grupoService.obtenerGruposConDescripcion("detalle")).hasSize(1)
     }
@@ -81,11 +81,11 @@ class TestGrupos {
                 .header("Authorization",token)
                 .content(JSONObject().put("userName", usuario.userName).toString())
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(MockMvcResultMatchers.status().isOk)
+        ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
 
         var usuariosDelGrupo = grupoService.obtenerGrupoDeID(idDelGrupo).usuarios
         assertThat(usuariosDelGrupo.size == 1)
-        assertThat(usuariosDelGrupo[0].userName=="gonzalo1995")
+        assertThat(usuariosDelGrupo.contains(usuario))
     }
 
     @Test

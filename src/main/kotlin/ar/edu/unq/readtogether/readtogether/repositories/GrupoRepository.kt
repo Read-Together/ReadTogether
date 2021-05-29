@@ -27,7 +27,7 @@ class GrupoRepository {
         var writeResultApiFuture: ApiFuture<WriteResult> = groups.document().set(docData)
         try {
             if (writeResultApiFuture.get() != null) {
-                return "El grupo ${grupo.nombre} ha sido creado"
+                return grupo.id
             }
             return "El grupo ${grupo.nombre} ha sido creado"
         } catch (e: Exception) {
