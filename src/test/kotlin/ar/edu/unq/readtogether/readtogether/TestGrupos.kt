@@ -1,13 +1,14 @@
 package ar.edu.unq.readtogether.readtogether
 
-import ar.edu.unq.readtogether.readtogether.controllers.CreacionDeGruposForm
-import ar.edu.unq.readtogether.readtogether.controllers.UsuariosController
+import ar.edu.unq.readtogether.readtogether.dtos.CreacionDeGruposForm
 import ar.edu.unq.readtogether.readtogether.dtos.RequestUsuario
+import ar.edu.unq.readtogether.readtogether.grupos.Grupo
 import ar.edu.unq.readtogether.readtogether.modelo.Usuario
 import ar.edu.unq.readtogether.readtogether.services.GrupoService
 import ar.edu.unq.readtogether.readtogether.services.UsuarioService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.assertj.core.api.Assertions.assertThat
+import org.json.JSONObject
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -33,18 +34,17 @@ class TestGrupos {
     @Autowired
     private lateinit var grupoService: GrupoService
     @Autowired
-    private lateinit var userService: UsuarioService
-    @Autowired
-    private lateinit var usuarioController: UsuariosController
+    private lateinit var usuarioService: UsuarioService
+
 
     @BeforeAll
     fun setUp(){
-        userService.eliminarDatos()
+        usuarioService.eliminarDatos()
     }
 
     @AfterEach
     fun clean(){
-        userService.eliminarDatos()
+        usuarioService.eliminarDatos()
         grupoService.eliminarDatos()
     }
 
@@ -53,8 +53,8 @@ class TestGrupos {
         val creacionDeGruposForm = CreacionDeGruposForm("grupo", "detalle")
         val usuarioARegistrar = Usuario("mauro","mauro@gmail.com", "123")
         val usuarioQueIniciaSesion = RequestUsuario("mauro", "123")
-        userService.registrarUsuario(usuarioARegistrar)
-        var token = userService.login(usuarioQueIniciaSesion)
+        usuarioService.registrarUsuario(usuarioARegistrar)
+        var token = usuarioService.login(usuarioQueIniciaSesion)
         mockMvc.perform(
             MockMvcRequestBuilders.post("/grupos")
                 .header("Authorization", token)
@@ -64,4 +64,49 @@ class TestGrupos {
         assertThat(grupoService.obtenerGruposConNombre("grupo")).hasSize(1)
         assertThat(grupoService.obtenerGruposConDescripcion("detalle")).hasSize(1)
     }
+
+    @Test
+    fun unUsuarioSeUneAlGrupoYQuedaRegistradoEnEl(){
+        var usuario = Usuario("gonzalo1995","gonzalo2@gmail.com","1234")
+        usuarioService.registrarUsuario(usuario)
+        val usuarioRequest = RequestUsuario("gonzalo1995","1234")
+        val nombreComunidad = "comunidad del anillo"
+        var token = usuarioService.login(usuarioRequest)
+        grupoService.guardarGrupo(Grupo(nombreComunidad, "mi precioso", mutableListOf()))
+        var grupo = grupoService.obtenerGruposConNombre(nombreComunidad)[0]
+        val idDelGrupo = grupo.id
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/grupos/$idDelGrupo/registrar")
+                .header("Authorization",token)
+                .content(JSONObject().put("userName", usuario.userName).toString())
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk)
+
+        var usuarioDelGrupo = grupoService.obtenerGrupoDeID(idDelGrupo).usuarios
+        assertThat(usuarioDelGrupo.size == 1)
+    }
+
+    @Test
+    fun buscoUnaComunidadPorUnIdYLoRetorna(){
+        var usuario = Usuario("barbi","barbi@gmail.com","123")
+        usuarioService.registrarUsuario(usuario)
+        val usuarioRequest = RequestUsuario("barbi","123")
+        val nombreComunidad = "silicon valley"
+        var token = usuarioService.login(usuarioRequest)
+        grupoService.guardarGrupo(Grupo(nombreComunidad, "esto es una descripcion", mutableListOf()))
+        var grupo = grupoService.obtenerGruposConNombre(nombreComunidad)[0]
+        val idDelGrupo = grupo.id
+
+        var response = mockMvc.perform(
+            MockMvcRequestBuilders.get("/grupos/$idDelGrupo")
+                .header("Authorization",token))
+            .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+            .andReturn().response.contentAsString
+        var contieneId = response.contains(grupo.id)
+        var contieneNombre = response.contains(grupo.nombre)
+        var contieneDescripcion = response.contains(grupo.descripcion)
+        assertThat(contieneId && contieneNombre && contieneDescripcion)
+    }
+
 }

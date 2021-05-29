@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter as Router, Switch, useParams } from "react-router-dom";
+import { BrowserRouter as Router, Switch, useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Register from "./components/Register";
 import { FormularioCrearComunidad } from "./components/FormularioCrearComunidad";
@@ -8,12 +8,15 @@ import { PrivateRoute } from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import Home from "./components/Home";
 import NavBar from "./components/NavBar";
+import "./css/Resultados.css";
+import Comunidad from "./components/Comunidad";
 
 const axios = require("axios").default;
 
 function Resultados() {
   const { termino } = useParams();
   const [resultados, setResultados] = useState([]);
+
 
   useEffect(() => {
     axios
@@ -26,7 +29,20 @@ function Resultados() {
   return (
     <div>
       <NavBar />
-      <p>{resultados.map((resultado) => resultado.nombre)}</p>
+      <div>
+        {resultados.map((resultado) => (
+          <div className="card cardComunidadEncontrado">
+            <div className="nombreDeComunidad">
+              <Link to={`/grupos/${resultado.id}`}>
+                <div>{resultado.nombre}</div>
+              </Link>
+            </div>
+            <div className="descripcionDeComunidad">
+              {resultado.descripcion}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -38,6 +54,7 @@ function App() {
         <PublicRoute path="/registrar" component={Register} />
         <PublicRoute path="/ingresar" component={Ingresar} />
         <PrivateRoute path="/busqueda/:termino" component={Resultados} />
+        <PrivateRoute path="/grupos/:id" component={Comunidad} />
         <PrivateRoute path="/home" component={Home} />
         <PrivateRoute
           path="/crear_comunidad"
