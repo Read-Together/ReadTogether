@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="CheckStyle-IDEA-Module">
+    <option name="configuration">
+      <map />
+    </option>
+  </component>
   <component name="FacetManager">
     <facet type="web" name="Web">
       <configuration>
@@ -104,7 +109,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest:2.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter:5.7.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.7.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apiguardian:apiguardian-api:1.1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-commons:1.7.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-params:5.7.1" level="project" />
@@ -202,5 +206,22 @@
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-gcp-starter:1.2.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-gcp-core:1.2.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-gcp-autoconfigure:1.2.8.RELEASE" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.cucumber:cucumber-java:6.10.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apiguardian:apiguardian-api:1.1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.cucumber:cucumber-spring:6.10.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.cucumber:cucumber-junit:6.10.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.13.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:2.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.cucumber:cucumber-core:6.10.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.cucumber:cucumber-gherkin:6.10.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.cucumber:cucumber-gherkin-messages:6.10.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.cucumber:messages:15.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.cucumber:tag-expressions:3.0.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.cucumber:cucumber-expressions:10.3.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.cucumber:datatable:3.5.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.cucumber:cucumber-plugin:6.10.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.cucumber:docstring:6.10.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.cucumber:html-formatter:13.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.cucumber:create-meta:4.0.0" level="project" />
   </component>
 </module>
