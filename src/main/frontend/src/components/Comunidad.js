@@ -11,7 +11,7 @@ const Comunidad = () => {
   useEffect(() => {
     getComunidad();
     console.log(data);
-  }, []);
+  },[]);
 
   const getComunidad = () => {
     const header = {

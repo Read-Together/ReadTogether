@@ -30,7 +30,6 @@ class GruposController {
     @PostMapping("/grupos/{idDelGrupo}/registrar")
     fun suscribirUsuarioAlGrupo(@PathVariable("idDelGrupo") idDelGrupo: String, @RequestBody usuario: RequestDeSuscripcion){
         grupoService.suscribirUsuarioAlGrupo(usuario.userName, idDelGrupo)
-        println(usuario.userName)
     }
 
     @GetMapping("/grupos/{idDelGrupo}")
