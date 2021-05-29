@@ -20,7 +20,6 @@ const Comunidad = () => {
     axios
       .get(`http://localhost:8080/grupos/${id}`, { headers: header })
       .then((response) => {
-        console.log(response.data);
         setData(response.data);
       });
   };

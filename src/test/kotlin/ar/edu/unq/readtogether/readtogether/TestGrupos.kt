@@ -1,6 +1,5 @@
 package ar.edu.unq.readtogether.readtogether
 
-import ar.edu.unq.readtogether.readtogether.controllers.UsuariosController
 import ar.edu.unq.readtogether.readtogether.dtos.CreacionDeGruposForm
 import ar.edu.unq.readtogether.readtogether.dtos.RequestUsuario
 import ar.edu.unq.readtogether.readtogether.grupos.Grupo
@@ -103,8 +102,11 @@ class TestGrupos {
             MockMvcRequestBuilders.get("/grupos/$idDelGrupo")
                 .header("Authorization",token))
             .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
-            .andReturn().response.contentAsString[0].toString()
-        assertThat(response == idDelGrupo)
+            .andReturn().response.contentAsString
+        var contieneId = response.contains(grupo.id)
+        var contieneNombre = response.contains(grupo.nombre)
+        var contieneDescripcion = response.contains(grupo.descripcion)
+        assertThat(contieneId && contieneNombre && contieneDescripcion)
     }
 
 }
