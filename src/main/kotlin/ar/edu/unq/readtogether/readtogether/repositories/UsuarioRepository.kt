@@ -57,7 +57,7 @@ class UsuarioRepository {
 
 
     fun emailValido(email:String): Boolean{
-        return email.contains("@") || email.contains(".com")
+        return email.contains("@") && email.contains(".com")
     }
 
     fun eliminarDatos(){

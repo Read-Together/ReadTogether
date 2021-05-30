@@ -58,7 +58,6 @@ function Resultados() {
             <div className="nombreDeComunidad d-grid gap-2 d-md-flex ">
               <Link to={`/grupos/${resultado.id}`}>
                 <div>{resultado.nombre}</div>
-                {console.log(resultado.id)}
               </Link>
               <div>
                 {!(estaEnElGrupo(resultado)
