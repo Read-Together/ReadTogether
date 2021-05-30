@@ -1,10 +1,8 @@
 import axios from "axios";
-import { ListGroup } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import NavBar from "./NavBar";
 import "../css/Comunidad.css";
-import { LeftMenu } from "./LeftMenu";
 
 const Comunidad = () => {
   const { id } = useParams();
@@ -27,9 +25,30 @@ const Comunidad = () => {
       });
   };
 
-  const estaEnElGrupo = (data) =>{
-    return data.usuarios?.some(usuario => usuario.userName === sessionStorage.getItem("loggedUsername"))      
-  } 
+  const estaEnElGrupo = (data) => {
+    if (
+      data.usuarios?.some(
+        (usuario) =>
+          usuario.userName === sessionStorage.getItem("loggedUsername")
+      )
+    ) {
+      return (
+        <div class="col-sm-2 botonBiblioteca">
+          <button type="button" className="btn btn-info ">
+            Biblioteca
+          </button>
+          <div>
+            <div className="usuariosTitulo">Usuarios</div>
+            <div>
+              {usuarios?.map((usuario) => (
+                <div className="usuarios">{usuario.userName}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+  };
 
   return (
     <div className="App">
@@ -37,22 +56,7 @@ const Comunidad = () => {
 
       <div class="container">
         <div class="row columnas">
-        {(estaEnElGrupo(data)
-                ) && (<div class="col-sm-2 botonBiblioteca">
-            <button type="button" className="btn btn-info ">
-              Biblioteca
-            </button>
-            <div>
-            <div className="usuariosTitulo">Usuarios</div>
-            <div>
-              {usuarios?.map((usuario) => (
-                <div className="usuarios">{usuario.userName}</div>
-              ))}
-            </div>
-            </div>
-            
-          </div>)}
-
+          {estaEnElGrupo(data)}
           <div class="col-sm-9 container">
             <div class="row">
               <div class="col-13  titulo">
