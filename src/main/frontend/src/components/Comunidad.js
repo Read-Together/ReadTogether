@@ -10,7 +10,7 @@ const Comunidad = () => {
 
   useEffect(() => {
     getComunidad();
-  }, []);
+  },[]);
 
   const getComunidad = () => {
     const header = {

@@ -60,7 +60,7 @@ class TestGrupos {
                 .header("Authorization", token)
                 .content(ObjectMapper().writeValueAsString(creacionDeGruposForm))
                 .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
         assertThat(grupoService.obtenerGruposConNombre("grupo")).hasSize(1)
         assertThat(grupoService.obtenerGruposConDescripcion("detalle")).hasSize(1)
     }
@@ -81,10 +81,11 @@ class TestGrupos {
                 .header("Authorization",token)
                 .content(JSONObject().put("userName", usuario.userName).toString())
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(MockMvcResultMatchers.status().isOk)
+        ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
 
-        var usuarioDelGrupo = grupoService.obtenerGrupoDeID(idDelGrupo).usuarios
-        assertThat(usuarioDelGrupo.size == 1)
+        var usuariosDelGrupo = grupoService.obtenerGrupoDeID(idDelGrupo).usuarios
+        assertThat(usuariosDelGrupo.size == 1)
+        assertThat(usuariosDelGrupo.contains(usuario))
     }
 
     @Test
@@ -93,10 +94,9 @@ class TestGrupos {
         usuarioService.registrarUsuario(usuario)
         val usuarioRequest = RequestUsuario("barbi","123")
         val nombreComunidad = "silicon valley"
-        var token = usuarioService.login(usuarioRequest)
-        grupoService.guardarGrupo(Grupo(nombreComunidad, "esto es una descripcion", mutableListOf()))
-        var grupo = grupoService.obtenerGruposConNombre(nombreComunidad)[0]
-        val idDelGrupo = grupo.id
+        val grupo = Grupo(nombreComunidad, "esto es una descripcion", mutableListOf())
+        val token = usuarioService.login(usuarioRequest)
+        val idDelGrupo = grupoService.guardarGrupo(grupo)
 
         var response = mockMvc.perform(
             MockMvcRequestBuilders.get("/grupos/$idDelGrupo")

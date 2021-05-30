@@ -1,6 +1,13 @@
 import "./App.css";
-import { BrowserRouter as Router, Switch, useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import axios from "axios";
+import {
+  BrowserRouter as Router,
+  Switch,
+  useParams,
+  Link,
+  useHistory,
+} from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import Register from "./components/Register";
 import { FormularioCrearComunidad } from "./components/FormularioCrearComunidad";
 import { Ingresar } from "./components/Ingresar";
@@ -11,12 +18,28 @@ import NavBar from "./components/NavBar";
 import "./css/Resultados.css";
 import Comunidad from "./components/Comunidad";
 
-const axios = require("axios").default;
-
 function Resultados() {
   const { termino } = useParams();
   const [resultados, setResultados] = useState([]);
+  const history = useHistory();
+  
 
+  const unirmeAGrupo = (resultado) => {
+    const header = { authorization: sessionStorage.getItem("accessToken") };
+    const data = { userName: sessionStorage.getItem("loggedUsername") };
+    axios
+      .post(`http://localhost:8080/grupos/${resultado.id}/registrar`, data, {
+        headers: header,
+      })
+      .then(() => {
+        history.push(`/grupos/${resultado.id}`);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const estaEnElGrupo = (resultado) =>{
+    return resultado.usuarios.some(usuario => usuario.userName === sessionStorage.getItem("loggedUsername"))      
+  } 
 
   useEffect(() => {
     axios
@@ -32,10 +55,24 @@ function Resultados() {
       <div>
         {resultados.map((resultado) => (
           <div className="card cardComunidadEncontrado">
-            <div className="nombreDeComunidad">
+            <div className="nombreDeComunidad d-grid gap-2 d-md-flex ">
               <Link to={`/grupos/${resultado.id}`}>
                 <div>{resultado.nombre}</div>
               </Link>
+              <div>
+                {!(estaEnElGrupo(resultado)
+                ) && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      unirmeAGrupo(resultado);
+                    }}
+                    className="botonUnirse btn btn-primary"
+                  >
+                    Unirse
+                  </button>
+                )}
+              </div>
             </div>
             <div className="descripcionDeComunidad">
               {resultado.descripcion}

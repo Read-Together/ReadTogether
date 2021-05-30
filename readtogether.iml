@@ -19,7 +19,7 @@
       <configuration />
     </facet>
     <facet type="kotlin-language" name="Kotlin">
-      <configuration version="3" platform="JVM 11" allPlatforms="JVM [11]" useProjectSettings="false">
+      <configuration version="4" platform="JVM 11" allPlatforms="JVM [11]" useProjectSettings="false">
         <compilerSettings>
           <option name="additionalArguments" value="-java-parameters -Xjsr305=strict" />
         </compilerSettings>

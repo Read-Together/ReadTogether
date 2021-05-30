@@ -14,8 +14,8 @@ class GrupoService @Autowired constructor(
 ) {
 
 
-    fun guardarGrupo(grupo: Grupo) {
-        grupoRepository.save(grupo)
+    fun guardarGrupo(grupo: Grupo):String {
+        return grupoRepository.save(grupo)
     }
 
     fun obtenerGruposConNombre(nombre : String) : List<Grupo>{
@@ -30,9 +30,9 @@ class GrupoService @Autowired constructor(
         grupoRepository.eliminarDatos()
     }
 
-    fun crearGrupo(nombre: String, detalle: String) {
+    fun crearGrupo(nombre: String, detalle: String):String {
         val grupo1 = Grupo(nombre,detalle, mutableListOf())
-        this.guardarGrupo(grupo1)
+        return this.guardarGrupo(grupo1)
     }
 
     fun suscribirUsuarioAlGrupo(usuario: String, idDelGrupo: String) {

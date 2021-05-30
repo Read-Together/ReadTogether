@@ -25,13 +25,10 @@ class GrupoRepository {
         docData["id"] = grupo.id
         var groups = getCollection()
         var writeResultApiFuture: ApiFuture<WriteResult> = groups.document().set(docData)
-        try {
-            if (writeResultApiFuture.get() != null) {
-                return "El grupo ${grupo.nombre} ha sido creado"
-            }
-            return "El grupo ${grupo.nombre} ha sido creado"
-        } catch (e: Exception) {
-            return "El grupo ${grupo.nombre} NO ha sido creado"
+        if (writeResultApiFuture.get() != null) {
+                return grupo.id
+        }else{
+            throw Exception("El grupo ${grupo.nombre} NO ha sido creado")
         }
     }
 

@@ -1,14 +1,13 @@
 package ar.edu.unq.readtogether.readtogether.acceptance.cucumber
 
-import ar.edu.unq.readtogether.readtogether.controllers.CreacionDeGruposForm
+import ar.edu.unq.readtogether.readtogether.dtos.CreacionDeGruposForm
 import ar.edu.unq.readtogether.readtogether.dtos.RequestUsuario
-import ar.edu.unq.readtogether.readtogether.modelo.Usuario
+
 import ar.edu.unq.readtogether.readtogether.services.GrupoService
 import ar.edu.unq.readtogether.readtogether.services.UsuarioService
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.cucumber.java.After
 import io.cucumber.java.en.And
-import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
 import org.assertj.core.api.Assertions.assertThat
@@ -67,7 +66,7 @@ class CrearComunidadAutenticadoDefs : SpringIntegrationTest(){
 
     @Then("la aplicacion se lo permite")
     fun verificarQueSeCreoLaComunidad(){
-        context.andExpect(status().isOk)
+        context.andExpect(status().is2xxSuccessful)
 
         val gruposEncontrados = grupoService.obtenerGruposConNombre(nombreDeComunidad)
         assertThat(gruposEncontrados).hasSize(1)
