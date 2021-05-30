@@ -94,10 +94,9 @@ class TestGrupos {
         usuarioService.registrarUsuario(usuario)
         val usuarioRequest = RequestUsuario("barbi","123")
         val nombreComunidad = "silicon valley"
-        var token = usuarioService.login(usuarioRequest)
-        grupoService.guardarGrupo(Grupo(nombreComunidad, "esto es una descripcion", mutableListOf()))
-        var grupo = grupoService.obtenerGruposConNombre(nombreComunidad)[0]
-        val idDelGrupo = grupo.id
+        val grupo = Grupo(nombreComunidad, "esto es una descripcion", mutableListOf())
+        val token = usuarioService.login(usuarioRequest)
+        val idDelGrupo = grupoService.guardarGrupo(grupo)
 
         var response = mockMvc.perform(
             MockMvcRequestBuilders.get("/grupos/$idDelGrupo")
