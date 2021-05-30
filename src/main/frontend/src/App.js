@@ -59,7 +59,7 @@ function Resultados() {
               <Link to={`/grupos/${resultado.id}`}>
                 <div>{resultado.nombre}</div>
               </Link>
-              <div>
+              <div  className="espaciadoBoton">
                 {!(estaEnElGrupo(resultado)
                 ) && (
                   <button
@@ -67,7 +67,7 @@ function Resultados() {
                     onClick={() => {
                       unirmeAGrupo(resultado);
                     }}
-                    className="botonUnirse btn btn-primary"
+                    className="botonUnirse btn btn-primary "
                   >
                     Unirse
                   </button>

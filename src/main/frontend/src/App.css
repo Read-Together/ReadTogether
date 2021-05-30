@@ -47,6 +47,16 @@ html, body, #root, .App{
   height: 100%;
 }
 
+
+
 .botonUnirse{
-  margin-left: 300%;
+    max-width: 120%;
+    margin-left: 0%;
 }
+
+.espaciadoBoton{
+    margin-left: 5%;
+}
+
+
+
