@@ -1,7 +1,6 @@
 package ar.edu.unq.readtogether.readtogether.services
 
-import ar.edu.unq.readtogether.readtogether.grupos.Grupo
-import ar.edu.unq.readtogether.readtogether.modelo.Usuario
+import ar.edu.unq.readtogether.readtogether.modelo.Grupo
 import ar.edu.unq.readtogether.readtogether.repositories.GrupoRepository
 import ar.edu.unq.readtogether.readtogether.repositories.UsuarioRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -38,7 +37,7 @@ class GrupoService @Autowired constructor(
     fun suscribirUsuarioAlGrupo(usuario: String, idDelGrupo: String) {
         val grupo = this.obtenerGrupoDeID(idDelGrupo)
 
-        grupo.agregarUsuario(usuarioRepository.usuarioDeNombre(usuario))
+        grupo.agregarUsuario(usuarioRepository.usuarioDeNombre(usuario).userName)
         grupoRepository.actualizarGrupo(grupo)
     }
 
