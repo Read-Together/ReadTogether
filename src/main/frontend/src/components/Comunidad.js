@@ -7,7 +7,6 @@ import "../css/Comunidad.css";
 const Comunidad = () => {
   const { id } = useParams();
   const [data, setData] = useState({});
-  const usuarios = data.usuarios;
 
   useEffect(() => {
     getComunidad();
@@ -28,8 +27,7 @@ const Comunidad = () => {
   const estaEnElGrupo = (data) => {
     if (
       data.usuarios?.some(
-        (usuario) =>
-          usuario.userName === sessionStorage.getItem("loggedUsername")
+        (usuario) => usuario === sessionStorage.getItem("loggedUsername")
       )
     ) {
       return (
@@ -40,8 +38,8 @@ const Comunidad = () => {
           <div>
             <div className="usuariosTitulo">Usuarios</div>
             <div>
-              {usuarios?.map((usuario) => (
-                <div className="usuarios">{usuario.userName}</div>
+              {data.usuarios.map((usuario) => (
+                <div className="usuarios">{usuario}</div>
               ))}
             </div>
           </div>

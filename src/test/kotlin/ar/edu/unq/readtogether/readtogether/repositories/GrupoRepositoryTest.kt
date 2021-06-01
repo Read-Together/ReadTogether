@@ -1,6 +1,6 @@
 package ar.edu.unq.readtogether.readtogether.repositories
 
-import ar.edu.unq.readtogether.readtogether.grupos.Grupo
+import ar.edu.unq.readtogether.readtogether.modelo.Grupo
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Test

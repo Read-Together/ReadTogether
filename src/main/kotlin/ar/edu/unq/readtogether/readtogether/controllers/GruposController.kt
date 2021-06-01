@@ -2,8 +2,7 @@ package ar.edu.unq.readtogether.readtogether.controllers
 
 import ar.edu.unq.readtogether.readtogether.dtos.CreacionDeGruposForm
 import ar.edu.unq.readtogether.readtogether.dtos.RequestDeSuscripcion
-import ar.edu.unq.readtogether.readtogether.grupos.Grupo
-import ar.edu.unq.readtogether.readtogether.modelo.Usuario
+import ar.edu.unq.readtogether.readtogether.modelo.Grupo
 import ar.edu.unq.readtogether.readtogether.services.GrupoService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus

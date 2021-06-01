@@ -1,7 +1,7 @@
 package ar.edu.unq.readtogether.readtogether.repositories
 
 import ar.edu.unq.readtogether.readtogether.firebase.FireBaseInitialization
-import ar.edu.unq.readtogether.readtogether.grupos.Grupo
+import ar.edu.unq.readtogether.readtogether.modelo.Grupo
 import com.google.api.core.ApiFuture
 import com.google.cloud.firestore.QueryDocumentSnapshot
 import com.google.cloud.firestore.QuerySnapshot

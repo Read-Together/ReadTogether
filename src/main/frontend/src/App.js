@@ -38,7 +38,7 @@ function Resultados() {
   };
 
   const estaEnElGrupo = (resultado) =>{
-    return resultado.usuarios.some(usuario => usuario.userName === sessionStorage.getItem("loggedUsername"))      
+    return resultado.usuarios.some(usuario => usuario === sessionStorage.getItem("loggedUsername"))      
   } 
 
   useEffect(() => {
