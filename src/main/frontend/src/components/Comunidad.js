@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {useParams} from "react-router";
 import NavBar from "./NavBar";
 import "../css/Comunidad.css";
+import { Link } from "react-router-dom";
 import {salirDelGrupo} from "../controllers/grupoController";
 import {useHistory} from "react-router-dom";
 
@@ -36,9 +37,12 @@ const Comunidad = () => {
     ) {
       return (
         <div class="col-sm-2 botonBiblioteca">
-          <button type="button" className="btn btn-info ">
+          <Link to={`/grupos/${id}/biblioteca`}>
+          <button type="button" className="btn btn-info" href="/grupos/:id/biblioteca">
             Biblioteca
           </button>
+          </Link>
+
           <div style={{height: "80%"}}>
             <div className="usuariosTitulo">Usuarios</div>
             <div>

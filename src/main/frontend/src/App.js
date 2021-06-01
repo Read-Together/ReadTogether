@@ -12,7 +12,7 @@ import NavBar from "./components/NavBar";
 import "./css/Resultados.css";
 import Comunidad from "./components/Comunidad";
 import {salirDelGrupo} from "./controllers/grupoController";
-
+import Biblioteca from "./components/Biblioteca";
 
 function Resultados() {
   const {termino} = useParams();
@@ -99,6 +99,7 @@ function App() {
         <PublicRoute path="/registrar" component={Register}/>
         <PublicRoute path="/ingresar" component={Ingresar}/>
         <PrivateRoute path="/busqueda/:termino" component={Resultados}/>
+        <PrivateRoute path="/grupos/:id/biblioteca" component={Biblioteca}/>
         <PrivateRoute path="/grupos/:id" component={Comunidad}/>
         <PrivateRoute path="/home" component={Home}/>
         <PrivateRoute

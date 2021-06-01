@@ -3,6 +3,7 @@ package ar.edu.unq.readtogether.readtogether
 import ar.edu.unq.readtogether.readtogether.dtos.CreacionDeGruposForm
 import ar.edu.unq.readtogether.readtogether.dtos.RequestUsuario
 import ar.edu.unq.readtogether.readtogether.modelo.Grupo
+import ar.edu.unq.readtogether.readtogether.modelo.Libro
 import ar.edu.unq.readtogether.readtogether.modelo.Usuario
 import ar.edu.unq.readtogether.readtogether.services.GrupoService
 import ar.edu.unq.readtogether.readtogether.services.UsuarioService
@@ -167,5 +168,38 @@ class TestGrupos {
         usuarioService.registrarUsuario(usuario)
         val token = usuarioService.login(RequestUsuario(usuario.userName, usuario.password))
         return token
+    }
+    @Test
+    fun pidoLaBibliotecaDeUnGrupo_retornaUn2xx(){
+        var usuario = Usuario("barbi","barbi@gmail.com","123")
+        usuarioService.registrarUsuario(usuario)
+        val usuarioRequest = RequestUsuario("barbi","123")
+        val token = usuarioService.login(usuarioRequest)
+        val grupo = Grupo("Comunidad", "esto es una descripcion", mutableListOf())
+        val idDelGrupo = grupoService.guardarGrupo(grupo)
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/grupos/$idDelGrupo/biblioteca")
+                .header("Authorization",token))
+            .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+
+    }
+
+    @Test
+    fun pídoBibliotecaDeUnGrupo_retornaUnaListaConUnElemento(){
+        var usuario = Usuario("barbi","barbi@gmail.com","123")
+        usuarioService.registrarUsuario(usuario)
+        val usuarioRequest = RequestUsuario("barbi","123")
+        val token = usuarioService.login(usuarioRequest)
+        val grupo = Grupo("Comunidad", "esto es una descripcion", mutableListOf())
+        val libro = Libro("Un libro", mutableListOf("Un Autor"), "Link")
+        grupo.agregarLibro(libro)
+        val idDelGrupo = grupoService.guardarGrupo(grupo)
+        val biblioteca =  mockMvc.perform(
+            MockMvcRequestBuilders.get("/grupos/$idDelGrupo/biblioteca")
+                .header("Authorization",token))
+            .andReturn().response.contentAsString
+        val contieneNombre = biblioteca.contains(libro.nombre)
+        val contieneLink = biblioteca.contains(libro.link)
+        assertThat(contieneNombre && contieneLink)
     }
 }

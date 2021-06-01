@@ -3,6 +3,7 @@ package ar.edu.unq.readtogether.readtogether.controllers
 import ar.edu.unq.readtogether.readtogether.dtos.CreacionDeGruposForm
 import ar.edu.unq.readtogether.readtogether.dtos.RequestConUsername
 import ar.edu.unq.readtogether.readtogether.modelo.Grupo
+import ar.edu.unq.readtogether.readtogether.modelo.Libro
 import ar.edu.unq.readtogether.readtogether.services.GrupoService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -53,4 +54,9 @@ class GruposController {
 
     private fun coincideConUsuarioAutenticado(usuario: RequestConUsername) =
             SecurityContextHolder.getContext().getAuthentication().name == usuario.userName
+
+    @GetMapping("/grupos/{idDelGrupo}/biblioteca")
+    fun biblioteca(@PathVariable("idDelGrupo") idDelGrupo: String) : ResponseEntity<MutableList<Libro>>{
+        return ResponseEntity(grupoService.obtenerBibiliotecaDeGrupo(idDelGrupo), HttpStatus.ACCEPTED)
+    }
 }
