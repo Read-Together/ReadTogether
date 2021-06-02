@@ -1,5 +1,6 @@
 package ar.edu.unq.readtogether.readtogether.repositories
 
+import ar.edu.unq.readtogether.readtogether.excepciones.EntidadNoEncontradaException
 import ar.edu.unq.readtogether.readtogether.firebase.FireBaseInitialization
 import ar.edu.unq.readtogether.readtogether.modelo.Grupo
 import com.google.api.core.ApiFuture
@@ -26,8 +27,8 @@ class GrupoRepository {
         var groups = getCollection()
         var writeResultApiFuture: ApiFuture<WriteResult> = groups.document().set(docData)
         if (writeResultApiFuture.get() != null) {
-                return grupo.id
-        }else{
+            return grupo.id
+        } else {
             throw Exception("El grupo ${grupo.nombre} NO ha sido creado")
         }
     }
@@ -45,22 +46,23 @@ class GrupoRepository {
 
     /***metodo de prueba ***/
     fun eliminarDatos() {
-        getCollection().listDocuments().forEach{each -> each.delete()}
+        getCollection().listDocuments().forEach { each -> each.delete() }
     }
 
     fun obtenerGrupoDeID(idDelGrupo: String): Grupo {
         return getCollection().get().get().documents.map { each -> crearGrupoDesde(each) }
-            .find { each -> each.id == idDelGrupo }!!
+                .find { each -> each.id == idDelGrupo }
+                ?: throw EntidadNoEncontradaException("No se encontró el grupo con id ${idDelGrupo}")
     }
 
     fun actualizarGrupo(grupo: Grupo) {
         getCollection().get().get().documents.first { each -> each.data["id"] == grupo.id }.reference.update(
-            mutableMapOf(
-                Pair("id", grupo.id),
-                Pair("nombre", grupo.nombre),
-                Pair("descripcion", grupo.descripcion),
-                Pair("usuarios", grupo.usuarios)
-            )
+                mutableMapOf(
+                        Pair("id", grupo.id),
+                        Pair("nombre", grupo.nombre),
+                        Pair("descripcion", grupo.descripcion),
+                        Pair("usuarios", grupo.usuarios)
+                )
         )
     }
 

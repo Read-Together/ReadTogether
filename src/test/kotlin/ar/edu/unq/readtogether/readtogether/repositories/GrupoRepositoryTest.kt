@@ -1,7 +1,9 @@
 package ar.edu.unq.readtogether.readtogether.repositories
 
+import ar.edu.unq.readtogether.readtogether.excepciones.EntidadNoEncontradaException
 import ar.edu.unq.readtogether.readtogether.modelo.Grupo
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -33,5 +35,14 @@ class GrupoRepositoryTest {
         val grupoRecuperado = grupoRepository.obtenerGrupoDeID(id)
         assertThat(grupoRecuperado.nombre == "ex-dalasha")
         assertThat(grupoRecuperado.descripcion == "eran muy buenos")
+    }
+
+    @Test
+    fun cuandoRecuperoUnGrupoInexistente_seLevantaUnaExcepcion() {
+        val idInexistente = "123=!"
+
+        assertThatThrownBy{ grupoRepository.obtenerGrupoDeID(idInexistente) }
+                .isInstanceOf(EntidadNoEncontradaException::class.java)
+                .hasMessage("No se encontró el grupo con id %s", idInexistente)
     }
 }

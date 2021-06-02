@@ -8,6 +8,10 @@ class Grupo{
         usuarios.add(usuario)
     }
 
+    fun quitarUsuario(userName: String) {
+        usuarios.remove(userName)
+    }
+
 
     lateinit var id: String
     lateinit var nombre: String

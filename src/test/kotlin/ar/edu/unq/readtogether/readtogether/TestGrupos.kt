@@ -9,10 +9,7 @@ import ar.edu.unq.readtogether.readtogether.services.UsuarioService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.json.JSONObject
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -37,9 +34,10 @@ class TestGrupos {
     private lateinit var usuarioService: UsuarioService
 
 
-    @BeforeAll
+    @BeforeEach
     fun setUp(){
         usuarioService.eliminarDatos()
+        grupoService.eliminarDatos()
     }
 
     @AfterEach
@@ -110,7 +108,64 @@ class TestGrupos {
     }
 
     @Test
-    internal fun cuandoUnUsuarioSaleDeUnGrupo_luegoNoEstaEnLaListaDeUsuariosDelGrupo() {
-        TODO("Not yet implemented")
+    fun cuandoUnUsuarioSaleDeUnGrupo_luegoNoEstaEnLaListaDeUsuariosDelGrupo() {
+        val idDelGrupo = grupoService.crearGrupo("nombre2", "descripcion2")
+        val userName = "gustavo"
+        val password = "123"
+        val usuario = Usuario(userName,"gustavo@gmail.com", password)
+        val token = registrarYLogear(usuario)
+        grupoService.suscribirUsuarioAlGrupo(userName, idDelGrupo)
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/grupos/$idDelGrupo/salir")
+                        .header("Authorization", token)
+                        .content(JSONObject().put("userName", usuario.userName).toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+
+        assertThat(grupoService.obtenerGrupoDeID(idDelGrupo).usuarios).doesNotContain(usuario.userName)
+    }
+
+    @Test
+    fun cuandoSacoAUnUsuarioDeUnGrupoEnElQueNoEstaba_retornaUnError() {
+        val idDelGrupo = grupoService.crearGrupo("nombre", "descripcion")
+        val userName = "ernesto"
+        val password = "123"
+        val usuario = Usuario(userName,"ernesto@gmail.com", password)
+        val token = registrarYLogear(usuario)
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/grupos/$idDelGrupo/salir")
+                        .header("Authorization", token)
+                        .content(JSONObject().put("userName", usuario.userName).toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isBadRequest)
+    }
+
+    @Test
+    fun cuandoSacoAUnUsuarioDistintoAlQueObtuvoElToken_retornaUnError() {
+        val idDelGrupo = grupoService.crearGrupo("nombre", "descripcion")
+        val userName = "ernesto"
+        val password = "123"
+        val usuarioLogeado = Usuario(userName,"ernesto@gmail.com", password)
+        usuarioService.registrarUsuario(usuarioLogeado)
+
+        val usuarioASacar = Usuario("otroUsername","otro@gmail.com", password)
+        usuarioService.registrarUsuario(usuarioASacar)
+        grupoService.suscribirUsuarioAlGrupo(usuarioASacar.userName, idDelGrupo)
+        val token = usuarioService.login(RequestUsuario(usuarioLogeado.userName, usuarioLogeado.password))
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/grupos/$idDelGrupo/salir")
+                        .header("Authorization", token)
+                        .content(JSONObject().put("userName", usuarioASacar.userName).toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isForbidden)
+    }
+
+    private fun registrarYLogear(usuario: Usuario): String {
+        usuarioService.registrarUsuario(usuario)
+        val token = usuarioService.login(RequestUsuario(usuario.userName, usuario.password))
+        return token
     }
 }
