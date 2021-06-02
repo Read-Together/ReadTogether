@@ -109,4 +109,8 @@ class TestGrupos {
         assertThat(contieneId && contieneNombre && contieneDescripcion)
     }
 
+    @Test
+    internal fun cuandoUnUsuarioSaleDeUnGrupo_luegoNoEstaEnLaListaDeUsuariosDelGrupo() {
+        TODO("Not yet implemented")
+    }
 }
