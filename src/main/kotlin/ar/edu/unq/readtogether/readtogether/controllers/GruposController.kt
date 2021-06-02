@@ -59,4 +59,9 @@ class GruposController {
     fun biblioteca(@PathVariable("idDelGrupo") idDelGrupo: String) : ResponseEntity<MutableList<Libro>>{
         return ResponseEntity(grupoService.obtenerBibiliotecaDeGrupo(idDelGrupo), HttpStatus.ACCEPTED)
     }
+
+    @PostMapping("/grupos/{idDelGrupo}/biblioteca")
+    fun cargarLibro(@PathVariable("idDelGrupo")idDelGrupo: String, @RequestBody libro: Libro){
+        grupoService.cargarLibro(idDelGrupo,libro)
+    }
 }

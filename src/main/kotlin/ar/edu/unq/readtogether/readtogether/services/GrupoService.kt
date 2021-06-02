@@ -67,4 +67,12 @@ class GrupoService @Autowired constructor(
     fun obtenerBibiliotecaDeGrupo(idDelGrupo: String): MutableList<Libro>{
         return grupoRepository.obtenerBibliotecaDeGrupo(idDelGrupo)
     }
+
+    fun cargarLibro(idDelGrupo: String,libro: Libro) {
+        val grupo = grupoRepository.obtenerGrupoDeID(idDelGrupo)
+        grupo.agregarLibro(libro)
+        grupoRepository.actualizarGrupo(grupo)
+    }
+
+
 }

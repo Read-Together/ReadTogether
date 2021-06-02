@@ -192,13 +192,21 @@ class TestGrupos {
         val token = usuarioService.login(usuarioRequest)
         val grupo = Grupo("Comunidad", "esto es una descripcion", mutableListOf())
         val libro = Libro("Un libro", mutableListOf("Un Autor"), "Link")
-        grupo.agregarLibro(libro)
         val idDelGrupo = grupoService.guardarGrupo(grupo)
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/grupos/$idDelGrupo/biblioteca")
+                .header("Authorization",token)
+                .content(ObjectMapper().writeValueAsString(libro))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+
         val biblioteca =  mockMvc.perform(
             MockMvcRequestBuilders.get("/grupos/$idDelGrupo/biblioteca")
                 .header("Authorization",token))
             .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
             .andReturn().response.contentAsString
+
         val contieneNombre = biblioteca.contains(libro.nombre)
         val contieneLink = biblioteca.contains(libro.link)
         assertThat(contieneNombre && contieneLink)
