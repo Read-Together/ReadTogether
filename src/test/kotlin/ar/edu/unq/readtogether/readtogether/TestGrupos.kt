@@ -197,6 +197,7 @@ class TestGrupos {
         val biblioteca =  mockMvc.perform(
             MockMvcRequestBuilders.get("/grupos/$idDelGrupo/biblioteca")
                 .header("Authorization",token))
+            .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
             .andReturn().response.contentAsString
         val contieneNombre = biblioteca.contains(libro.nombre)
         val contieneLink = biblioteca.contains(libro.link)
