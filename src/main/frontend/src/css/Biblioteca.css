@@ -6,3 +6,26 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.cardLibro{
+    margin-bottom: 1%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    padding-left: 1%;
+    background-color: rgb(252, 243, 231);
+    border-style: hidden;
+}
+
+.botonCarga{
+    margin-top: 2%;
+    margin-bottom: -1%;
+    text-align: center;
+}
+
+.tamañoBoton{
+    width: 15%;
+}
+
+.clave{
+    color: crimson;
+}

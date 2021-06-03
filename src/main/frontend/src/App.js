@@ -100,9 +100,10 @@ function App() {
         <PublicRoute path="/registrar" component={Register}/>
         <PublicRoute path="/ingresar" component={Ingresar}/>
         <PrivateRoute path="/busqueda/:termino" component={Resultados}/>
+        <PrivateRoute path="/grupos/:id/biblioteca/cargar" component={FormularioCargarLibro}/>
         <PrivateRoute path="/grupos/:id/biblioteca" component={Biblioteca}/>
-        <PrivateRoute path="/grupos/:id" component={Comunidad}/>
-        <PrivateRoute path="/home" component={Home}/><PrivateRoute path="/grupos/:id/biblioteca/cargar" component={FormularioCargarLibro}/>
+        <PrivateRoute path="/grupos/:id" component={Comunidad} />
+        <PrivateRoute path="/home" component={Home} />
         <PrivateRoute
           path="/crear_comunidad"
           component={FormularioCrearComunidad}

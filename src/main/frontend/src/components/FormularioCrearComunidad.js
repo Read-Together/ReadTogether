@@ -30,6 +30,7 @@ export function FormularioCrearComunidad() {
         { headers: headers }
       )
       .then((response) => {
+        console.log(response.data);
         setFueCreado(true);
         axios.post(`http://localhost:8080/grupos/${response.data}/registrar`, data, {
           headers: headers
