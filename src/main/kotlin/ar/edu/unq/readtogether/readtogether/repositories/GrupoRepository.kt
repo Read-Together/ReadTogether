@@ -63,12 +63,19 @@ class GrupoRepository {
                 Pair("usuarios", grupo.usuarios.toList())
         )
 
-        grupoEncontrado.reference.update(camposActualizados)
+        ejecutarActualizacion(grupoEncontrado, camposActualizados)
     }
 
     private fun crearGrupoDesde(grupo: QueryDocumentSnapshot?): Grupo {
         val grupoCreado = grupo!!.toObject(Grupo::class.java)
         return grupoCreado
+    }
+
+    private fun ejecutarActualizacion(grupoEncontrado: QueryDocumentSnapshot, camposActualizados: MutableMap<String, Any>) {
+        val result = grupoEncontrado.reference.update(camposActualizados)
+        if (result.get() == null) {
+            throw RuntimeException("No se pudo actualizar el grupo")
+        }
     }
 
 }
