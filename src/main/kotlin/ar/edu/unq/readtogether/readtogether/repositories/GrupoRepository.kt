@@ -56,7 +56,8 @@ class GrupoRepository {
     }
 
     fun actualizarGrupo(grupo: Grupo) {
-        getCollection().get().get().documents.first { each -> each.data["id"] == grupo.id }.reference.update(
+        val grupoEncontrado = getCollection().get().get().documents.first { each -> each.data["id"]!!.equals(grupo.id) }
+        grupoEncontrado.reference.update(
                 mutableMapOf(
                         Pair("id", grupo.id),
                         Pair("nombre", grupo.nombre),
