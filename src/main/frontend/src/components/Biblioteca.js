@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import NavBar from "./NavBar";
 import axios from "axios";
 import { useParams } from "react-router";
+import "../css/Biblioteca.css" ;
+import { Link } from "react-router-dom";
 
 const Biblioteca = () => {
     const {id} = useParams();
@@ -31,12 +33,19 @@ const Biblioteca = () => {
                     <div className="card">
                         <span>
                         {libro.nombre}
-                        {libro.autores}
+                        {libro.autor}
                         {libro.link}
                         </span>
                     </div>
                 ))}
             </div>
+              <div>
+                  <Link to={`/grupos/${id}/biblioteca/cargar`}>
+                  <button type="button" className="botonCargarLibro btn btn-primary ">
+                      Cargar libro
+                  </button>
+                  </Link>
+              </div>
             <div>
                 
             </div>

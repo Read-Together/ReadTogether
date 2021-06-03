@@ -191,7 +191,7 @@ class TestGrupos {
         val usuarioRequest = RequestUsuario("barbi","123")
         val token = usuarioService.login(usuarioRequest)
         val grupo = Grupo("Comunidad", "esto es una descripcion", mutableListOf())
-        val libro = Libro("Un libro", mutableListOf("Un Autor"), "Link")
+        val libro = Libro("Un libro", "Un Autor", "Link")
         val idDelGrupo = grupoService.guardarGrupo(grupo)
 
         mockMvc.perform(
