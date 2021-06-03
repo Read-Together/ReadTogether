@@ -23,9 +23,24 @@ class GrupoServiceTest {
     private lateinit var grupoService: GrupoService
 
     @AfterEach
-    internal fun tearDown() {
+    fun tearDown() {
         usuarioService.eliminarDatos()
         grupoService.eliminarDatos()
+    }
+
+    @Test
+    fun cuandoAgregoAUnUsuarioAUnGrupo_luegoEstaEnLaListaDeMiembros() {
+        val userName = "ernesto"
+        val password = "123"
+        val usuario = Usuario(userName, "ernesto@gmail.com", password)
+        usuarioService.registrarUsuario(usuario)
+        val nombreDelGrupo = "nombre"
+        grupoService.crearGrupo(nombreDelGrupo, "descripcion")
+        val idDelGrupo = grupoService.obtenerGruposConNombre(nombreDelGrupo).first().id
+
+        grupoService.suscribirUsuarioAlGrupo(userName, idDelGrupo)
+
+        assertThat(grupoService.obtenerGrupoDeID(idDelGrupo).usuarios).contains(usuario.userName)
     }
 
     @Test

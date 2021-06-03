@@ -24,17 +24,19 @@ class GrupoRepositoryTest {
 
     @Test
     fun puedoActualizarUnGrupo(){
-        val grupo = Grupo("dalasha", "son muy buenos", mutableListOf())
+        val grupo = Grupo("dalasha", "son muy buenos", mutableListOf("jorge"))
         grupoRepository.save(grupo)
         val id = grupoRepository.obtenerGrupos(grupo.nombre).first().id
 
         grupo.nombre = "ex-dalasha"
         grupo.descripcion = "eran muy buenos"
+        grupo.usuarios.add("pepe")
         grupoRepository.actualizarGrupo(grupo)
 
         val grupoRecuperado = grupoRepository.obtenerGrupoDeID(id)
         assertThat(grupoRecuperado.nombre == "ex-dalasha")
         assertThat(grupoRecuperado.descripcion == "eran muy buenos")
+        assertThat(grupoRecuperado.usuarios).containsAll(listOf("jorge", "pepe"))
     }
 
     @Test

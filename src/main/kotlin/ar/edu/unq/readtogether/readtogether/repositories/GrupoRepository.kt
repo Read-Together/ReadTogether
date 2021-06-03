@@ -57,14 +57,13 @@ class GrupoRepository {
 
     fun actualizarGrupo(grupo: Grupo) {
         val grupoEncontrado = getCollection().get().get().documents.first { each -> each.data["id"]!!.equals(grupo.id) }
-        grupoEncontrado.reference.update(
-                mutableMapOf(
-                        Pair("id", grupo.id),
-                        Pair("nombre", grupo.nombre),
-                        Pair("descripcion", grupo.descripcion),
-                        Pair("usuarios", grupo.usuarios)
-                )
+        val camposActualizados = mutableMapOf(
+                Pair("nombre", grupo.nombre),
+                Pair("descripcion", grupo.descripcion),
+                Pair("usuarios", grupo.usuarios.toList())
         )
+
+        grupoEncontrado.reference.update(camposActualizados)
     }
 
     private fun crearGrupoDesde(grupo: QueryDocumentSnapshot?): Grupo {
