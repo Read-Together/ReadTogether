@@ -102,10 +102,9 @@ class TestGrupos {
                 .header("Authorization",token))
             .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
             .andReturn().response.contentAsString
-        var contieneId = response.contains(grupo.id)
-        var contieneNombre = response.contains(grupo.nombre)
-        var contieneDescripcion = response.contains(grupo.descripcion)
-        assertThat(contieneId && contieneNombre && contieneDescripcion)
+        assertThat(response.contains(grupo.id))
+        assertThat(response.contains(grupo.nombre))
+        assertThat(response.contains(grupo.descripcion))
     }
 
     @Test
@@ -206,9 +205,7 @@ class TestGrupos {
                 .header("Authorization",token))
             .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
             .andReturn().response.contentAsString
-
-        val contieneNombre = biblioteca.contains(libro.nombre)
-        val contieneLink = biblioteca.contains(libro.link)
-        assertThat(contieneNombre && contieneLink)
+        assertThat(biblioteca.contains(libro.nombre))
+        assertThat(biblioteca.contains(libro.link))
     }
 }
