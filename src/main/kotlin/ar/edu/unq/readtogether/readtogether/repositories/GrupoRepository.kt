@@ -65,8 +65,6 @@ class GrupoRepository {
                 Pair("usuarios", grupo.usuarios),
                 Pair("biblioteca", grupo.biblioteca)
             )
-        )
-
         ejecutarActualizacion(grupoEncontrado, camposActualizados)
     }
 

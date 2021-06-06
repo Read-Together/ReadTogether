@@ -28,4 +28,8 @@ class Grupo{
         biblioteca.add(libro)
     }
 
+    fun quitarUsuario(userName: String) {
+        usuarios.remove(userName)
+    }
+
 }
