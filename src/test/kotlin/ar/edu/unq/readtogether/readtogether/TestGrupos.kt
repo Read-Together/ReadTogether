@@ -209,7 +209,7 @@ class TestGrupos {
         assertThat(biblioteca.contains(libro.link))
     }
 
-    /*
+
     @Test
     fun alCargarUnLibroEnUnGrupoBorradoObtengoUnError(){
         var usuario = Usuario("barbi","barbi@gmail.com","123")
@@ -226,6 +226,6 @@ class TestGrupos {
                 .header("Authorization",token)
                 .content(ObjectMapper().writeValueAsString(libro))
                 .contentType(MediaType.APPLICATION_JSON)
-        )
-    }*/
+        ).andExpect(MockMvcResultMatchers.status().is4xxClientError)
+    }
 }
