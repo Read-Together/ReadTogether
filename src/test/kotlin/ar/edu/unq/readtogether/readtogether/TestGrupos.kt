@@ -168,6 +168,7 @@ class TestGrupos {
         val token = usuarioService.login(RequestUsuario(usuario.userName, usuario.password))
         return token
     }
+
     @Test
     fun pidoLaBibliotecaDeUnGrupo_retornaUn2xx(){
         var usuario = Usuario("barbi","barbi@gmail.com","123")
@@ -180,7 +181,6 @@ class TestGrupos {
             MockMvcRequestBuilders.get("/grupos/$idDelGrupo/biblioteca")
                 .header("Authorization",token))
             .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
-
     }
 
     @Test
@@ -208,4 +208,24 @@ class TestGrupos {
         assertThat(biblioteca.contains(libro.nombre))
         assertThat(biblioteca.contains(libro.link))
     }
+
+    /*
+    @Test
+    fun alCargarUnLibroEnUnGrupoBorradoObtengoUnError(){
+        var usuario = Usuario("barbi","barbi@gmail.com","123")
+        usuarioService.registrarUsuario(usuario)
+        val usuarioRequest = RequestUsuario("barbi","123")
+        val token = usuarioService.login(usuarioRequest)
+        val grupo = Grupo("Comunidad", "esto es una descripcion", mutableListOf())
+        val libro = Libro("Un libro", "Un Autor", "Link")
+        val idDelGrupo = grupoService.guardarGrupo(grupo)
+
+        grupoService.eliminarDatos()
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/grupos/$idDelGrupo/biblioteca")
+                .header("Authorization",token)
+                .content(ObjectMapper().writeValueAsString(libro))
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+    }*/
 }

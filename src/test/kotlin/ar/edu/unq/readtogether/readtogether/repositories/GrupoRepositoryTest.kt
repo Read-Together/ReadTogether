@@ -2,6 +2,7 @@ package ar.edu.unq.readtogether.readtogether.repositories
 
 import ar.edu.unq.readtogether.readtogether.excepciones.EntidadNoEncontradaException
 import ar.edu.unq.readtogether.readtogether.modelo.Grupo
+import ar.edu.unq.readtogether.readtogether.modelo.Libro
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.AfterAll
@@ -37,6 +38,17 @@ class GrupoRepositoryTest {
         assertThat(grupoRecuperado.nombre == "ex-dalasha")
         assertThat(grupoRecuperado.descripcion == "eran muy buenos")
         assertThat(grupoRecuperado.usuarios).containsAll(listOf("jorge", "pepe"))
+    }
+
+    @Test
+    fun puedoObtenerLaBibliotecaDelGrupo(){
+        val grupo = Grupo("dalasha", "son muy buenos", mutableListOf())
+        grupoRepository.save(grupo)
+        val id = grupoRepository.obtenerGrupos(grupo.nombre).first().id
+        val libro = Libro("Un libro", "Un Autor", "Link")
+        grupo.agregarLibro(libro)
+
+        assertThat(grupoRepository.obtenerBibliotecaDeGrupo(id).isNotEmpty())
     }
 
     @Test
