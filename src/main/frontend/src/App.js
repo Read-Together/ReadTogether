@@ -15,100 +15,100 @@ import {salirDelGrupo} from "./controllers/grupoController";
 
 
 function Resultados() {
-    const {termino} = useParams();
-    const [resultados, setResultados] = useState([]);
-    const history = useHistory();
+  const {termino} = useParams();
+  const [resultados, setResultados] = useState([]);
+  const history = useHistory();
 
 
 
-    const unirmeAGrupo = (resultado) => {
-        const header = {authorization: sessionStorage.getItem("accessToken")};
-        const data = {userName: sessionStorage.getItem("loggedUsername")};
-        axios
-            .post(`http://localhost:8080/grupos/${resultado.id}/registrar`, data, {
-                headers: header,
-            })
-            .then(() => {
-                history.push(`/grupos/${resultado.id}`);
-            })
-            .catch((error) => console.log(error));
-    };
+  const unirmeAGrupo = (resultado) => {
+    const header = {authorization: sessionStorage.getItem("accessToken")};
+    const data = {userName: sessionStorage.getItem("loggedUsername")};
+    axios
+      .post(`http://localhost:8080/grupos/${resultado.id}/registrar`, data, {
+        headers: header,
+      })
+      .then(() => {
+        history.push(`/grupos/${resultado.id}`);
+      })
+      .catch((error) => console.log(error));
+  };
 
-    const estaEnElGrupo = (resultado) => {
-        return resultado.usuarios.some(usuario => usuario === sessionStorage.getItem("loggedUsername"))
+  const estaEnElGrupo = (resultado) => {
+    return resultado.usuarios.some(usuario => usuario === sessionStorage.getItem("loggedUsername"))
+  }
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/grupos?busqueda=${termino}`)
+      .then((resultados) => {
+        setResultados(resultados.data);
+      });
+  }, [termino]);
+
+  function cambiarSuscripción(resultado) {
+    if (estaEnElGrupo(resultado)) {
+      salirDelGrupo(resultado.id)
+      history.replace(`/`);
+    } else {
+      unirmeAGrupo(resultado)
     }
 
-    useEffect(() => {
-        axios
-            .get(`http://localhost:8080/grupos?busqueda=${termino}`)
-            .then((resultados) => {
-                setResultados(resultados.data);
-            });
-    }, [termino]);
+  }
 
-    function cambiarSuscripción(resultado) {
-        if (estaEnElGrupo(resultado)) {
-            salirDelGrupo(resultado.id)
-            history.replace(`/`);
-        } else {
-            unirmeAGrupo(resultado)
-        }
+  return (
+    <div>
+      <NavBar/>
+      <div>
+        {resultados.map((resultado) => (
+          <div className="card cardComunidadEncontrado">
+            <div className="nombreDeComunidad d-grid gap-2 d-md-flex ">
+              <Link to={`/grupos/${resultado.id}`}>
+                <div>{resultado.nombre}</div>
+              </Link>
+              <div className="espaciadoBoton">
 
-    }
+                <button
+                  type="button"
+                  onClick={() => {
+                    cambiarSuscripción(resultado);
 
-    return (
-        <div>
-            <NavBar/>
-            <div>
-                {resultados.map((resultado) => (
-                    <div className="card cardComunidadEncontrado">
-                        <div className="nombreDeComunidad d-grid gap-2 d-md-flex ">
-                            <Link to={`/grupos/${resultado.id}`}>
-                                <div>{resultado.nombre}</div>
-                            </Link>
-                            <div className="espaciadoBoton">
+                  }}
+                  className="botonUnirse btn btn-primary "
+                >
+                  {estaEnElGrupo(resultado) ? "Salir" : "Unirse"}
 
-                                <button
-                                        type="button"
-                                        onClick={() => {
-                                            cambiarSuscripción(resultado);
+                </button>
 
-                                        }}
-                                        className="botonUnirse btn btn-primary "
-                                >
-                                    {estaEnElGrupo(resultado) ? "Salir" : "Unirse"}
-
-                                </button>
-
-                            </div>
-                        </div>
-                        <div className="descripcionDeComunidad">
-                            {resultado.descripcion}
-                        </div>
-                    </div>
-                ))}
+              </div>
             </div>
-        </div>
-    );
+            <div className="descripcionDeComunidad">
+              {resultado.descripcion}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 function App() {
-    return (
-        <Router>
-            <Switch>
-                <PublicRoute path="/registrar" component={Register}/>
-                <PublicRoute path="/ingresar" component={Ingresar}/>
-                <PrivateRoute path="/busqueda/:termino" component={Resultados}/>
-                <PrivateRoute path="/grupos/:id" component={Comunidad}/>
-                <PrivateRoute path="/home" component={Home}/>
-                <PrivateRoute
-                    path="/crear_comunidad"
-                    component={FormularioCrearComunidad}
-                />
-                <PrivateRoute path="/" component={Home}/>
-            </Switch>
-        </Router>
-    );
+  return (
+    <Router>
+      <Switch>
+        <PublicRoute path="/registrar" component={Register}/>
+        <PublicRoute path="/ingresar" component={Ingresar}/>
+        <PrivateRoute path="/busqueda/:termino" component={Resultados}/>
+        <PrivateRoute path="/grupos/:id" component={Comunidad}/>
+        <PrivateRoute path="/home" component={Home}/>
+        <PrivateRoute
+          path="/crear_comunidad"
+          component={FormularioCrearComunidad}
+        />
+        <PrivateRoute path="/" component={Home}/>
+      </Switch>
+    </Router>
+  );
 }
 
 export default App;
