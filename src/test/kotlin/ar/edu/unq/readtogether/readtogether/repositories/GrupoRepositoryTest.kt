@@ -1,7 +1,9 @@
 package ar.edu.unq.readtogether.readtogether.repositories
 
+import ar.edu.unq.readtogether.readtogether.excepciones.EntidadNoEncontradaException
 import ar.edu.unq.readtogether.readtogether.modelo.Grupo
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -22,16 +24,27 @@ class GrupoRepositoryTest {
 
     @Test
     fun puedoActualizarUnGrupo(){
-        val grupo = Grupo("dalasha", "son muy buenos", mutableListOf())
+        val grupo = Grupo("dalasha", "son muy buenos", mutableListOf("jorge"))
         grupoRepository.save(grupo)
         val id = grupoRepository.obtenerGrupos(grupo.nombre).first().id
 
         grupo.nombre = "ex-dalasha"
         grupo.descripcion = "eran muy buenos"
+        grupo.usuarios.add("pepe")
         grupoRepository.actualizarGrupo(grupo)
 
         val grupoRecuperado = grupoRepository.obtenerGrupoDeID(id)
         assertThat(grupoRecuperado.nombre == "ex-dalasha")
         assertThat(grupoRecuperado.descripcion == "eran muy buenos")
+        assertThat(grupoRecuperado.usuarios).containsAll(listOf("jorge", "pepe"))
+    }
+
+    @Test
+    fun cuandoRecuperoUnGrupoInexistente_seLevantaUnaExcepcion() {
+        val idInexistente = "123=!"
+
+        assertThatThrownBy{ grupoRepository.obtenerGrupoDeID(idInexistente) }
+                .isInstanceOf(EntidadNoEncontradaException::class.java)
+                .hasMessage("No se encontró el grupo con id %s", idInexistente)
     }
 }

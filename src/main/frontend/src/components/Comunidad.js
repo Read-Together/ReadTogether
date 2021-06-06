@@ -1,11 +1,15 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import {useEffect, useState} from "react";
+import {useParams} from "react-router";
 import NavBar from "./NavBar";
 import "../css/Comunidad.css";
+import {salirDelGrupo} from "../controllers/grupoController";
+import {useHistory} from "react-router-dom";
+
 
 const Comunidad = () => {
-  const { id } = useParams();
+  const history = useHistory();
+  const {id} = useParams();
   const [data, setData] = useState({});
 
   useEffect(() => {
@@ -18,13 +22,13 @@ const Comunidad = () => {
     };
 
     axios
-      .get(`http://localhost:8080/grupos/${id}`, { headers: header })
+      .get(`http://localhost:8080/grupos/${id}`, {headers: header})
       .then((response) => {
         setData(response.data);
       });
   };
 
-  const estaEnElGrupo = (data) => {
+  const componentesParaMiembros = (data) => {
     if (
       data.usuarios?.some(
         (usuario) => usuario === sessionStorage.getItem("loggedUsername")
@@ -35,7 +39,7 @@ const Comunidad = () => {
           <button type="button" className="btn btn-info ">
             Biblioteca
           </button>
-          <div>
+          <div style={{height: "80%"}}>
             <div className="usuariosTitulo">Usuarios</div>
             <div>
               {data.usuarios.map((usuario) => (
@@ -43,6 +47,14 @@ const Comunidad = () => {
               ))}
             </div>
           </div>
+          <button className="botonUnirse btn btn-primary "
+                  onClick={() => {
+                    salirDelGrupo(id)
+                    history.replace(`/`)
+                  }}>
+
+            Salir
+          </button>
         </div>
       );
     }
@@ -50,11 +62,11 @@ const Comunidad = () => {
 
   return (
     <div className="App">
-      <NavBar />
+      <NavBar/>
 
       <div class="container">
         <div class="row columnas">
-          {estaEnElGrupo(data)}
+          {componentesParaMiembros(data)}
           <div class="col-sm-9 container">
             <div class="row">
               <div class="col-13  titulo">
