@@ -216,11 +216,9 @@ class TestGrupos {
         usuarioService.registrarUsuario(usuario)
         val usuarioRequest = RequestUsuario("barbi","123")
         val token = usuarioService.login(usuarioRequest)
-        val grupo = Grupo("Comunidad", "esto es una descripcion", mutableListOf())
         val libro = Libro("Un libro", "Un Autor", "Link")
-        val idDelGrupo = grupoService.guardarGrupo(grupo)
+        val idDelGrupo = "id de mentira"
 
-        grupoService.eliminarDatos()
         mockMvc.perform(
             MockMvcRequestBuilders.post("/grupos/$idDelGrupo/biblioteca")
                 .header("Authorization",token)
