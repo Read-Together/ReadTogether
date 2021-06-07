@@ -4,15 +4,7 @@ import java.util.*
 
 class Grupo{
 
-    fun agregarUsuario(usuario: String) {
-        usuarios.add(usuario)
-    }
-
-    fun quitarUsuario(userName: String) {
-        usuarios.remove(userName)
-    }
-
-
+    lateinit var biblioteca: MutableList<Libro>
     lateinit var id: String
     lateinit var nombre: String
     lateinit var descripcion: String
@@ -23,8 +15,21 @@ class Grupo{
         this.nombre = nombre
         this.descripcion = descripcion
         this.usuarios = usuarios
+        this.biblioteca = mutableListOf()
     }
 
     constructor()
+
+    fun agregarUsuario(usuario: String) {
+        usuarios.add(usuario)
+    }
+
+    fun agregarLibro(libro: Libro) {
+        biblioteca.add(libro)
+    }
+
+    fun quitarUsuario(userName: String) {
+        usuarios.remove(userName)
+    }
 
 }

@@ -2,7 +2,9 @@ package ar.edu.unq.readtogether.readtogether.controllers
 
 import ar.edu.unq.readtogether.readtogether.dtos.CreacionDeGruposForm
 import ar.edu.unq.readtogether.readtogether.dtos.RequestConUsername
+import ar.edu.unq.readtogether.readtogether.excepciones.EntidadNoEncontradaException
 import ar.edu.unq.readtogether.readtogether.modelo.Grupo
+import ar.edu.unq.readtogether.readtogether.modelo.Libro
 import ar.edu.unq.readtogether.readtogether.services.GrupoService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -53,4 +55,19 @@ class GruposController {
 
     private fun coincideConUsuarioAutenticado(usuario: RequestConUsername) =
             SecurityContextHolder.getContext().getAuthentication().name == usuario.userName
+
+    @GetMapping("/grupos/{idDelGrupo}/biblioteca")
+    fun biblioteca(@PathVariable("idDelGrupo") idDelGrupo: String) : ResponseEntity<MutableList<Libro>>{
+        return ResponseEntity(grupoService.obtenerBibiliotecaDeGrupo(idDelGrupo), HttpStatus.ACCEPTED)
+    }
+
+    @PostMapping("/grupos/{idDelGrupo}/biblioteca")
+    fun cargarLibro(@PathVariable("idDelGrupo")idDelGrupo: String, @RequestBody libro: Libro): ResponseEntity<Unit> {
+        try {
+            return ResponseEntity(grupoService.cargarLibro(idDelGrupo, libro), HttpStatus.OK)
+        } catch (e: EntidadNoEncontradaException) {
+            println(e.printStackTrace())
+            return ResponseEntity(null, HttpStatus.BAD_REQUEST)
+        }
+    }
 }

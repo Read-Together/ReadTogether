@@ -3,6 +3,7 @@ package ar.edu.unq.readtogether.readtogether
 import ar.edu.unq.readtogether.readtogether.dtos.CreacionDeGruposForm
 import ar.edu.unq.readtogether.readtogether.dtos.RequestUsuario
 import ar.edu.unq.readtogether.readtogether.modelo.Grupo
+import ar.edu.unq.readtogether.readtogether.modelo.Libro
 import ar.edu.unq.readtogether.readtogether.modelo.Usuario
 import ar.edu.unq.readtogether.readtogether.services.GrupoService
 import ar.edu.unq.readtogether.readtogether.services.UsuarioService
@@ -101,10 +102,9 @@ class TestGrupos {
                 .header("Authorization",token))
             .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
             .andReturn().response.contentAsString
-        var contieneId = response.contains(grupo.id)
-        var contieneNombre = response.contains(grupo.nombre)
-        var contieneDescripcion = response.contains(grupo.descripcion)
-        assertThat(contieneId && contieneNombre && contieneDescripcion)
+        assertThat(response.contains(grupo.id))
+        assertThat(response.contains(grupo.nombre))
+        assertThat(response.contains(grupo.descripcion))
     }
 
     @Test
@@ -167,5 +167,65 @@ class TestGrupos {
         usuarioService.registrarUsuario(usuario)
         val token = usuarioService.login(RequestUsuario(usuario.userName, usuario.password))
         return token
+    }
+
+    @Test
+    fun pidoLaBibliotecaDeUnGrupo_retornaUn2xx(){
+        var usuario = Usuario("barbi","barbi@gmail.com","123")
+        usuarioService.registrarUsuario(usuario)
+        val usuarioRequest = RequestUsuario("barbi","123")
+        val token = usuarioService.login(usuarioRequest)
+        val grupo = Grupo("Comunidad", "esto es una descripcion", mutableListOf())
+        val idDelGrupo = grupoService.guardarGrupo(grupo)
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/grupos/$idDelGrupo/biblioteca")
+                .header("Authorization",token))
+            .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+    }
+
+    @Test
+    fun pídoBibliotecaDeUnGrupo_retornaUnaListaConUnElemento(){
+        var usuario = Usuario("barbi","barbi@gmail.com","123")
+        usuarioService.registrarUsuario(usuario)
+        val usuarioRequest = RequestUsuario("barbi","123")
+        val token = usuarioService.login(usuarioRequest)
+        val grupo = Grupo("Comunidad", "esto es una descripcion", mutableListOf())
+        val libro = Libro("Un libro", "Un Autor", "Link")
+        val idDelGrupo = grupoService.guardarGrupo(grupo)
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/grupos/$idDelGrupo/biblioteca")
+                .header("Authorization",token)
+                .content(ObjectMapper().writeValueAsString(libro))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+
+        val biblioteca =  mockMvc.perform(
+            MockMvcRequestBuilders.get("/grupos/$idDelGrupo/biblioteca")
+                .header("Authorization",token))
+            .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+            .andReturn().response.contentAsString
+        assertThat(biblioteca.contains(libro.nombre))
+        assertThat(biblioteca.contains(libro.link))
+    }
+
+
+    @Test
+    fun alCargarUnLibroEnUnGrupoBorradoObtengoUnError(){
+        var usuario = Usuario("barbi","barbi@gmail.com","123")
+        usuarioService.registrarUsuario(usuario)
+        val usuarioRequest = RequestUsuario("barbi","123")
+        val token = usuarioService.login(usuarioRequest)
+        val grupo = Grupo("Comunidad", "esto es una descripcion", mutableListOf())
+        val libro = Libro("Un libro", "Un Autor", "Link")
+        val idDelGrupo = grupoService.guardarGrupo(grupo)
+
+        grupoService.eliminarDatos()
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/grupos/$idDelGrupo/biblioteca")
+                .header("Authorization",token)
+                .content(ObjectMapper().writeValueAsString(libro))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().is4xxClientError)
     }
 }

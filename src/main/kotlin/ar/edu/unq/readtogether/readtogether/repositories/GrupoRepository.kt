@@ -3,6 +3,7 @@ package ar.edu.unq.readtogether.readtogether.repositories
 import ar.edu.unq.readtogether.readtogether.excepciones.EntidadNoEncontradaException
 import ar.edu.unq.readtogether.readtogether.firebase.FireBaseInitialization
 import ar.edu.unq.readtogether.readtogether.modelo.Grupo
+import ar.edu.unq.readtogether.readtogether.modelo.Libro
 import com.google.api.core.ApiFuture
 import com.google.cloud.firestore.QueryDocumentSnapshot
 import com.google.cloud.firestore.QuerySnapshot
@@ -24,6 +25,7 @@ class GrupoRepository {
         docData["descripcion"] = grupo.descripcion
         docData["usuarios"] = grupo.usuarios
         docData["id"] = grupo.id
+        docData["biblioteca"] = grupo.biblioteca
         var groups = getCollection()
         var writeResultApiFuture: ApiFuture<WriteResult> = groups.document().set(docData)
         if (writeResultApiFuture.get() != null) {
@@ -60,9 +62,9 @@ class GrupoRepository {
         val camposActualizados = mutableMapOf(
                 Pair("nombre", grupo.nombre),
                 Pair("descripcion", grupo.descripcion),
-                Pair("usuarios", grupo.usuarios.toList())
-        )
-
+                Pair("usuarios", grupo.usuarios),
+                Pair("biblioteca", grupo.biblioteca)
+            )
         ejecutarActualizacion(grupoEncontrado, camposActualizados)
     }
 
@@ -76,6 +78,11 @@ class GrupoRepository {
         if (result.get() == null) {
             throw RuntimeException("No se pudo actualizar el grupo")
         }
+    }
+
+    fun obtenerBibliotecaDeGrupo(idDelGrupo: String): MutableList<Libro> {
+        val grupo = obtenerGrupoDeID(idDelGrupo)
+        return grupo.biblioteca
     }
 
 }

@@ -1,6 +1,7 @@
 package ar.edu.unq.readtogether.readtogether.services
 
 import ar.edu.unq.readtogether.readtogether.modelo.Grupo
+import ar.edu.unq.readtogether.readtogether.modelo.Libro
 import ar.edu.unq.readtogether.readtogether.repositories.GrupoRepository
 import ar.edu.unq.readtogether.readtogether.repositories.UsuarioRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -62,4 +63,16 @@ class GrupoService @Autowired constructor(
             throw RuntimeException("El usuario ${userName} no está en el grupo ${idDelGrupo}")
         }
     }
+
+    fun obtenerBibiliotecaDeGrupo(idDelGrupo: String): MutableList<Libro>{
+        return grupoRepository.obtenerBibliotecaDeGrupo(idDelGrupo)
+    }
+
+    fun cargarLibro(idDelGrupo: String,libro: Libro) {
+        val grupo = grupoRepository.obtenerGrupoDeID(idDelGrupo)
+        grupo.agregarLibro(libro)
+        grupoRepository.actualizarGrupo(grupo)
+    }
+
+
 }
