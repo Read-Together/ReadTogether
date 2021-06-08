@@ -1,0 +1,15 @@
+.cardComunidadesHome{
+    margin-top: 2%;
+    background-color: rgb(247, 235, 218);
+    padding: 1.4%;
+    padding-top: 1%;
+}
+
+.tituloHome{
+    font-size: 150%;
+}
+
+.bienvenida{
+    font-size: 200%;
+    text-align: center;
+}

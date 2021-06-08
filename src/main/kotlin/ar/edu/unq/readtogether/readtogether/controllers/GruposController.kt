@@ -73,6 +73,6 @@ class GruposController {
 
     @GetMapping("/home/{nombreUsuario}")
     fun homeDelUsuario(@PathVariable("nombreUsuario")nombreUsuario: String): ResponseEntity<List<Grupo>>{
-        return ResponseEntity(grupoService.gruposDelUsuario(nombreUsuario), HttpStatus.FOUND)
+        return ResponseEntity(grupoService.gruposDelUsuario(nombreUsuario), HttpStatus.ACCEPTED)
     }
 }

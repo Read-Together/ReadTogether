@@ -244,7 +244,7 @@ class TestGrupos {
 
         var response = mockMvc.perform(MockMvcRequestBuilders.get("/home/$nombreUsuario")
             .header("Authorization",token))
-            .andExpect(MockMvcResultMatchers.status().isFound)
+            .andExpect(MockMvcResultMatchers.status().isAccepted)
             .andReturn().response.contentAsString
         var grupos = Gson().fromJson(response, Array<Grupo>::class.java).toList()
         assertThat(grupos).hasSize(2)
