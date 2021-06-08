@@ -8,6 +8,7 @@ import ar.edu.unq.readtogether.readtogether.modelo.Usuario
 import ar.edu.unq.readtogether.readtogether.services.GrupoService
 import ar.edu.unq.readtogether.readtogether.services.UsuarioService
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.gson.Gson
 import org.assertj.core.api.Assertions.assertThat
 import org.json.JSONObject
 import org.junit.jupiter.api.AfterEach
@@ -22,6 +23,8 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import java.io.File
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -181,7 +184,7 @@ class TestGrupos {
     }
 
     @Test
-    fun pídoBibliotecaDeUnGrupo_retornaUnaListaConUnElemento(){
+    fun pidoBibliotecaDeUnGrupo_retornaUnaListaConUnElemento(){
         var usuario = Usuario("barbi","barbi@gmail.com","123")
         usuarioService.registrarUsuario(usuario)
         val usuarioRequest = RequestUsuario("barbi","123")
@@ -221,6 +224,30 @@ class TestGrupos {
                         .content(ObjectMapper().writeValueAsString(libro))
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().is4xxClientError)
+    }
+
+    @Test
+    fun pidoLosGruposDeUnUsuario_meDevuelve2Grupos(){
+        val usuario = Usuario("Gonzalo", "gonzalo@gmail.com", "123")
+        usuarioService.registrarUsuario(usuario)
+        val requestUsuario = RequestUsuario("Gonzalo", "123")
+        val token = usuarioService.login(requestUsuario)
+
+        /** se crean 2 grupos con el usuario dentro, y uno sin el usuario**/
+        val grupo1 = Grupo("Grupo Con Usuario", "una descripcion", mutableListOf("Barbi", "Gonzalo"))
+        val grupo2 = Grupo("Grupo Con Usuario", "una descripcion", mutableListOf("Juan", "Gonzalo", "Mauro"))
+        val grupo3 = Grupo("Grupo Con Usuario", "una descripcion", mutableListOf("Juan", "Mauro", "Barbi"))
+        grupoService.guardarGrupo(grupo1)
+        grupoService.guardarGrupo(grupo2)
+        grupoService.guardarGrupo(grupo3)
+        val nombreUsuario = usuario.userName
+
+        var response = mockMvc.perform(MockMvcRequestBuilders.get("/home/$nombreUsuario")
+            .header("Authorization",token))
+            .andExpect(MockMvcResultMatchers.status().isFound)
+            .andReturn().response.contentAsString
+        var grupos = Gson().fromJson(response, Array<Grupo>::class.java).toList()
+        assertThat(grupos).hasSize(2)
     }
 
 

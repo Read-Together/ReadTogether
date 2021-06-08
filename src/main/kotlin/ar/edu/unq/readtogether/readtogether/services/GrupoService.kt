@@ -74,5 +74,9 @@ class GrupoService @Autowired constructor(
         grupoRepository.actualizarGrupo(grupo)
     }
 
+    fun gruposDelUsuario(nombreUsuario: String): List<Grupo> {
+        return grupoRepository.gruposDelUsuario(nombreUsuario)
+    }
+
 
 }
