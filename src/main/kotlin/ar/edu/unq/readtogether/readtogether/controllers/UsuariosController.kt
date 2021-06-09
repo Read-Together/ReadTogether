@@ -34,6 +34,6 @@ class UsuariosController {
 
     @ExceptionHandler(value = [(CredencialesDeLoginInvalidasException::class)])
     fun manejarFalloDeCredenciales(e: Exception): ResponseEntity<String> {
-        return ResponseEntity(e.message, HttpStatus.NOT_FOUND)
+        return ResponseEntity(e.message, HttpStatus.FORBIDDEN)
     }
 }
