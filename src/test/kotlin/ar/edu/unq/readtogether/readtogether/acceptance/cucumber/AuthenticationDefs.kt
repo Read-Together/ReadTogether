@@ -29,7 +29,6 @@ class AuthenticationDefs : SpringIntegrationTest(){
     @Autowired
     private lateinit var context: StepDefinitionsContext
 
-    val username = "unNombreDeUsuario"
     val email = "unMail@gmail.com"
     val contraseña = "unaContrasenia"
 
@@ -51,6 +50,13 @@ class AuthenticationDefs : SpringIntegrationTest(){
                 .content(ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)), mockMvc)
         context.andExpect(status().isForbidden)
+    }
+
+    @Given("un usuario logeado")
+    fun usuarioLogeado(){
+        val usuario = Usuario(username, email, contraseña)
+        usuarioService.registrarUsuario(usuario)
+        context.token = usuarioService.login(RequestUsuario(username, contraseña))
     }
 
     @When("ingresa su usuario y contraseña correctos")

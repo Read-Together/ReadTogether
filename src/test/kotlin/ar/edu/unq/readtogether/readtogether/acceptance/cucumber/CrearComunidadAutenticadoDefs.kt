@@ -31,7 +31,7 @@ class CrearComunidadAutenticadoDefs : SpringIntegrationTest(){
     @Autowired
     private lateinit var grupoService: GrupoService
 
-    private val username = "unNombreDeUsuario"
+    private val userName = "unNombreDeUsuario"
     private val contraseña = "unaContrasenia"
     private val nombreDeComunidad = "nombre"
     private val descripcionDeComunidad = "descripcion"
@@ -44,7 +44,7 @@ class CrearComunidadAutenticadoDefs : SpringIntegrationTest(){
 
     @And("esta autenticado")
     fun autenticarUsuario(){
-        val request = RequestUsuario(username, contraseña)
+        val request = RequestUsuario(userName, contraseña)
         context.perform(
                 MockMvcRequestBuilders.post("/login")
                         .content(ObjectMapper().writeValueAsString(request))
