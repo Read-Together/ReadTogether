@@ -1,6 +1,7 @@
 package ar.edu.unq.readtogether.readtogether.acceptance.cucumber
 
 import ar.edu.unq.readtogether.readtogether.dtos.CreacionDeGruposForm
+import ar.edu.unq.readtogether.readtogether.modelo.Libro
 import ar.edu.unq.readtogether.readtogether.services.GrupoService
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.cucumber.java.en.Given
@@ -12,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 @AutoConfigureMockMvc
 class ComunidadDefs : SpringIntegrationTest() {
@@ -30,9 +33,25 @@ class ComunidadDefs : SpringIntegrationTest() {
     @Autowired
     private lateinit var context: StepDefinitionsContext
 
+    val libro = Libro("Un libro", "Un Autor", "Link")
+
     @Given("una comunidad ya creada de nombre \"([^\"]*)\"$")
     fun crearComunidadDeNombre(nombre: String) {
         idDelGrupo = grupoService.crearGrupo(nombre, "una descripcion")
+    }
+
+    @Given("puede ver la vista del nuevo grupo")
+    fun elUsuarioVeLaVistaDelGrupo(){
+        idDelGrupo = context.andReturn().response.contentAsString
+
+        var response = context.perform(
+            MockMvcRequestBuilders.get("/grupos/$idDelGrupo")
+                .header("Authorization",context.token), mockMvc)
+            .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+            .andReturn().response.contentAsString
+        assertThat(response.contains(idDelGrupo))
+        assertThat(response.contains(grupoService.obtenerGrupoDeID(idDelGrupo).nombre))
+        assertThat(response.contains(grupoService.obtenerGrupoDeID(idDelGrupo).descripcion))
     }
 
     @When("crea una comunidad")
@@ -66,6 +85,16 @@ class ComunidadDefs : SpringIntegrationTest() {
         )
     }
 
+    @When ("el usuario carga un libro en la comunidad \"([^\"]*)\"\$")
+    fun usuarioCargaLibro(nombreDeComunidad: String){
+        val id = grupoService.obtenerGruposConNombre(nombreDeComunidad).first().id
+        context.perform(post("/grupos/$id/biblioteca")
+            .header("Authorization",context.token)
+            .content(ObjectMapper().writeValueAsString(libro))
+            .contentType(MediaType.APPLICATION_JSON), mockMvc
+        )
+    }
+
     @Then("obtiene el id de la comunidad creada")
     fun assertarQueObtieneIdDeUnaComunidad() {
         idDelGrupo = context.andReturn().response.contentAsString
@@ -84,6 +113,18 @@ class ComunidadDefs : SpringIntegrationTest() {
     fun assertarQueElUsuarioNoEsMiembroDelGrupo(nombreDeComunidad: String) {
         val grupo = grupoService.obtenerGruposConNombre(nombreDeComunidad).first()
         assertThat(grupo.usuarios).doesNotContain(username)
+    }
+
+    @Then("el usuario puede ver el libro en la biblioteca de \"([^\"]*)\"\$")
+    fun usuarioVeLaBibliotecaConElLibro(nombreDeComunidad: String){
+        val idDelGrupo = grupoService.obtenerGruposConNombre(nombreDeComunidad).first().id
+        val biblioteca =   context.perform(
+             MockMvcRequestBuilders.get("/grupos/$idDelGrupo/biblioteca")
+                    .header("Authorization",context.token), mockMvc)
+                    .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+                    .andReturn().response.contentAsString
+        assertThat(biblioteca.contains(libro.nombre))
+        assertThat(biblioteca.contains(libro.link))
     }
 
 }
