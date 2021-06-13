@@ -7,6 +7,8 @@ import org.springframework.test.web.servlet.*
 @Component
 class StepDefinitionsContext : ResultActions{
 
+    lateinit var token : String
+
     protected lateinit var currentResultAction: ResultActions
 
     override fun andExpect(matcher: ResultMatcher): ResultActions {

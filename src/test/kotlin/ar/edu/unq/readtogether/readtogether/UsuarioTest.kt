@@ -94,14 +94,14 @@ class UsuarioTest {
     }
 
     @Test
-    fun cuandoInicioSesionConDatosErroneos_arrojaComoExceptionUsuarioYOContraseniaInvalidos() {
+    fun cuandoInicioSesionConDatosErroneos_retornaForbidden() {
         usuario = Usuario("juan3", "juan3@gmail.com", "1234")
         usuarioService.registrarUsuario(usuario)
         var usuarioLogin = RequestUsuario("juan3", "123")
         mockMvc.perform(MockMvcRequestBuilders.post("/login")
                 .content(ObjectMapper().writeValueAsString(usuarioLogin))
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound)
+                .andExpect(status().isForbidden)
     }
 
 }

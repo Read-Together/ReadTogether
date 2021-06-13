@@ -5,7 +5,9 @@ import io.cucumber.junit.CucumberOptions
 import org.junit.runner.RunWith
 
 @RunWith(Cucumber::class)
-@CucumberOptions(features = ["src/test/resources/cucumber/authentication.feature"]
-        , plugin = ["pretty"])
+@CucumberOptions(features = [
+    "src/test/resources/cucumber/authentication.feature",
+    "src/test/resources/cucumber/comunidad.feature"
+], plugin = ["pretty"])
 class CucumberIntegrationTest {
 }

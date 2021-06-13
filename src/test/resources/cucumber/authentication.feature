@@ -4,6 +4,11 @@ Feature: Autenticacion de usuario
     When ingresa su usuario y contraseña correctos
     Then obtiene un token
 
+  Scenario: Usuario ingresa credenciales incorrectas
+    Given un usuario que ya se ha registrado en la aplicacion
+    When ingresa su usuario correcto pero una contraseña incorrecta
+    Then la aplicacion no le permite logearse
+
   Scenario: Usuario se registra
     Given un usuario que no se ha registrado en la aplicacion
     When se registra con usuario, mail y contraseña

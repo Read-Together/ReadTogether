@@ -3,8 +3,8 @@ package ar.edu.unq.readtogether.readtogether.controllers
 import ar.edu.unq.readtogether.readtogether.dtos.RequestUsuario
 import ar.edu.unq.readtogether.readtogether.dtos.UsuarioResponseDTO
 import ar.edu.unq.readtogether.readtogether.excepciones.CredencialesDeLoginInvalidasException
-import ar.edu.unq.readtogether.readtogether.services.UsuarioService
 import ar.edu.unq.readtogether.readtogether.modelo.Usuario
+import ar.edu.unq.readtogether.readtogether.services.UsuarioService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -18,12 +18,12 @@ class UsuariosController {
     private lateinit var usuarioService: UsuarioService
 
     @PostMapping("/registrar")
-    fun registrarUsuario(@RequestBody usuario: Usuario) : ResponseEntity<UsuarioResponseDTO?>{
-        try {
-            return ResponseEntity(usuarioService.registrarUsuario(usuario), HttpStatus.OK)
+    fun registrarUsuario(@RequestBody usuario: Usuario): ResponseEntity<UsuarioResponseDTO?> {
+        return try {
+            ResponseEntity(usuarioService.registrarUsuario(usuario), HttpStatus.OK)
         } catch (e: RuntimeException) {
             println(e.printStackTrace())
-            return ResponseEntity(null, HttpStatus.BAD_REQUEST)
+            ResponseEntity(null, HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -34,6 +34,6 @@ class UsuariosController {
 
     @ExceptionHandler(value = [(CredencialesDeLoginInvalidasException::class)])
     fun manejarFalloDeCredenciales(e: Exception): ResponseEntity<String> {
-        return ResponseEntity(e.message, HttpStatus.NOT_FOUND)
+        return ResponseEntity(e.message, HttpStatus.FORBIDDEN)
     }
 }

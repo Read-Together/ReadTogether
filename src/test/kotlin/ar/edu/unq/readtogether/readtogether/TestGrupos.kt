@@ -10,7 +10,10 @@ import ar.edu.unq.readtogether.readtogether.services.UsuarioService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.json.JSONObject
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -163,12 +166,6 @@ class TestGrupos {
         ).andExpect(MockMvcResultMatchers.status().isForbidden)
     }
 
-    private fun registrarYLogear(usuario: Usuario): String {
-        usuarioService.registrarUsuario(usuario)
-        val token = usuarioService.login(RequestUsuario(usuario.userName, usuario.password))
-        return token
-    }
-
     @Test
     fun pidoLaBibliotecaDeUnGrupo_retornaUn2xx(){
         var usuario = Usuario("barbi","barbi@gmail.com","123")
@@ -209,7 +206,6 @@ class TestGrupos {
         assertThat(biblioteca.contains(libro.link))
     }
 
-
     @Test
     fun alCargarUnLibroEnUnGrupoBorradoObtengoUnError(){
         var usuario = Usuario("barbi","barbi@gmail.com","123")
@@ -220,10 +216,17 @@ class TestGrupos {
         val idDelGrupo = "id de mentira"
 
         mockMvc.perform(
-            MockMvcRequestBuilders.post("/grupos/$idDelGrupo/biblioteca")
-                .header("Authorization",token)
-                .content(ObjectMapper().writeValueAsString(libro))
-                .contentType(MediaType.APPLICATION_JSON)
+                MockMvcRequestBuilders.post("/grupos/$idDelGrupo/biblioteca")
+                        .header("Authorization", token)
+                        .content(ObjectMapper().writeValueAsString(libro))
+                        .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().is4xxClientError)
+    }
+
+
+    private fun registrarYLogear(usuario: Usuario): String {
+        usuarioService.registrarUsuario(usuario)
+        val token = usuarioService.login(RequestUsuario(usuario.userName, usuario.password))
+        return token
     }
 }

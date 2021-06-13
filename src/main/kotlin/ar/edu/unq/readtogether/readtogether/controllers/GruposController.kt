@@ -36,14 +36,14 @@ class GruposController {
 
     @PostMapping("/grupos/{idDelGrupo}/salir")
     fun salirDeComunidad(@PathVariable("idDelGrupo") idDelGrupo: String, @RequestBody usuario: RequestConUsername) : ResponseEntity<Void>{
-        if (!coincideConUsuarioAutenticado(usuario)){
-            return ResponseEntity(HttpStatus.FORBIDDEN)
+        return if (!coincideConUsuarioAutenticado(usuario)) {
+            ResponseEntity(HttpStatus.FORBIDDEN)
         } else {
             try {
                 grupoService.quitarUsuarioDelGrupo(usuario.userName, idDelGrupo)
-                return ResponseEntity(HttpStatus.OK)
+                ResponseEntity(HttpStatus.OK)
             } catch (e: RuntimeException) {
-                return ResponseEntity(HttpStatus.BAD_REQUEST)
+                ResponseEntity(HttpStatus.BAD_REQUEST)
             }
         }
     }

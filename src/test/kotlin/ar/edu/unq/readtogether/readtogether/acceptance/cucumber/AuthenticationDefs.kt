@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @AutoConfigureMockMvc
-class RegistrarDefs : SpringIntegrationTest(){
+class AuthenticationDefs : SpringIntegrationTest(){
 
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -29,7 +29,6 @@ class RegistrarDefs : SpringIntegrationTest(){
     @Autowired
     private lateinit var context: StepDefinitionsContext
 
-    val username = "unNombreDeUsuario"
     val email = "unMail@gmail.com"
     val contraseña = "unaContrasenia"
 
@@ -38,13 +37,46 @@ class RegistrarDefs : SpringIntegrationTest(){
         usuarioService.eliminarDatos()
     }
 
+    @Given("un usuario que ya se ha registrado en la aplicacion")
+    fun registrarUsuario(){
+        val usuario = Usuario(username, email, contraseña)
+        usuarioService.registrarUsuario(usuario)
+    }
+
     @Given("un usuario que no se ha registrado en la aplicacion")
     fun `el usuario no esta registrado en la aplicacion`(){
         val request = RequestUsuario(username, contraseña)
         context.perform((MockMvcRequestBuilders.post("/login")
                 .content(ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)), mockMvc)
-        context.andExpect(status().isNotFound)
+        context.andExpect(status().isForbidden)
+    }
+
+    @Given("un usuario logeado")
+    fun usuarioLogeado(){
+        val usuario = Usuario(username, email, contraseña)
+        usuarioService.registrarUsuario(usuario)
+        context.token = usuarioService.login(RequestUsuario(username, contraseña))
+    }
+
+    @When("ingresa su usuario y contraseña correctos")
+    fun autenticarUsuario(){
+        val request = RequestUsuario(username, contraseña)
+        context.perform(
+                MockMvcRequestBuilders.post("/login")
+                        .content(ObjectMapper().writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON), mockMvc
+        )
+    }
+
+    @When("ingresa su usuario correcto pero una contraseña incorrecta")
+    fun ingresarConContraseniaIncorrecta(){
+        val request = RequestUsuario(username, "contraseñaincorrecta")
+        context.perform(
+                MockMvcRequestBuilders.post("/login")
+                        .content(ObjectMapper().writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON), mockMvc
+        )
     }
 
     @When("se registra con usuario, mail y contraseña")
@@ -57,6 +89,11 @@ class RegistrarDefs : SpringIntegrationTest(){
         )
     }
 
+    @Then("obtiene un token")
+    fun asegurarseQueRetorneUnToken(){
+        assertThat(context.andReturn().response.contentAsString).contains("Bearer")
+    }
+
     @Then("puede autenticarse con las credenciales con las que se registro")
     fun autenticarAlUsuario(){
         context.andExpect(status().isOk)
@@ -66,6 +103,11 @@ class RegistrarDefs : SpringIntegrationTest(){
                 .content(ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)), mockMvc)
         context.andExpect(status().isOk)
+    }
+
+    @Then("la aplicacion no le permite logearse")
+    fun assertarQueLaAplicacionNoPermitioElLogin(){
+        context.andExpect(status().isForbidden)
     }
 
 }
