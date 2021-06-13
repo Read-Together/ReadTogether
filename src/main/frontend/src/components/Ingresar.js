@@ -1,5 +1,5 @@
 import { Alert, Button, Card, Form } from "react-bootstrap";
-import {useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -59,14 +59,18 @@ export const Ingresar = () => {
           </Form.Group>
           <div className="botones">
             <div>
-              <Button variant="primary" type="submit" className="botonIngresar" disabled={!(password && usuario)}>
+              <Button
+                variant="primary"
+                type="submit"
+                className="botonIngresar"
+                disabled={!(password && usuario)}
+              >
                 Ingresar
               </Button>
             </div>
 
             <div className="espacioPregunta ">
               ¿No tenes cuenta?
-              
               <Link to="/registrar" className="espaciado">
                 Registrate
               </Link>

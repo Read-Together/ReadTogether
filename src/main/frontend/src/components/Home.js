@@ -22,6 +22,7 @@ const Home = () => {
     axios
       .get(`http://localhost:8080/home/${usuario}`, { headers: header })
       .then((response) => {
+        console.log(response);
         setData(response.data);
       });
   };

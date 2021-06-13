@@ -68,7 +68,19 @@ function Resultados() {
                 <div>{resultado.nombre}</div>
               </Link>
               <div className="espaciadoBoton">
+                {estaEnElGrupo(resultado) ?
+                <button
+                  type="button"
+                  onClick={() => {
+                    cambiarSuscripción(resultado);
 
+                  }}
+                  className="botonUnirse btn btn-danger "
+                >
+                  Salir
+
+                </button>
+                 :
                 <button
                   type="button"
                   onClick={() => {
@@ -77,10 +89,11 @@ function Resultados() {
                   }}
                   className="botonUnirse btn btn-primary "
                 >
-                  {estaEnElGrupo(resultado) ? "Salir" : "Unirse"}
+                  Unirse
 
                 </button>
 
+                }
               </div>
             </div>
             <div className="descripcionDeComunidad">

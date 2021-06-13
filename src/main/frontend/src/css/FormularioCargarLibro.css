@@ -5,6 +5,7 @@
     top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
+    
 }
 
 .botonCargar{
@@ -21,5 +22,5 @@
 }
 
 .cardCargarLibro{
-    background-color: whitesmoke;
+    background-color: rgb(247, 235, 218);
 }

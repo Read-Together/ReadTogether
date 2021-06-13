@@ -51,7 +51,7 @@ const Comunidad = () => {
               ))}
             </div>
           </div>
-          <button className="botonUnirse btn btn-primary "
+          <button className="botonUnirse btn btn-danger "
                   onClick={() => {
                     salirDelGrupo(id)
                     history.replace(`/`)

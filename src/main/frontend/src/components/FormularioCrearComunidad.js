@@ -86,7 +86,7 @@ export function FormularioCrearComunidad() {
             Crear
           </Button>
           <Link to="/home">
-            <Button className="btn btn-danger botonVolver">Volver</Button>
+            <Button className="btn btn-danger botonVolverForm">Volver</Button>
           </Link>
         </Form>
       </Container>
