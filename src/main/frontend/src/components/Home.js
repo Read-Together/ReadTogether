@@ -33,7 +33,14 @@ const Home = () => {
         <LeftMenu />
 
         <div className="main-content">
-          <div className="bienvenida">ESTO ES UNA BIENVENIDA</div>
+          <div className="bienvenida">¡Bienvenido!</div>
+
+            <div className="subtitulo">
+              <p>¡Animate a formar parte de esta gran comunidad de lectura! </p>
+              <p>Tendrás la posibilidad crear comunidades y/o unirte a las ya generadas por nuestros usuarios </p>
+              </div>
+          <br/>
+          <div className="listadoDeGrupos">Tus comunidades: </div>
           {data.map((grupo) => (
             <div className="card cardComunidadesHome">
               <Link to={`/grupos/${grupo.id}`}>
