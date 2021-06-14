@@ -233,9 +233,10 @@ class TestGrupos {
         val requestUsuario = RequestUsuario("Gonzalo", "123")
         val token = usuarioService.login(requestUsuario)
 
+        val username = "Gonzalo"
         /** se crean 2 grupos con el usuario dentro, y uno sin el usuario**/
-        val grupo1 = Grupo("Grupo Con Usuario", "una descripcion", mutableListOf("Barbi", "Gonzalo"))
-        val grupo2 = Grupo("Grupo Con Usuario", "una descripcion", mutableListOf("Juan", "Gonzalo", "Mauro"))
+        val grupo1 = Grupo("Grupo Con Usuario", "una descripcion", mutableListOf("Barbi", username))
+        val grupo2 = Grupo("Grupo Con Usuario", "una descripcion", mutableListOf("Juan", username, "Mauro"))
         val grupo3 = Grupo("Grupo Con Usuario", "una descripcion", mutableListOf("Juan", "Mauro", "Barbi"))
         grupoService.guardarGrupo(grupo1)
         grupoService.guardarGrupo(grupo2)
@@ -250,6 +251,22 @@ class TestGrupos {
         assertThat(grupos).hasSize(2)
     }
 
+    @Test
+    fun pidoLosGruposDeUnUsuario_meDevuelve0Grupos(){
+        val usuario = Usuario("Gonzalo", "gonzalo@gmail.com", "123")
+        usuarioService.registrarUsuario(usuario)
+        val requestUsuario = RequestUsuario("Gonzalo", "123")
+        val token = usuarioService.login(requestUsuario)
+
+        val nombreUsuario = usuario.userName
+
+        var response = mockMvc.perform(MockMvcRequestBuilders.get("/home/$nombreUsuario")
+            .header("Authorization",token))
+            .andExpect(MockMvcResultMatchers.status().isAccepted)
+            .andReturn().response.contentAsString
+        var grupos = Gson().fromJson(response, Array<Grupo>::class.java).toList()
+        assertThat(grupos).hasSize(0)
+    }
 
     private fun registrarYLogear(usuario: Usuario): String {
         usuarioService.registrarUsuario(usuario)
