@@ -13,12 +13,12 @@
 }
 
 .cardComunidadEncontrado{
-    background-color:rgb(251, 251, 251);
+    background-color: rgb(247, 235, 218);
     margin-top: 1.5%;
     margin-right: 25%;
     margin-left: 3%;
     padding-right: 1%;
-    border-color: whitesmoke;
+   
 }
 
 :hover{

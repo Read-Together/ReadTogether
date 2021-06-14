@@ -22,7 +22,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <nav className="navbar navbar-expand-lg navbar-light">
       <div className="container-fluid">
         <a className="navbar-brand" href="/home">
           <h1 className="animated flash">Read Together</h1>
@@ -52,7 +52,7 @@ const NavBar = () => {
             aria-label="Search"
           />
           <Link to={`/busqueda/${termino}`}>
-            <button Class="btn btn-outline-success botonBuscar" type="submit">
+            <button Class="btn btn-success botonBuscar" type="submit">
               Buscar
             </button>
           </Link>

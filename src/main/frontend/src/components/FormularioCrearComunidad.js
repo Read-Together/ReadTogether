@@ -48,7 +48,7 @@ export function FormularioCrearComunidad() {
     <div>
       <NavBar />
 
-      <Container className="formularioComunidad">
+      <Container className="card formularioComunidad cardFormulario">
         <Form onSubmit={handleSubmit}>
           <Alert variant="success" show={fueCreado}>
             ¡Genial! Has creado el grupo {nombre}{" "}
@@ -86,7 +86,7 @@ export function FormularioCrearComunidad() {
             Crear
           </Button>
           <Link to="/home">
-            <Button className="btn btn-danger botonVolver">Volver</Button>
+            <Button className="btn btn-danger botonVolverForm">Volver</Button>
           </Link>
         </Form>
       </Container>

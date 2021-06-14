@@ -1,30 +1,34 @@
 import "./App.css";
 import axios from "axios";
-import {BrowserRouter as Router, Link, Switch, useHistory, useParams,} from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import {
+  BrowserRouter as Router,
+  Link,
+  Switch,
+  useHistory,
+  useParams,
+} from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import Register from "./components/Register";
-import {FormularioCrearComunidad} from "./components/FormularioCrearComunidad";
-import {Ingresar} from "./components/Ingresar";
-import {PrivateRoute} from "./components/PrivateRoute";
+import { FormularioCrearComunidad } from "./components/FormularioCrearComunidad";
+import { Ingresar } from "./components/Ingresar";
+import { PrivateRoute } from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import Home from "./components/Home";
 import NavBar from "./components/NavBar";
 import "./css/Resultados.css";
 import Comunidad from "./components/Comunidad";
-import {salirDelGrupo} from "./controllers/grupoController";
+import { salirDelGrupo } from "./controllers/grupoController";
 import Biblioteca from "./components/Biblioteca";
 import FormularioCargarLibro from "./components/FormularioCargarLibro";
 
 function Resultados() {
-  const {termino} = useParams();
+  const { termino } = useParams();
   const [resultados, setResultados] = useState([]);
   const history = useHistory();
 
-
-
   const unirmeAGrupo = (resultado) => {
-    const header = {authorization: sessionStorage.getItem("accessToken")};
-    const data = {userName: sessionStorage.getItem("loggedUsername")};
+    const header = { authorization: sessionStorage.getItem("accessToken") };
+    const data = { userName: sessionStorage.getItem("loggedUsername") };
     axios
       .post(`http://localhost:8080/grupos/${resultado.id}/registrar`, data, {
         headers: header,
@@ -36,8 +40,10 @@ function Resultados() {
   };
 
   const estaEnElGrupo = (resultado) => {
-    return resultado.usuarios.some(usuario => usuario === sessionStorage.getItem("loggedUsername"))
-  }
+    return resultado.usuarios.some(
+      (usuario) => usuario === sessionStorage.getItem("loggedUsername")
+    );
+  };
 
   useEffect(() => {
     axios
@@ -49,17 +55,16 @@ function Resultados() {
 
   function cambiarSuscripción(resultado) {
     if (estaEnElGrupo(resultado)) {
-      salirDelGrupo(resultado.id)
-      history.replace(`/`);
+      salirDelGrupo(resultado.id);
+      history.push(`/`);
     } else {
-      unirmeAGrupo(resultado)
+      unirmeAGrupo(resultado);
     }
-
   }
 
   return (
     <div>
-      <NavBar/>
+      <NavBar />
       <div>
         {resultados.map((resultado) => (
           <div className="card cardComunidadEncontrado">
@@ -68,19 +73,29 @@ function Resultados() {
                 <div>{resultado.nombre}</div>
               </Link>
               <div className="espaciadoBoton">
-
+                {estaEnElGrupo(resultado) ?
                 <button
                   type="button"
                   onClick={() => {
                     cambiarSuscripción(resultado);
+                  }}
+                  className="botonUnirse btn btn-danger "
+                >
+                  Salir
 
+                </button>
+                 :
+                <button
+                  type="button"
+                  onClick={() => {
+                    cambiarSuscripción(resultado);
                   }}
                   className="botonUnirse btn btn-primary "
                 >
-                  {estaEnElGrupo(resultado) ? "Salir" : "Unirse"}
+                  Unirse
+                  </button>
 
-                </button>
-
+                }
               </div>
             </div>
             <div className="descripcionDeComunidad">
@@ -97,18 +112,21 @@ function App() {
   return (
     <Router>
       <Switch>
-        <PublicRoute path="/registrar" component={Register}/>
-        <PublicRoute path="/ingresar" component={Ingresar}/>
-        <PrivateRoute path="/busqueda/:termino" component={Resultados}/>
-        <PrivateRoute path="/grupos/:id/biblioteca/cargar" component={FormularioCargarLibro}/>
-        <PrivateRoute path="/grupos/:id/biblioteca" component={Biblioteca}/>
+        <PublicRoute path="/registrar" component={Register} />
+        <PublicRoute path="/ingresar" component={Ingresar} />
+        <PrivateRoute path="/busqueda/:termino" component={Resultados} />
+        <PrivateRoute
+          path="/grupos/:id/biblioteca/cargar"
+          component={FormularioCargarLibro}
+        />
+        <PrivateRoute path="/grupos/:id/biblioteca" component={Biblioteca} />
         <PrivateRoute path="/grupos/:id" component={Comunidad} />
         <PrivateRoute path="/home" component={Home} />
         <PrivateRoute
           path="/crear_comunidad"
           component={FormularioCrearComunidad}
         />
-        <PrivateRoute path="/" component={Home}/>
+        <PrivateRoute path="/" component={Home} />
       </Switch>
     </Router>
   );

@@ -1,0 +1,26 @@
+.cardComunidadesHome{
+    margin-top: 2%;
+    background-color: rgb(247, 235, 218);
+    padding: 1.4%;
+    padding-top: 1%;
+}
+
+.tituloHome{
+    font-size: 150%;
+}
+
+.bienvenida{
+    font-size:4.0rem;
+    font-weight:300;
+    line-height:1.2
+}
+
+.listadoDeGrupos{
+    font-size:2.0rem;
+    font-weight:300;
+}
+
+.subtitulo{
+    margin-top: 2%;
+    font-size: 1.5rem;
+}

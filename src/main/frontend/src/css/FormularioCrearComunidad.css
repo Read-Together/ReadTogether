@@ -13,9 +13,13 @@
     margin-top: 1%;
 }
 
-.botonVolver{
+.botonVolverForm{
     padding: 0.7%;
     width: 10%;
     margin-top: 1%;
     margin-left: 1%;
+}
+
+.cardFormulario{
+    background-color: rgb(247, 235, 218);
 }

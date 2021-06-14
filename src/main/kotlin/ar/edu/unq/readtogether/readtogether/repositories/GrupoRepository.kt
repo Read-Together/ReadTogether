@@ -85,4 +85,13 @@ class GrupoRepository {
         return grupo.biblioteca
     }
 
+    fun gruposDelUsuario(nombreUsuario: String): List<Grupo> {
+        var grupos = getCollection().whereArrayContains("usuarios", nombreUsuario).get().get()
+        var listaDeGrupos = mutableListOf<Grupo>()
+        for(grupo in grupos){
+            listaDeGrupos.add(crearGrupoDesde(grupo))
+        }
+        return listaDeGrupos.toList()
+    }
+
 }
